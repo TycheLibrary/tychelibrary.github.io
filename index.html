@@ -37,6 +37,33 @@
             
   <section id="welcome-to-tyche-s-documentation">
 <h1>Welcome to Tyche’s documentation!<a class="headerlink" href="#welcome-to-tyche-s-documentation" title="Permalink to this heading">¶</a></h1>
+<p>Tyche is a Python library to support the representation of, and the reasoning about, aleatoric information.
+Aleatoric information is information that has an independent probability of being true each time it is observed
+(i.e., each observation is a roll of the dice). For example, every text message that people send _may_ include
+emojis, with a different probability for each individual that sent the message. Tyche provides functionality to
+reason about this aleatoric information using aleatoric description logic. This allows the probability of truth
+of logical statements to be efficiently queried, and allows the probability of the tendencies of individuals to
+be learnt through observation.</p>
+<p>Tyche provides its main functionality through its <cite>tyche.individuals</cite> module, which facilitates the
+construction of ontological knowledge bases with probabilistic beliefs. This allows the simple
+representation of individuals, the probabilistic beliefs about them (termed concepts), and the
+probabilistic relationships between them (termed roles). Aleatoric description logic sentences
+may then be constructed using the <cite>tyche.language</cite> model to be used to query a knowledge base
+for a probability, or to be used as an observation to update a knowledge base. This allows
+fine-grained modelling of probabilistic belief systems, with a rigorous mathematical foundation.</p>
+<p><strong>GitHub:</strong> <a class="reference external" href="https://github.com/TycheLibrary/Tyche">github.com/TycheLibrary/Tyche</a></p>
+<p><strong>PyPi:</strong> <a class="reference external" href="https://pypi.org/project/Tyche">pypi.org/project/Tyche/</a></p>
+<p><strong>Related Publications:</strong></p>
+<ul class="simple">
+<li><p>“Aleatoric Description Logic for Probabilistic Reasoning” by
+Tim French and Thomas Smoker (2021):
+<a class="reference external" href="https://arxiv.org/abs/2108.13036">arXiv link</a></p></li>
+<li><p>“A modal aleatoric calculus for probabilistic reasoning” by
+Tim French, Andrew Gozzard and Mark Reynolds (2018):
+<a class="reference external" href="https://arxiv.org/abs/1812.11741">arXiv link</a></p></li>
+</ul>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading">¶</a></h2>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Modules:</span></p>
 <ul>
@@ -62,12 +89,13 @@
 </div>
 </section>
 <section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading">¶</a></h1>
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
+</section>
 </section>
 
 

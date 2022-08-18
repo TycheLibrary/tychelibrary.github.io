@@ -1,0 +1,1002 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>tyche.individuals &#8212; Tyche v1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="tyche.distributions" href="distributions.html" />
+    <link rel="prev" title="tyche.language" href="language.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-tyche.individuals">
+<span id="tyche-individuals"></span><h1>tyche.individuals<a class="headerlink" href="#module-tyche.individuals" title="Permalink to this heading">¶</a></h1>
+<p>This module contains classes used to construct ontological knowledge bases
+of individuals, the probabilistic beliefs about them (concepts), and the
+probabilistic relationships between them (roles). These belief models
+can be used as contexts to evaluate aleatoric description logic (ADL)
+sentences. This module also contains many learning strategies that may
+be used to update your belief models based upon ADL observations.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="tyche.individuals.BayesRuleLearningStrategy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.individuals.</span></span><span class="sig-name descname"><span class="pre">BayesRuleLearningStrategy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.BayesRuleLearningStrategy" title="Permalink to this definition">¶</a></dt>
+<dd><p>TODO</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>learning_rate</strong> (<em>float</em>) – </p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.BayesRuleLearningStrategy.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">individual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">likelihood</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.BayesRuleLearningStrategy.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modifies the individual to learn the given concept from the given observation of it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<em>SelfType_LearningStrategy</em>) – </p></li>
+<li><p><strong>individual</strong> (<a class="reference internal" href="language.html#tyche.language.TycheContext" title="tyche.language.TycheContext"><em>TycheContext</em></a>) – </p></li>
+<li><p><strong>role_ref</strong> (<a class="reference internal" href="#tyche.individuals.RoleFunctionSymbolReference" title="tyche.individuals.RoleFunctionSymbolReference"><em>RoleFunctionSymbolReference</em></a>) – </p></li>
+<li><p><strong>observation</strong> (<a class="reference internal" href="language.html#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p></li>
+<li><p><strong>likelihood</strong> (<em>float</em>) – </p></li>
+<li><p><strong>learning_rate</strong> (<em>float</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tyche.individuals.ConceptFunctionSymbolReference">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.individuals.</span></span><span class="sig-name descname"><span class="pre">ConceptFunctionSymbolReference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_strat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.ConceptFunctionSymbolReference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a reference to a concept, with additional information about the concept attached.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>symbol</strong> (<em>str</em>) – </p></li>
+<li><p><strong>fget</strong> (<em>Callable</em><em>[</em><em>[</em><em>any</em><em>]</em><em>, </em><em>TycheConceptValue</em><em>]</em>) – </p></li>
+<li><p><strong>fset</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>any</em><em>, </em><em>TycheConceptValue</em><em>]</em><em>, </em><em>None</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>learning_strat</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="#tyche.individuals.ConceptLearningStrategy" title="tyche.individuals.ConceptLearningStrategy"><em>ConceptLearningStrategy</em></a><em>]</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tyche.individuals.ConceptLearningStrategy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.individuals.</span></span><span class="sig-name descname"><span class="pre">ConceptLearningStrategy</span></span><a class="headerlink" href="#tyche.individuals.ConceptLearningStrategy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies changes to individuals to update them based upon observations of concepts.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.ConceptLearningStrategy.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">individual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">likelihood</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.ConceptLearningStrategy.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modifies the individual to learn the given concept from the given observation of it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<em>SelfType_LearningStrategy</em>) – </p></li>
+<li><p><strong>individual</strong> (<a class="reference internal" href="language.html#tyche.language.TycheContext" title="tyche.language.TycheContext"><em>TycheContext</em></a>) – </p></li>
+<li><p><strong>concept_ref</strong> (<a class="reference internal" href="#tyche.individuals.ConceptFunctionSymbolReference" title="tyche.individuals.ConceptFunctionSymbolReference"><em>ConceptFunctionSymbolReference</em></a>) – </p></li>
+<li><p><strong>observation</strong> (<a class="reference internal" href="language.html#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p></li>
+<li><p><strong>likelihood</strong> (<em>float</em>) – </p></li>
+<li><p><strong>learning_rate</strong> (<em>float</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tyche.individuals.DirectConceptLearningStrategy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.individuals.</span></span><span class="sig-name descname"><span class="pre">DirectConceptLearningStrategy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.DirectConceptLearningStrategy" title="Permalink to this definition">¶</a></dt>
+<dd><p>The most basic learning strategy that simply updates concepts
+to the values they were observed as. A learning rate can be
+used to limit the changes to the concept’s value, to stop a
+single true observation marking the concept always true.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>learning_rate</strong> (<em>float</em>) – </p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.DirectConceptLearningStrategy.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">individual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">likelihood</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.DirectConceptLearningStrategy.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modifies the individual to learn the given concept from the given observation of it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<em>SelfType_LearningStrategy</em>) – </p></li>
+<li><p><strong>individual</strong> (<a class="reference internal" href="language.html#tyche.language.TycheContext" title="tyche.language.TycheContext"><em>TycheContext</em></a>) – </p></li>
+<li><p><strong>concept_ref</strong> (<a class="reference internal" href="#tyche.individuals.ConceptFunctionSymbolReference" title="tyche.individuals.ConceptFunctionSymbolReference"><em>ConceptFunctionSymbolReference</em></a>) – </p></li>
+<li><p><strong>observation</strong> (<a class="reference internal" href="language.html#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p></li>
+<li><p><strong>likelihood</strong> (<em>float</em>) – </p></li>
+<li><p><strong>learning_rate</strong> (<em>float</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tyche.individuals.IdentityIndividual">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.individuals.</span></span><span class="sig-name descname"><span class="pre">IdentityIndividual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_role_value=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entries=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_strat=&lt;tyche.individuals.BayesRuleLearningStrategy</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.IdentityIndividual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implicitly represents a role over the set of possible states that an individual could take.
+Evaluation of concepts and roles with this context will implicitly perform an expectation
+over the set of possible individuals in the id role.</p>
+<p>The None-individual is not supported for identity roles.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id_role_value</strong> (<em>TycheRoleValue</em>) – </p></li>
+<li><p><strong>name</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – </p></li>
+<li><p><strong>entries</strong> (<em>Union</em><em>[</em><em>None</em><em>, </em><em>list</em><em>[</em><em>Union</em><em>[</em><em>ForwardRef</em><em>(</em><em>'TycheContext'</em><em>)</em><em>, </em><em>Tuple</em><em>[</em><em>ForwardRef</em><em>(</em><em>'TycheContext'</em><em>)</em><em>, </em><em>float</em><em>]</em><em>]</em><em>]</em><em>, </em><em>dict</em><em>[</em><em>'TycheContext'</em><em>, </em><em>float</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>learning_strat</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="#tyche.individuals.RoleLearningStrategy" title="tyche.individuals.RoleLearningStrategy"><em>RoleLearningStrategy</em></a><em>]</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.IdentityIndividual.add">
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">individual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.IdentityIndividual.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a possible individual with the given weight. The weights
+represent the relative weight of the individual against the
+weights of other individuals. If the given individual already
+exists, this will replace their weight.</p>
+<p>If no weight is given, the default weight of 1 will be used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>individual</strong> (<a class="reference internal" href="language.html#tyche.language.TycheContext" title="tyche.language.TycheContext"><em>TycheContext</em></a>) – </p></li>
+<li><p><strong>weight</strong> (<em>float</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.IdentityIndividual.eval">
+<span class="sig-name descname"><span class="pre">eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.IdentityIndividual.eval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the given concept to a probability of
+it being true if sampled within this context.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>node</strong> (<a class="reference internal" href="language.html#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.IdentityIndividual.eval_role">
+<span class="sig-name descname"><span class="pre">eval_role</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">role</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.IdentityIndividual.eval_role" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the given role to a distribution of possible
+other contexts if it were sampled within this context.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>role</strong> (<a class="reference internal" href="language.html#tyche.language.Role" title="tyche.language.Role"><em>Role</em></a>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="language.html#tyche.language.ExclusiveRoleDist" title="tyche.language.ExclusiveRoleDist"><em>ExclusiveRoleDist</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.IdentityIndividual.get_concept">
+<span class="sig-name descname"><span class="pre">get_concept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.IdentityIndividual.get_concept" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the probability of the atom with the given symbol
+being true, without modification by the context.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>symbol</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.IdentityIndividual.get_concept_reference">
+<span class="sig-name descname"><span class="pre">get_concept_reference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.IdentityIndividual.get_concept_reference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a mutable reference to the probability of the atom with the given symbol
+being true. This reference can be used to get and set the value of the atom.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>symbol</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="references.html#tyche.references.SymbolReference" title="tyche.references.SymbolReference"><em>SymbolReference</em></a>[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.IdentityIndividual.get_role">
+<span class="sig-name descname"><span class="pre">get_role</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.IdentityIndividual.get_role" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the role distribution of the role with the
+given symbol, without modification by the context.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>symbol</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="language.html#tyche.language.ExclusiveRoleDist" title="tyche.language.ExclusiveRoleDist"><em>ExclusiveRoleDist</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.IdentityIndividual.get_role_reference">
+<span class="sig-name descname"><span class="pre">get_role_reference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.IdentityIndividual.get_role_reference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a mutable reference to the role distribution of the role with the
+given symbol. This reference can be used to get and set the value of the role.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>symbol</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="references.html#tyche.references.SymbolReference" title="tyche.references.SymbolReference"><em>SymbolReference</em></a>[<a class="reference internal" href="language.html#tyche.language.ExclusiveRoleDist" title="tyche.language.ExclusiveRoleDist"><em>ExclusiveRoleDist</em></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.IdentityIndividual.is_empty">
+<span class="sig-name descname"><span class="pre">is_empty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.IdentityIndividual.is_empty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether no possible individuals have been added.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.IdentityIndividual.observe">
+<span class="sig-name descname"><span class="pre">observe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">likelihood</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.IdentityIndividual.observe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempts to update the beliefs of this individual based upon
+an observation of the given concept.</p>
+<p>The optional likelihood parameter provides a degree of certainty
+about the observation. By default, the observation is assumed to
+be reliable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observation</strong> (<a class="reference internal" href="language.html#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p></li>
+<li><p><strong>likelihood</strong> (<em>float</em>) – </p></li>
+<li><p><strong>learning_rate</strong> (<em>float</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.IdentityIndividual.remove">
+<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">individual</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.IdentityIndividual.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes the given individual from this identity individual.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>individual</strong> (<a class="reference internal" href="language.html#tyche.language.TycheContext" title="tyche.language.TycheContext"><em>TycheContext</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.IdentityIndividual.to_str">
+<span class="sig-name descname"><span class="pre">to_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detail_lvl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent_lvl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.IdentityIndividual.to_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>A version of str() that allows additional formatting options to be specified.
+Allows specifying the number of levels of detail to include, and the
+indentation to use while formatting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>detail_lvl</strong> (<em>int</em>) – </p></li>
+<li><p><strong>indent_lvl</strong> (<em>int</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tyche.individuals.Individual">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.individuals.</span></span><span class="sig-name descname"><span class="pre">Individual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.Individual" title="Permalink to this definition">¶</a></dt>
+<dd><p>A helper class for representing individual entities in an aleatoric knowledge base.
+These roles can be used as contexts to use to evaluate Tyche expressions within.</p>
+<p>The concepts and roles about the individual may be stored as instance variables,
+or as methods that supply their value.
+* Fields can be marked as concepts by giving them the TycheConcept type hint.
+* Fields can be marked as roles by giving them the TycheRole type hint.
+* Methods can be marked as concepts using the &#64;concept decorator.
+* Methods can be marked as roles using the &#64;role decorator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – </p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.Individual.coerce_concept_value">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">coerce_concept_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.Individual.coerce_concept_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Coerces concept values to a float value in the range [0, 1],
+and raises errors if this is not possible.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>any</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.Individual.coerce_role_value">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">coerce_role_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.Individual.coerce_role_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Coerces role values to only allow WeightedRoleDistribution.
+In the future, this should accept other types of role distributions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>any</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="language.html#tyche.language.ExclusiveRoleDist" title="tyche.language.ExclusiveRoleDist"><em>ExclusiveRoleDist</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.Individual.describe">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.Individual.describe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a string describing the concepts and roles of the given Individual type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj_type</strong> (<em>Type</em><em>[</em><a class="reference internal" href="#tyche.individuals.Individual" title="tyche.individuals.Individual"><em>Individual</em></a><em>]</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.Individual.eval">
+<span class="sig-name descname"><span class="pre">eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.Individual.eval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the given concept to a probability of
+it being true if sampled within this context.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>node</strong> (<em>CompatibleWithADLNode</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.Individual.eval_role">
+<span class="sig-name descname"><span class="pre">eval_role</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">role</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.Individual.eval_role" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the given role to a distribution of possible
+other contexts if it were sampled within this context.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>role</strong> (<em>CompatibleWithRole</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="language.html#tyche.language.ExclusiveRoleDist" title="tyche.language.ExclusiveRoleDist"><em>ExclusiveRoleDist</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.Individual.get_concept">
+<span class="sig-name descname"><span class="pre">get_concept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.Individual.get_concept" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the probability of the atom with the given symbol
+being true, without modification by the context.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>symbol</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.Individual.get_concept_names">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_concept_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.Individual.get_concept_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all the concept names of the given Individual type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj_type</strong> (<em>Type</em><em>[</em><a class="reference internal" href="#tyche.individuals.Individual" title="tyche.individuals.Individual"><em>Individual</em></a><em>]</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>set[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.Individual.get_concept_reference">
+<span class="sig-name descname"><span class="pre">get_concept_reference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.Individual.get_concept_reference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a mutable reference to the probability of the atom with the given symbol
+being true. This reference can be used to get and set the value of the atom.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>symbol</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="references.html#tyche.references.BakedSymbolReference" title="tyche.references.BakedSymbolReference"><em>BakedSymbolReference</em></a>[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.Individual.get_role">
+<span class="sig-name descname"><span class="pre">get_role</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.Individual.get_role" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the role distribution of the role with the
+given symbol, without modification by the context.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>symbol</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="language.html#tyche.language.ExclusiveRoleDist" title="tyche.language.ExclusiveRoleDist"><em>ExclusiveRoleDist</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.Individual.get_role_names">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_role_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.Individual.get_role_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all the role names of the given Individual type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>obj_type</strong> (<em>Type</em><em>[</em><a class="reference internal" href="#tyche.individuals.Individual" title="tyche.individuals.Individual"><em>Individual</em></a><em>]</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>set[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.Individual.get_role_reference">
+<span class="sig-name descname"><span class="pre">get_role_reference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.Individual.get_role_reference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a mutable reference to the role distribution of the role with the
+given symbol. This reference can be used to get and set the value of the role.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>symbol</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="references.html#tyche.references.SymbolReference" title="tyche.references.SymbolReference"><em>SymbolReference</em></a>[<a class="reference internal" href="language.html#tyche.language.ExclusiveRoleDist" title="tyche.language.ExclusiveRoleDist"><em>ExclusiveRoleDist</em></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.Individual.observe">
+<span class="sig-name descname"><span class="pre">observe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">observation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">likelihood</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.Individual.observe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Learns the roles and concepts within this individual based upon the observation,
+and propagate the effects of the observation node to its child nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>observation</strong> (<a class="reference internal" href="language.html#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p></li>
+<li><p><strong>likelihood</strong> (<em>float</em>) – </p></li>
+<li><p><strong>learning_rate</strong> (<em>float</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.Individual.to_str">
+<span class="sig-name descname"><span class="pre">to_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detail_lvl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent_lvl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.Individual.to_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>A version of str() that allows additional formatting options to be specified.
+Allows specifying the number of levels of detail to include, and the
+indentation to use while formatting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>detail_lvl</strong> (<em>int</em>) – </p></li>
+<li><p><strong>indent_lvl</strong> (<em>int</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tyche.individuals.IndividualPropertyDecorator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.individuals.</span></span><span class="sig-name descname"><span class="pre">IndividualPropertyDecorator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fget</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.IndividualPropertyDecorator" title="Permalink to this definition">¶</a></dt>
+<dd><p>A decorator to mark methods as providing the value of a concept or role,
+and to provide additional metadata or learning functions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>type_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>fget</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="#tyche.individuals.Individual" title="tyche.individuals.Individual"><em>Individual</em></a><em>]</em><em>, </em><em>AccessedValueType</em><em>]</em>) – </p></li>
+<li><p><strong>symbol</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.IndividualPropertyDecorator.learning_func">
+<span class="sig-name descname"><span class="pre">learning_func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">learning_strat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.IndividualPropertyDecorator.learning_func" title="Permalink to this definition">¶</a></dt>
+<dd><p>This can be used as a decorator to register a method-based setter for this symbol.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>learning_strat</strong> (<em>Optional</em><em>[</em><em>LearningStrategyType</em><em>]</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>Callable</em>[[<em>Callable</em>[[<a class="reference internal" href="#tyche.individuals.Individual" title="tyche.individuals.Individual"><em>Individual</em></a>, <em>AccessedValueType</em>], None]], <em>Callable</em>[[<a class="reference internal" href="#tyche.individuals.Individual" title="tyche.individuals.Individual"><em>Individual</em></a>, <em>AccessedValueType</em>], None]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tyche.individuals.LearningStrategy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.individuals.</span></span><span class="sig-name descname"><span class="pre">LearningStrategy</span></span><a class="headerlink" href="#tyche.individuals.LearningStrategy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies changes to individuals to update them based upon observations.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.LearningStrategy.init_for_new_usage">
+<span class="sig-name descname"><span class="pre">init_for_new_usage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.LearningStrategy.init_for_new_usage" title="Permalink to this definition">¶</a></dt>
+<dd><p>If a learning strategy requires per-reference per-individual state, then this can
+clone the learning strategy for each new individual and reference. Otherwise, the
+state of this learning strategy will be shared for every individual and reference
+that uses it (which is fine for stateless learning strategies).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>SelfType_LearningStrategy</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tyche.individuals.RoleFunctionSymbolReference">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.individuals.</span></span><span class="sig-name descname"><span class="pre">RoleFunctionSymbolReference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_strat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.RoleFunctionSymbolReference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a reference to a concept, with additional information about the concept attached.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>symbol</strong> (<em>str</em>) – </p></li>
+<li><p><strong>fget</strong> (<em>Callable</em><em>[</em><em>[</em><em>any</em><em>]</em><em>, </em><em>TycheRoleValue</em><em>]</em>) – </p></li>
+<li><p><strong>fset</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>any</em><em>, </em><em>TycheRoleValue</em><em>]</em><em>, </em><em>None</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>learning_strat</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="#tyche.individuals.RoleLearningStrategy" title="tyche.individuals.RoleLearningStrategy"><em>RoleLearningStrategy</em></a><em>]</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tyche.individuals.RoleLearningStrategy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.individuals.</span></span><span class="sig-name descname"><span class="pre">RoleLearningStrategy</span></span><a class="headerlink" href="#tyche.individuals.RoleLearningStrategy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies changes to individuals to update them based upon observations over roles.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.RoleLearningStrategy.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">individual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">likelihood</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.RoleLearningStrategy.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modifies the individual to learn the given concept from the given observation of it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<em>SelfType_LearningStrategy</em>) – </p></li>
+<li><p><strong>individual</strong> (<a class="reference internal" href="language.html#tyche.language.TycheContext" title="tyche.language.TycheContext"><em>TycheContext</em></a>) – </p></li>
+<li><p><strong>role_ref</strong> (<a class="reference internal" href="#tyche.individuals.RoleFunctionSymbolReference" title="tyche.individuals.RoleFunctionSymbolReference"><em>RoleFunctionSymbolReference</em></a>) – </p></li>
+<li><p><strong>observation</strong> (<a class="reference internal" href="language.html#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p></li>
+<li><p><strong>likelihood</strong> (<em>float</em>) – </p></li>
+<li><p><strong>learning_rate</strong> (<em>float</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tyche.individuals.StatisticalConceptLearningStrategy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.individuals.</span></span><span class="sig-name descname"><span class="pre">StatisticalConceptLearningStrategy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_value_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decay_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decay_rate_for_decay_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.StatisticalConceptLearningStrategy" title="Permalink to this definition">¶</a></dt>
+<dd><p>This learning strategy accumulates a running mean of observations
+about a concept, and uses it to learn the value of the concept.
+An initial value bias can be used to favour the initial value of
+the concept until enough observations have been made.</p>
+<p>If an initial value is not supplied on construction, then the initial
+value is considered to be the value of the concept when the first
+observation is made that calls this learning strategy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>initial_value_weight</strong> (<em>float</em>) – </p></li>
+<li><p><strong>decay_rate</strong> (<em>float</em>) – </p></li>
+<li><p><strong>decay_rate_for_decay_rate</strong> (<em>float</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.StatisticalConceptLearningStrategy.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">individual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">concept_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">likelihood</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.StatisticalConceptLearningStrategy.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modifies the individual to learn the given concept from the given observation of it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<em>SelfType_LearningStrategy</em>) – </p></li>
+<li><p><strong>individual</strong> (<a class="reference internal" href="language.html#tyche.language.TycheContext" title="tyche.language.TycheContext"><em>TycheContext</em></a>) – </p></li>
+<li><p><strong>concept_ref</strong> (<a class="reference internal" href="#tyche.individuals.ConceptFunctionSymbolReference" title="tyche.individuals.ConceptFunctionSymbolReference"><em>ConceptFunctionSymbolReference</em></a>) – </p></li>
+<li><p><strong>observation</strong> (<a class="reference internal" href="language.html#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p></li>
+<li><p><strong>likelihood</strong> (<em>float</em>) – </p></li>
+<li><p><strong>learning_rate</strong> (<em>float</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.StatisticalConceptLearningStrategy.init_for_new_usage">
+<span class="sig-name descname"><span class="pre">init_for_new_usage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.StatisticalConceptLearningStrategy.init_for_new_usage" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is required so that the state of each reference that uses an instance
+of this learning strategy is kept separate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>SelfType_LearningStrategy</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tyche.individuals.StatisticalRoleLearningStrategy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.individuals.</span></span><span class="sig-name descname"><span class="pre">StatisticalRoleLearningStrategy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_value_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decay_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decay_rate_for_decay_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.StatisticalRoleLearningStrategy" title="Permalink to this definition">¶</a></dt>
+<dd><p>TODO</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>initial_value_weight</strong> (<em>float</em>) – </p></li>
+<li><p><strong>decay_rate</strong> (<em>float</em>) – </p></li>
+<li><p><strong>decay_rate_for_decay_rate</strong> (<em>float</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.StatisticalRoleLearningStrategy.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">individual</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">likelihood</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.StatisticalRoleLearningStrategy.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modifies the individual to learn the given concept from the given observation of it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<em>SelfType_LearningStrategy</em>) – </p></li>
+<li><p><strong>individual</strong> (<a class="reference internal" href="language.html#tyche.language.TycheContext" title="tyche.language.TycheContext"><em>TycheContext</em></a>) – </p></li>
+<li><p><strong>role_ref</strong> (<a class="reference internal" href="#tyche.individuals.RoleFunctionSymbolReference" title="tyche.individuals.RoleFunctionSymbolReference"><em>RoleFunctionSymbolReference</em></a>) – </p></li>
+<li><p><strong>observation</strong> (<a class="reference internal" href="language.html#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p></li>
+<li><p><strong>likelihood</strong> (<em>float</em>) – </p></li>
+<li><p><strong>learning_rate</strong> (<em>float</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.StatisticalRoleLearningStrategy.init_for_new_usage">
+<span class="sig-name descname"><span class="pre">init_for_new_usage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.StatisticalRoleLearningStrategy.init_for_new_usage" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is required so that the state of each reference that uses an instance
+of this learning strategy is kept separate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>SelfType_LearningStrategy</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tyche.individuals.TycheAccessorStore">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.individuals.</span></span><span class="sig-name descname"><span class="pre">TycheAccessorStore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accessors</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.TycheAccessorStore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores a set of ways to access concepts or roles from a Tyche individual.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>type_name</strong> (<em>str</em>) – </p></li>
+<li><p><strong>accessors</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="references.html#tyche.references.SymbolReference" title="tyche.references.SymbolReference"><em>tyche.references.SymbolReference</em></a><em>[</em><em>~AccessedValueType</em><em>]</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.TycheAccessorStore.contains">
+<span class="sig-name descname"><span class="pre">contains</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.TycheAccessorStore.contains" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether this store contains a reference to the given symbol.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>symbol</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.TycheAccessorStore.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.TycheAccessorStore.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accesses the given symbol from the given object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> (<em>any</em>) – </p></li>
+<li><p><strong>symbol</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>AccessedValueType</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.TycheAccessorStore.get_accessor_ref_map">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_accessor_ref_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">accessor_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.TycheAccessorStore.get_accessor_ref_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a map from Individual subclass types to their accessor stores for the given type of accessors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>accessor_type</strong> (<em>type</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[type, dict[str, <a class="reference internal" href="references.html#tyche.references.SymbolReference" title="tyche.references.SymbolReference">tyche.references.SymbolReference</a>[~AccessedValueType]]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.TycheAccessorStore.get_accessor_stores_map">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_accessor_stores_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">accessor_type</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.TycheAccessorStore.get_accessor_stores_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a map from Individual subclass types to their accessor stores for the given type of accessors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>accessor_type</strong> (<em>type</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[type, ‘TycheAccessorStore’]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.TycheAccessorStore.get_or_populate_for">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_or_populate_for</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">accessor_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_type_hint</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.TycheAccessorStore.get_or_populate_for" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets or populates the set of accessors associated with obj_type, and returns them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj_type</strong> (<em>type</em>) – </p></li>
+<li><p><strong>accessor_type</strong> (<em>type</em>) – </p></li>
+<li><p><strong>field_type_hint</strong> (<em>type</em>) – </p></li>
+<li><p><strong>type_name</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#tyche.individuals.TycheAccessorStore" title="tyche.individuals.TycheAccessorStore"><em>TycheAccessorStore</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.TycheAccessorStore.get_reference">
+<span class="sig-name descname"><span class="pre">get_reference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.TycheAccessorStore.get_reference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the reference to access the given symbol.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>symbol</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="references.html#tyche.references.SymbolReference" title="tyche.references.SymbolReference"><em>SymbolReference</em></a>[<em>AccessedValueType</em>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.individuals.TycheAccessorStore.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.TycheAccessorStore.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modifies the given symbol in the given object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>obj</strong> (<em>any</em>) – </p></li>
+<li><p><strong>symbol</strong> (<em>str</em>) – </p></li>
+<li><p><strong>value</strong> (<em>AccessedValueType</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tyche.individuals.TycheConceptDecorator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.individuals.</span></span><span class="sig-name descname"><span class="pre">TycheConceptDecorator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.TycheConceptDecorator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Marks that a method provides the value of a concept for use in Tyche formulas.
+The name of the function is used as the name of the concept in formulas.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fn</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>TycheConceptValue</em><em>]</em>) – </p></li>
+<li><p><strong>symbol</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="tyche.individuals.TycheIndividualsException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.individuals.</span></span><span class="sig-name descname"><span class="pre">TycheIndividualsException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.TycheIndividualsException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for detailing exceptions with individuals.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tyche.individuals.TycheRoleDecorator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.individuals.</span></span><span class="sig-name descname"><span class="pre">TycheRoleDecorator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.TycheRoleDecorator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Marks that a method provides the value of a role for use in Tyche formulas.
+The name of the function is used as the name of the role in formulas.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fn</strong> (<em>Callable</em><em>[</em><em>[</em><em>]</em><em>, </em><em>TycheRoleValue</em><em>]</em>) – </p></li>
+<li><p><strong>symbol</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tyche.individuals.concept">
+<span class="sig-prename descclassname"><span class="pre">tyche.individuals.</span></span><span class="sig-name descname"><span class="pre">concept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.concept" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers a method as supplying the value of a concept for the evaluation of Tyche expressions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>symbol</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>Callable</em>[[<em>Callable</em>[[<a class="reference internal" href="#tyche.individuals.Individual" title="tyche.individuals.Individual"><em>Individual</em></a>], <em>TycheConceptValue</em>]], <a class="reference internal" href="#tyche.individuals.TycheConceptDecorator" title="tyche.individuals.TycheConceptDecorator"><em>TycheConceptDecorator</em></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="tyche.individuals.role">
+<span class="sig-prename descclassname"><span class="pre">tyche.individuals.</span></span><span class="sig-name descname"><span class="pre">role</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.individuals.role" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers a method as supplying the value of a role for the evaluation of Tyche expressions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>symbol</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>Callable</em>[[<em>Callable</em>[[], <em>TycheRoleValue</em>]], <a class="reference internal" href="#tyche.individuals.TycheRoleDecorator" title="tyche.individuals.TycheRoleDecorator"><em>TycheRoleDecorator</em></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="toctree-wrapper compound">
+</div>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="index.html">Tyche</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Modules:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="language.html">tyche.language</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">tyche.individuals</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="distributions.html">tyche.distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="probability.html">tyche.probability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">tyche.references</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string_utils.html">tyche.string_utils</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="language.html" title="previous chapter">tyche.language</a></li>
+      <li>Next: <a href="distributions.html" title="next chapter">tyche.distributions</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Padraig Lamont, drtnf.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.1.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/individuals.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

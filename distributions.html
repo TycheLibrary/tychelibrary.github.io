@@ -56,7 +56,7 @@ distributions to get new distributions).</p>
 </pre></div>
 </div>
 <p>This aims to allow the more flexible and intuitive use of probability
-distributions, by reducing the amount of manual math that is required
+distributions, by reducing the amount of manual work that is required
 to manipulate and use them.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="tyche.distributions.ContinuousProbDist">
@@ -325,16 +325,21 @@ the cumulative density function of this probability distribution.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="tyche.distributions.ProbDist">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.distributions.</span></span><span class="sig-name descname"><span class="pre">ProbDist</span></span><a class="headerlink" href="#tyche.distributions.ProbDist" title="Permalink to this definition">¶</a></dt>
-<dd><p>Allows the representation of a probability distribution in Tyche.</p>
+<dd><p>A probability distribution over a continuous or discrete space of numeric values.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tyche.distributions.ProbDist.sample">
 <span class="sig-name descname"><span class="pre">sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rng</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.ProbDist.sample" title="Permalink to this definition">¶</a></dt>
-<dd><p>Samples size random values from this distribution.</p>
+<dd><p>Samples random values from this distribution.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>rng</strong> (<em>Generator</em>) – </p></li>
-<li><p><strong>shape</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>int</em><em>, </em><em>tuple</em><em>]</em><em>]</em>) – </p></li>
+<li><p><strong>rng</strong> (<em>Generator</em>) – A NumPy random number generator that is used to generate random samples
+from this distribution.</p></li>
+<li><p><strong>shape</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>int</em><em>, </em><em>tuple</em><em>]</em><em>]</em>) – Configures the format of the returned samples from this probability
+distribution. By default, a single sampled value is returned. If an int
+is provided, then a NumPy array of <cite>shape</cite> values will be returned. If a
+tuple is provided, then a NumPy array of sampled values will be returned
+with the tuple used as the array’s shape.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -406,7 +411,8 @@ the cumulative density function of this probability distribution.</p>
 <dl class="py exception">
 <dt class="sig sig-object py" id="tyche.distributions.TycheDistributionsException">
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.distributions.</span></span><span class="sig-name descname"><span class="pre">TycheDistributionsException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.TycheDistributionsException" title="Permalink to this definition">¶</a></dt>
-<dd><p>Class for detailing exceptions with distributions.</p>
+<dd><p>An exception type that is thrown when errors occur in
+the construction or use of probability distributions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>message</strong> (<em>str</em>) – </p>

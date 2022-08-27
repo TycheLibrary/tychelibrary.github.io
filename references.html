@@ -42,10 +42,34 @@
 <p>This module contains functionality to represent references to concepts
 or roles. These references allow the value of concepts or roles to be
 fetched from individuals, and updated with new values within individuals.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="tyche.references.TycheReferencesException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.references.</span></span><span class="sig-name descname"><span class="pre">TycheReferencesException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.references.TycheReferencesException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for detailing exceptions with references.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tyche.references.SymbolReference">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.references.</span></span><span class="sig-name descname"><span class="pre">SymbolReference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.references.SymbolReference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">SymbolType</span></code>]</p>
+<p>Represents a reference to the value of a symbol.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>symbol</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="tyche.references.BakedSymbolReference">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.references.</span></span><span class="sig-name descname"><span class="pre">BakedSymbolReference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.references.BakedSymbolReference" title="Permalink to this definition">¶</a></dt>
-<dd><p>Represents a reference to the value of a symbol,
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">SymbolType</span></code>]</p>
+<p>Represents a reference to the value of a symbol,
 with the object that the value is accessed from baked in.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -60,7 +84,8 @@ with the object that the value is accessed from baked in.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="tyche.references.FieldSymbolReference">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.references.</span></span><span class="sig-name descname"><span class="pre">FieldSymbolReference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.references.FieldSymbolReference" title="Permalink to this definition">¶</a></dt>
-<dd><p>Represents a reference to a field in an object.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">SymbolType</span></code>], <a class="reference internal" href="#tyche.references.SymbolReference" title="tyche.references.SymbolReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymbolReference</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">SymbolType</span></code>]</p>
+<p>Represents a reference to a field in an object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -74,7 +99,8 @@ with the object that the value is accessed from baked in.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="tyche.references.FunctionSymbolReference">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.references.</span></span><span class="sig-name descname"><span class="pre">FunctionSymbolReference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.references.FunctionSymbolReference" title="Permalink to this definition">¶</a></dt>
-<dd><p>Represents a reference to a mutable property in an object.</p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">SymbolType</span></code>], <a class="reference internal" href="#tyche.references.SymbolReference" title="tyche.references.SymbolReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymbolReference</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">SymbolType</span></code>]</p>
+<p>Represents a reference to a mutable property in an object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -89,7 +115,8 @@ with the object that the value is accessed from baked in.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="tyche.references.GuardedSymbolReference">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.references.</span></span><span class="sig-name descname"><span class="pre">GuardedSymbolReference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">get_transform</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.references.GuardedSymbolReference" title="Permalink to this definition">¶</a></dt>
-<dd><p>Represents a mutable reference where the accessed value is
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">SymbolType</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">GuardedSymbolType</span></code>], <a class="reference internal" href="#tyche.references.SymbolReference" title="tyche.references.SymbolReference"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymbolReference</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">SymbolType</span></code>]</p>
+<p>Represents a mutable reference where the accessed value is
 different to the value stored in the reference. The referenced
 value is transformed when accessed or modified.</p>
 <dl class="field-list simple">
@@ -103,30 +130,6 @@ value is transformed when accessed or modified.</p>
 </dl>
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="tyche.references.SymbolReference">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.references.</span></span><span class="sig-name descname"><span class="pre">SymbolReference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.references.SymbolReference" title="Permalink to this definition">¶</a></dt>
-<dd><p>Represents a reference to the value of a symbol.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>symbol</strong> (<em>str</em>) – </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="tyche.references.TycheReferencesException">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.references.</span></span><span class="sig-name descname"><span class="pre">TycheReferencesException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.references.TycheReferencesException" title="Permalink to this definition">¶</a></dt>
-<dd><p>Class for detailing exceptions with references.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>message</strong> (<em>str</em>) – </p>
-</dd>
-</dl>
-</dd></dl>
-
-<div class="toctree-wrapper compound">
-</div>
 </section>
 
 
@@ -155,12 +158,12 @@ value is transformed when accessed or modified.</p>
 <li class="toctree-l1"><a class="reference internal" href="distributions.html">tyche.distributions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="probability.html">tyche.probability</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">tyche.references</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#tyche.references.TycheReferencesException">TycheReferencesException</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tyche.references.SymbolReference">SymbolReference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tyche.references.BakedSymbolReference">BakedSymbolReference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tyche.references.FieldSymbolReference">FieldSymbolReference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tyche.references.FunctionSymbolReference">FunctionSymbolReference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tyche.references.GuardedSymbolReference">GuardedSymbolReference</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#tyche.references.SymbolReference">SymbolReference</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#tyche.references.TycheReferencesException">TycheReferencesException</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="string_utils.html">tyche.string_utils</a></li>

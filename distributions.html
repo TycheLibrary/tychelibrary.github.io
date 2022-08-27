@@ -58,14 +58,138 @@ distributions to get new distributions).</p>
 <p>This aims to allow the more flexible and intuitive use of probability
 distributions, by reducing the amount of manual work that is required
 to manipulate and use them.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="tyche.distributions.TycheDistributionsException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.distributions.</span></span><span class="sig-name descname"><span class="pre">TycheDistributionsException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.TycheDistributionsException" title="Permalink to this definition">¶</a></dt>
+<dd><p>An exception type that is thrown when errors occur in
+the construction or use of probability distributions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> (<em>str</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tyche.distributions.ProbDist">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.distributions.</span></span><span class="sig-name descname"><span class="pre">ProbDist</span></span><a class="headerlink" href="#tyche.distributions.ProbDist" title="Permalink to this definition">¶</a></dt>
+<dd><p>A probability distribution over a continuous or discrete space of numeric values.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.distributions.ProbDist.sample">
+<span class="sig-name descname"><span class="pre">sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rng</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.ProbDist.sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Samples random values from this distribution.</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><dl class="simple">
+<dt>rng: A NumPy random number generator that is used to generate random samples</dt><dd><p>from this distribution.</p>
+</dd>
+<dt>shape: Configures the format of the returned samples from this probability</dt><dd><p>distribution. By default, a single sampled value is returned. If an int
+is provided, then a NumPy array of <cite>shape</cite> values will be returned. If a
+tuple is provided, then a NumPy array of sampled values will be returned
+with the tuple used as the array’s shape.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rng</strong> (<em>Generator</em>) – </p></li>
+<li><p><strong>shape</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>int</em><em>, </em><em>tuple</em><em>]</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ArrayLike</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="tyche.distributions.ContinuousProbDist">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.distributions.</span></span><span class="sig-name descname"><span class="pre">ContinuousProbDist</span></span><a class="headerlink" href="#tyche.distributions.ContinuousProbDist" title="Permalink to this definition">¶</a></dt>
-<dd><p>Represents a continuous probability distribution.</p>
+<dd><p>Bases: <a class="reference internal" href="#tyche.distributions.ProbDist" title="tyche.distributions.ProbDist"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProbDist</span></code></a></p>
+<p>Represents a continuous probability distribution.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.distributions.ContinuousProbDist.sample">
+<span class="sig-name descname"><span class="pre">sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rng</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.ContinuousProbDist.sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Samples random values from this distribution.</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><dl class="simple">
+<dt>rng: A NumPy random number generator that is used to generate random samples</dt><dd><p>from this distribution.</p>
+</dd>
+<dt>shape: Configures the format of the returned samples from this probability</dt><dd><p>distribution. By default, a single sampled value is returned. If an int
+is provided, then a NumPy array of <cite>shape</cite> values will be returned. If a
+tuple is provided, then a NumPy array of sampled values will be returned
+with the tuple used as the array’s shape.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rng</strong> (<em>Generator</em>) – </p></li>
+<li><p><strong>shape</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>int</em><em>, </em><em>tuple</em><em>]</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ArrayLike</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="tyche.distributions.ContinuousProbDist.cdf">
 <span class="sig-name descname"><span class="pre">cdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.ContinuousProbDist.cdf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluates the cumulative density function at x.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>ArrayLike</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ArrayLike</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.distributions.ContinuousProbDist.mean">
+<span class="sig-name descname"><span class="pre">mean</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.ContinuousProbDist.mean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the mean of this distribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.distributions.ContinuousProbDist.variance">
+<span class="sig-name descname"><span class="pre">variance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.ContinuousProbDist.variance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the variance of this distribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.distributions.ContinuousProbDist.std_dev">
+<span class="sig-name descname"><span class="pre">std_dev</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.ContinuousProbDist.std_dev" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the standard deviation of this distribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.distributions.ContinuousProbDist.pdf">
+<span class="sig-name descname"><span class="pre">pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.ContinuousProbDist.pdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the probability density function at x.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>x</strong> (<em>ArrayLike</em>) – </p>
@@ -91,21 +215,55 @@ the cumulative density function of this probability distribution.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="tyche.distributions.ContinuousProbDist.mean">
-<span class="sig-name descname"><span class="pre">mean</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.ContinuousProbDist.mean" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluates the mean of this distribution.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tyche.distributions.LinearTransformContinuousProbDist">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.distributions.</span></span><span class="sig-name descname"><span class="pre">LinearTransformContinuousProbDist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.LinearTransformContinuousProbDist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tyche.distributions.ContinuousProbDist" title="tyche.distributions.ContinuousProbDist"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContinuousProbDist</span></code></a></p>
+<p>Applies a linear transformation to a ContinuousProbDist.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dist</strong> (<a class="reference internal" href="#tyche.distributions.ContinuousProbDist" title="tyche.distributions.ContinuousProbDist"><em>ContinuousProbDist</em></a>) – </p></li>
+<li><p><strong>shift</strong> (<em>float</em>) – </p></li>
+<li><p><strong>scale</strong> (<em>float</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.distributions.LinearTransformContinuousProbDist.sample">
+<span class="sig-name descname"><span class="pre">sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rng</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.LinearTransformContinuousProbDist.sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Samples random values from this distribution.</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><dl class="simple">
+<dt>rng: A NumPy random number generator that is used to generate random samples</dt><dd><p>from this distribution.</p>
+</dd>
+<dt>shape: Configures the format of the returned samples from this probability</dt><dd><p>distribution. By default, a single sampled value is returned. If an int
+is provided, then a NumPy array of <cite>shape</cite> values will be returned. If a
+tuple is provided, then a NumPy array of sampled values will be returned
+with the tuple used as the array’s shape.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rng</strong> (<em>Generator</em>) – </p></li>
+<li><p><strong>shape</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ArrayLike</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tyche.distributions.ContinuousProbDist.pdf">
-<span class="sig-name descname"><span class="pre">pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.ContinuousProbDist.pdf" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluates the probability density function at x.</p>
+<dt class="sig sig-object py" id="tyche.distributions.LinearTransformContinuousProbDist.cdf">
+<span class="sig-name descname"><span class="pre">cdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.LinearTransformContinuousProbDist.cdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the cumulative density function at x.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>x</strong> (<em>ArrayLike</em>) – </p>
@@ -117,36 +275,8 @@ the cumulative density function of this probability distribution.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tyche.distributions.ContinuousProbDist.sample">
-<span class="sig-name descname"><span class="pre">sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rng</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.ContinuousProbDist.sample" title="Permalink to this definition">¶</a></dt>
-<dd><p>Samples a random value from this distribution.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>rng</strong> (<em>Generator</em>) – </p></li>
-<li><p><strong>shape</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>int</em><em>, </em><em>tuple</em><em>]</em><em>]</em>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tyche.distributions.ContinuousProbDist.std_dev">
-<span class="sig-name descname"><span class="pre">std_dev</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.ContinuousProbDist.std_dev" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluates the standard deviation of this distribution.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tyche.distributions.ContinuousProbDist.variance">
-<span class="sig-name descname"><span class="pre">variance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.ContinuousProbDist.variance" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="tyche.distributions.LinearTransformContinuousProbDist.variance">
+<span class="sig-name descname"><span class="pre">variance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.LinearTransformContinuousProbDist.variance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluates the variance of this distribution.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -155,25 +285,10 @@ the cumulative density function of this probability distribution.</p>
 </dl>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="tyche.distributions.LinearTransformContinuousProbDist">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.distributions.</span></span><span class="sig-name descname"><span class="pre">LinearTransformContinuousProbDist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.LinearTransformContinuousProbDist" title="Permalink to this definition">¶</a></dt>
-<dd><p>Applies a linear transformation to a ContinuousProbDist.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>dist</strong> (<a class="reference internal" href="#tyche.distributions.ContinuousProbDist" title="tyche.distributions.ContinuousProbDist"><em>ContinuousProbDist</em></a>) – </p></li>
-<li><p><strong>shift</strong> (<em>float</em>) – </p></li>
-<li><p><strong>scale</strong> (<em>float</em>) – </p></li>
-</ul>
-</dd>
-</dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="tyche.distributions.LinearTransformContinuousProbDist.cdf">
-<span class="sig-name descname"><span class="pre">cdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.LinearTransformContinuousProbDist.cdf" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluates the cumulative density function at x.</p>
+<dt class="sig sig-object py" id="tyche.distributions.LinearTransformContinuousProbDist.pdf">
+<span class="sig-name descname"><span class="pre">pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.LinearTransformContinuousProbDist.pdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the probability density function at x.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>x</strong> (<em>ArrayLike</em>) – </p>
@@ -199,161 +314,13 @@ the cumulative density function of this probability distribution.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="tyche.distributions.LinearTransformContinuousProbDist.pdf">
-<span class="sig-name descname"><span class="pre">pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.LinearTransformContinuousProbDist.pdf" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluates the probability density function at x.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>x</strong> (<em>ArrayLike</em>) – </p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>ArrayLike</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tyche.distributions.LinearTransformContinuousProbDist.sample">
-<span class="sig-name descname"><span class="pre">sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rng</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.LinearTransformContinuousProbDist.sample" title="Permalink to this definition">¶</a></dt>
-<dd><p>Samples a random value from this distribution.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>rng</strong> (<em>Generator</em>) – </p></li>
-<li><p><strong>shape</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>ArrayLike</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tyche.distributions.LinearTransformContinuousProbDist.variance">
-<span class="sig-name descname"><span class="pre">variance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.LinearTransformContinuousProbDist.variance" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluates the variance of this distribution.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="tyche.distributions.NormalDist">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.distributions.</span></span><span class="sig-name descname"><span class="pre">NormalDist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std_dev</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.NormalDist" title="Permalink to this definition">¶</a></dt>
-<dd><p>A normal probability distribution.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>mean</strong> (<em>float</em>) – </p></li>
-<li><p><strong>std_dev</strong> (<em>float</em>) – </p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="tyche.distributions.NormalDist.cdf">
-<span class="sig-name descname"><span class="pre">cdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.NormalDist.cdf" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluates the cumulative density function at x.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>x</strong> (<em>ArrayLike</em>) – </p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>ArrayLike</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tyche.distributions.NormalDist.inverse_cdf">
-<span class="sig-name descname"><span class="pre">inverse_cdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prob</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.NormalDist.inverse_cdf" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates the x-value that would produce the given probability using
-the cumulative density function of this probability distribution.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>prob</strong> (<em>ArrayLike</em>) – </p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>ArrayLike</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tyche.distributions.NormalDist.pdf">
-<span class="sig-name descname"><span class="pre">pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.NormalDist.pdf" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluates the probability density function at x.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>x</strong> (<em>ArrayLike</em>) – </p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>ArrayLike</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tyche.distributions.NormalDist.std_dev">
-<span class="sig-name descname"><span class="pre">std_dev</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.NormalDist.std_dev" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluates the standard deviation of this distribution.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tyche.distributions.NormalDist.variance">
-<span class="sig-name descname"><span class="pre">variance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.NormalDist.variance" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluates the variance of this distribution.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="tyche.distributions.ProbDist">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.distributions.</span></span><span class="sig-name descname"><span class="pre">ProbDist</span></span><a class="headerlink" href="#tyche.distributions.ProbDist" title="Permalink to this definition">¶</a></dt>
-<dd><p>A probability distribution over a continuous or discrete space of numeric values.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="tyche.distributions.ProbDist.sample">
-<span class="sig-name descname"><span class="pre">sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rng</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.ProbDist.sample" title="Permalink to this definition">¶</a></dt>
-<dd><p>Samples random values from this distribution.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>rng</strong> (<em>Generator</em>) – A NumPy random number generator that is used to generate random samples
-from this distribution.</p></li>
-<li><p><strong>shape</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>int</em><em>, </em><em>tuple</em><em>]</em><em>]</em>) – Configures the format of the returned samples from this probability
-distribution. By default, a single sampled value is returned. If an int
-is provided, then a NumPy array of <cite>shape</cite> values will be returned. If a
-tuple is provided, then a NumPy array of sampled values will be returned
-with the tuple used as the array’s shape.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>ArrayLike</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="tyche.distributions.TruncateContinuousProbDist">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.distributions.</span></span><span class="sig-name descname"><span class="pre">TruncateContinuousProbDist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.TruncateContinuousProbDist" title="Permalink to this definition">¶</a></dt>
-<dd><p>Truncates a ContinuousProbDist.</p>
+<dd><p>Bases: <a class="reference internal" href="#tyche.distributions.ContinuousProbDist" title="tyche.distributions.ContinuousProbDist"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContinuousProbDist</span></code></a></p>
+<p>Truncates a ContinuousProbDist.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -367,6 +334,20 @@ with the tuple used as the array’s shape.</p></li>
 <dt class="sig sig-object py" id="tyche.distributions.TruncateContinuousProbDist.cdf">
 <span class="sig-name descname"><span class="pre">cdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.TruncateContinuousProbDist.cdf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluates the cumulative density function at x.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>ArrayLike</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ArrayLike</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.distributions.TruncateContinuousProbDist.pdf">
+<span class="sig-name descname"><span class="pre">pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.TruncateContinuousProbDist.pdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the probability density function at x.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>x</strong> (<em>ArrayLike</em>) – </p>
@@ -392,38 +373,13 @@ the cumulative density function of this probability distribution.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="tyche.distributions.TruncateContinuousProbDist.pdf">
-<span class="sig-name descname"><span class="pre">pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.TruncateContinuousProbDist.pdf" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluates the probability density function at x.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>x</strong> (<em>ArrayLike</em>) – </p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>ArrayLike</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="tyche.distributions.TycheDistributionsException">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.distributions.</span></span><span class="sig-name descname"><span class="pre">TycheDistributionsException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.TycheDistributionsException" title="Permalink to this definition">¶</a></dt>
-<dd><p>An exception type that is thrown when errors occur in
-the construction or use of probability distributions.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>message</strong> (<em>str</em>) – </p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="tyche.distributions.UniformDist">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.distributions.</span></span><span class="sig-name descname"><span class="pre">UniformDist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minimum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.UniformDist" title="Permalink to this definition">¶</a></dt>
-<dd><p>A uniform probability distribution.</p>
+<dd><p>Bases: <a class="reference internal" href="#tyche.distributions.ContinuousProbDist" title="tyche.distributions.ContinuousProbDist"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContinuousProbDist</span></code></a></p>
+<p>A uniform probability distribution.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -436,6 +392,31 @@ the construction or use of probability distributions.</p>
 <dt class="sig sig-object py" id="tyche.distributions.UniformDist.cdf">
 <span class="sig-name descname"><span class="pre">cdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.UniformDist.cdf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluates the cumulative density function at x.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>ArrayLike</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ArrayLike</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.distributions.UniformDist.variance">
+<span class="sig-name descname"><span class="pre">variance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.UniformDist.variance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the variance of this distribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.distributions.UniformDist.pdf">
+<span class="sig-name descname"><span class="pre">pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.UniformDist.pdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the probability density function at x.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>x</strong> (<em>ArrayLike</em>) – </p>
@@ -461,9 +442,60 @@ the cumulative density function of this probability distribution.</p>
 </dl>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="tyche.distributions.NormalDist">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tyche.distributions.</span></span><span class="sig-name descname"><span class="pre">NormalDist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">std_dev</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.NormalDist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tyche.distributions.ContinuousProbDist" title="tyche.distributions.ContinuousProbDist"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContinuousProbDist</span></code></a></p>
+<p>A normal probability distribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mean</strong> (<em>float</em>) – </p></li>
+<li><p><strong>std_dev</strong> (<em>float</em>) – </p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="tyche.distributions.UniformDist.pdf">
-<span class="sig-name descname"><span class="pre">pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.UniformDist.pdf" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="tyche.distributions.NormalDist.cdf">
+<span class="sig-name descname"><span class="pre">cdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.NormalDist.cdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the cumulative density function at x.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>ArrayLike</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ArrayLike</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.distributions.NormalDist.variance">
+<span class="sig-name descname"><span class="pre">variance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.NormalDist.variance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the variance of this distribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.distributions.NormalDist.std_dev">
+<span class="sig-name descname"><span class="pre">std_dev</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.NormalDist.std_dev" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the standard deviation of this distribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.distributions.NormalDist.pdf">
+<span class="sig-name descname"><span class="pre">pdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.NormalDist.pdf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluates the probability density function at x.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -476,20 +508,22 @@ the cumulative density function of this probability distribution.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tyche.distributions.UniformDist.variance">
-<span class="sig-name descname"><span class="pre">variance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.UniformDist.variance" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluates the variance of this distribution.</p>
+<dt class="sig sig-object py" id="tyche.distributions.NormalDist.inverse_cdf">
+<span class="sig-name descname"><span class="pre">inverse_cdf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prob</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.distributions.NormalDist.inverse_cdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the x-value that would produce the given probability using
+the cumulative density function of this probability distribution.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>prob</strong> (<em>ArrayLike</em>) – </p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ArrayLike</p>
 </dd>
 </dl>
 </dd></dl>
 
 </dd></dl>
 
-<div class="toctree-wrapper compound">
-</div>
 </section>
 
 
@@ -516,13 +550,13 @@ the cumulative density function of this probability distribution.</p>
 <li class="toctree-l1"><a class="reference internal" href="language.html">tyche.language</a></li>
 <li class="toctree-l1"><a class="reference internal" href="individuals.html">tyche.individuals</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">tyche.distributions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#tyche.distributions.TycheDistributionsException">TycheDistributionsException</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tyche.distributions.ProbDist">ProbDist</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tyche.distributions.ContinuousProbDist">ContinuousProbDist</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tyche.distributions.LinearTransformContinuousProbDist">LinearTransformContinuousProbDist</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#tyche.distributions.NormalDist">NormalDist</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#tyche.distributions.ProbDist">ProbDist</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tyche.distributions.TruncateContinuousProbDist">TruncateContinuousProbDist</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#tyche.distributions.TycheDistributionsException">TycheDistributionsException</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tyche.distributions.UniformDist">UniformDist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tyche.distributions.NormalDist">NormalDist</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="probability.html">tyche.probability</a></li>

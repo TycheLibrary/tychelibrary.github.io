@@ -54,6 +54,20 @@ the use of the probability methods in this module.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="tyche.probability.random_probability">
+<span class="sig-prename descclassname"><span class="pre">tyche.probability.</span></span><span class="sig-name descname"><span class="pre">random_probability</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rng</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.probability.random_probability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a random probability from the range [0, 1].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rng</strong> (<em>Generator</em>) – </p></li>
+<li><p><strong>shape</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>int</em><em>, </em><em>tuple</em><em>]</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="tyche.probability.uncertain_bayes_rule">
 <span class="sig-prename descclassname"><span class="pre">tyche.probability.</span></span><span class="sig-name descname"><span class="pre">uncertain_bayes_rule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prob_concept</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prob_obs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prob_obs_given_concept</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">likelihood</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tyche.probability.uncertain_bayes_rule" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bayes’ rule for uncertain observations.</p>
@@ -107,6 +121,7 @@ See: <a class="reference external" href="https://stats.stackexchange.com/questio
 <li class="toctree-l1"><a class="reference internal" href="distributions.html">tyche.distributions</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">tyche.probability</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#tyche.probability.TycheProbabilityException">TycheProbabilityException</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tyche.probability.random_probability">random_probability</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tyche.probability.uncertain_bayes_rule">uncertain_bayes_rule</a></li>
 </ul>
 </li>

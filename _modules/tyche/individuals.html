@@ -1,0 +1,1084 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tyche.individuals &#8212; Tyche v1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for tyche.individuals</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains classes used to construct ontological knowledge bases</span>
+<span class="sd">of individuals, the probabilistic beliefs about them (concepts), and the</span>
+<span class="sd">probabilistic relationships between them (roles). These belief models</span>
+<span class="sd">can be used as contexts to evaluate aleatoric description logic (ADL)</span>
+<span class="sd">sentences. This module also contains many learning strategies that may</span>
+<span class="sd">be used to update your belief models based upon ADL observations.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">get_type_hints</span><span class="p">,</span> <span class="n">Final</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">cast</span><span class="p">,</span> <span class="n">Generic</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">tyche.language</span> <span class="kn">import</span> <span class="n">ExclusiveRoleDist</span><span class="p">,</span> <span class="n">TycheLanguageException</span><span class="p">,</span> <span class="n">TycheContext</span><span class="p">,</span> <span class="n">Concept</span><span class="p">,</span> <span class="n">ADLNode</span><span class="p">,</span> <span class="n">Expectation</span><span class="p">,</span> \
+    <span class="n">Role</span><span class="p">,</span> <span class="n">RoleDistributionEntries</span><span class="p">,</span> <span class="n">ALWAYS</span><span class="p">,</span> <span class="n">CompatibleWithADLNode</span><span class="p">,</span> <span class="n">CompatibleWithRole</span><span class="p">,</span> <span class="n">NEVER</span><span class="p">,</span> <span class="n">Constant</span><span class="p">,</span> <span class="n">Given</span><span class="p">,</span> \
+    <span class="n">ReferenceBackedRole</span><span class="p">,</span> <span class="n">RoleDist</span>
+
+<span class="kn">from</span> <span class="nn">tyche.probability</span> <span class="kn">import</span> <span class="n">uncertain_bayes_rule</span>
+<span class="kn">from</span> <span class="nn">tyche.references</span> <span class="kn">import</span> <span class="n">SymbolReference</span><span class="p">,</span> <span class="n">FieldSymbolReference</span><span class="p">,</span> <span class="n">GuardedSymbolReference</span><span class="p">,</span> <span class="n">FunctionSymbolReference</span><span class="p">,</span> \
+    <span class="n">BakedSymbolReference</span>
+
+
+<span class="n">TycheConceptValue</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;TycheConceptValue&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+<span class="n">TycheRoleValue</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;TycheRoleValue&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">RoleDist</span><span class="p">)</span>
+
+<span class="c1"># Marks instance variables of classes as probabilities that</span>
+<span class="c1"># may be accessed by Tyche formulas.</span>
+<span class="n">TycheConceptField</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;TycheConceptField&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+<span class="n">TycheRoleField</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;TycheRoleField&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">RoleDist</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="TycheIndividualsException"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.TycheIndividualsException">[docs]</a><span class="k">class</span> <span class="nc">TycheIndividualsException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    An exception type that is thrown when errors occur in</span>
+<span class="sd">    the construction or use of individuals.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;TycheIndividualsException: &quot;</span> <span class="o">+</span> <span class="n">message</span></div>
+
+
+<span class="n">AccessedValueType</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;AccessedValueType&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="TycheAccessorStore"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.TycheAccessorStore">[docs]</a><span class="k">class</span> <span class="nc">TycheAccessorStore</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">AccessedValueType</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Stores a set of ways to access concepts or roles from a Tyche individual.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Stores all the accessors for atoms &amp; roles of Individual subclass types.</span>
+    <span class="n">__accessor_store_maps</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">type</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">type</span><span class="p">,</span> <span class="s1">&#39;TycheAccessorStore&#39;</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># Stores all the non-field accessor references for atoms &amp; roles of Individual subclass types.</span>
+    <span class="n">__accessor_ref_maps</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">type</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">type</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">SymbolReference</span><span class="p">[</span><span class="n">AccessedValueType</span><span class="p">]]]]]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">accessors</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">SymbolReference</span><span class="p">[</span><span class="n">AccessedValueType</span><span class="p">]]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type_name</span> <span class="o">=</span> <span class="n">type_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">accessors</span> <span class="o">=</span> <span class="n">accessors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_symbols</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">accessors</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+<div class="viewcode-block" id="TycheAccessorStore.contains"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.TycheAccessorStore.contains">[docs]</a>    <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Returns whether this store contains a reference to the given symbol. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">accessors</span></div>
+
+<div class="viewcode-block" id="TycheAccessorStore.get_reference"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.TycheAccessorStore.get_reference">[docs]</a>    <span class="k">def</span> <span class="nf">get_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SymbolReference</span><span class="p">[</span><span class="n">AccessedValueType</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot; Returns the reference to access the given symbol. &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">accessors</span><span class="p">[</span><span class="n">symbol</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TycheLanguageException</span><span class="p">(</span><span class="s2">&quot;Unknown </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">type_name</span><span class="p">,</span> <span class="n">symbol</span>
+            <span class="p">))</span></div>
+
+<div class="viewcode-block" id="TycheAccessorStore.get"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.TycheAccessorStore.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="nb">any</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AccessedValueType</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Accesses the given symbol from the given object. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_reference</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TycheAccessorStore.set"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.TycheAccessorStore.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="nb">any</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">AccessedValueType</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Modifies the given symbol in the given object. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_reference</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TycheAccessorStore.get_accessor_stores_map"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.TycheAccessorStore.get_accessor_stores_map">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_accessor_stores_map</span><span class="p">(</span><span class="n">accessor_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">type</span><span class="p">,</span> <span class="s1">&#39;TycheAccessorStore&#39;</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot; Returns a map from Individual subclass types to their accessor stores for the given type of accessors. &quot;&quot;&quot;</span>
+        <span class="n">accessor_store_maps</span> <span class="o">=</span> <span class="n">TycheAccessorStore</span><span class="o">.</span><span class="n">__accessor_store_maps</span>
+        <span class="k">if</span> <span class="n">accessor_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">accessor_store_maps</span><span class="p">:</span>
+            <span class="n">accessor_store_maps</span><span class="p">[</span><span class="n">accessor_type</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">return</span> <span class="n">accessor_store_maps</span><span class="p">[</span><span class="n">accessor_type</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="TycheAccessorStore.get_accessor_ref_map"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.TycheAccessorStore.get_accessor_ref_map">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_accessor_ref_map</span><span class="p">(</span><span class="n">accessor_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">type</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">SymbolReference</span><span class="p">[</span><span class="n">AccessedValueType</span><span class="p">]]]:</span>
+        <span class="sd">&quot;&quot;&quot; Returns a map from Individual subclass types to their accessor stores for the given type of accessors. &quot;&quot;&quot;</span>
+        <span class="n">accessor_ref_maps</span> <span class="o">=</span> <span class="n">TycheAccessorStore</span><span class="o">.</span><span class="n">__accessor_ref_maps</span>
+        <span class="k">if</span> <span class="n">accessor_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">accessor_ref_maps</span><span class="p">:</span>
+            <span class="n">accessor_ref_maps</span><span class="p">[</span><span class="n">accessor_type</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">return</span> <span class="n">accessor_ref_maps</span><span class="p">[</span><span class="n">accessor_type</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="TycheAccessorStore.get_or_populate_for"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.TycheAccessorStore.get_or_populate_for">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_or_populate_for</span><span class="p">(</span>
+            <span class="n">obj_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span> <span class="n">accessor_type</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span> <span class="n">field_type_hint</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span> <span class="n">type_name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;TycheAccessorStore&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets or populates the set of accessors associated with obj_type, and returns them.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">stores_cache_map</span> <span class="o">=</span> <span class="n">TycheAccessorStore</span><span class="o">.</span><span class="n">get_accessor_stores_map</span><span class="p">(</span><span class="n">accessor_type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">obj_type</span> <span class="ow">in</span> <span class="n">stores_cache_map</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">stores_cache_map</span><span class="p">[</span><span class="n">obj_type</span><span class="p">]</span>
+
+        <span class="c1"># Get the references populated by annotations.</span>
+        <span class="n">refs_map</span> <span class="o">=</span> <span class="n">TycheAccessorStore</span><span class="o">.</span><span class="n">get_accessor_ref_map</span><span class="p">(</span><span class="n">accessor_type</span><span class="p">)</span>
+        <span class="n">method_references</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">SymbolReference</span><span class="p">[</span><span class="n">AccessedValueType</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">parent_or_obj_type</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">obj_type</span><span class="o">.</span><span class="n">mro</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="n">parent_or_obj_type</span> <span class="ow">in</span> <span class="n">refs_map</span><span class="p">:</span>
+                <span class="n">method_references</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">refs_map</span><span class="p">[</span><span class="n">parent_or_obj_type</span><span class="p">])</span>
+
+        <span class="c1"># Get the set of variables that can be accessed from obj_type.</span>
+        <span class="c1"># These include the fields from parent classes automatically.</span>
+        <span class="n">fields</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">type_hint</span> <span class="ow">in</span> <span class="n">get_type_hints</span><span class="p">(</span><span class="n">obj_type</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">type_hint</span> <span class="o">==</span> <span class="n">field_type_hint</span><span class="p">:</span>
+                <span class="n">fields</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">method_references</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">TycheIndividualsException</span><span class="p">(</span>
+                        <span class="s2">&quot;The </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> in type </span><span class="si">{}</span><span class="s2"> cannot be provided as both a variable and a method&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">type_name</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">obj_type</span><span class="o">.</span><span class="vm">__name__</span>
+                        <span class="p">))</span>
+
+        <span class="c1"># Check that all the symbol names are valid.</span>
+        <span class="k">for</span> <span class="n">symbol_name</span><span class="p">,</span> <span class="n">name_set</span> <span class="ow">in</span> <span class="p">[(</span><span class="s2">&quot;field&quot;</span><span class="p">,</span> <span class="n">fields</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;method&quot;</span><span class="p">,</span> <span class="n">method_references</span><span class="o">.</span><span class="n">keys</span><span class="p">())]:</span>
+            <span class="n">symbol_type_name</span> <span class="o">=</span> <span class="n">type_name</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
+            <span class="n">context</span> <span class="o">=</span> <span class="s2">&quot;type </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">obj_type</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">name_set</span><span class="p">:</span>
+                <span class="n">Concept</span><span class="o">.</span><span class="n">check_symbol</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">symbol_name</span><span class="o">=</span><span class="n">symbol_name</span><span class="p">,</span> <span class="n">symbol_type_name</span><span class="o">=</span><span class="n">symbol_type_name</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">)</span>
+
+        <span class="c1"># Store the accessors in the type object.</span>
+        <span class="n">var_references</span> <span class="o">=</span> <span class="p">{</span><span class="n">symbol</span><span class="p">:</span> <span class="n">FieldSymbolReference</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span> <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">}</span>
+        <span class="n">all_references</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">method_references</span><span class="p">,</span> <span class="o">**</span><span class="n">var_references</span><span class="p">}</span>
+        <span class="n">accessors</span> <span class="o">=</span> <span class="n">TycheAccessorStore</span><span class="p">(</span><span class="n">type_name</span><span class="p">,</span> <span class="n">all_references</span><span class="p">)</span>
+        <span class="n">stores_cache_map</span><span class="p">[</span><span class="n">obj_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">accessors</span>
+        <span class="k">return</span> <span class="n">accessors</span></div></div>
+
+
+<div class="viewcode-block" id="ConceptFunctionSymbolReference"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.ConceptFunctionSymbolReference">[docs]</a><span class="k">class</span> <span class="nc">ConceptFunctionSymbolReference</span><span class="p">(</span><span class="n">FunctionSymbolReference</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Represents a reference to a concept, with additional information about the concept attached. &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">fget</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">any</span><span class="p">],</span> <span class="n">TycheConceptValue</span><span class="p">],</span>
+            <span class="n">fset</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">any</span><span class="p">,</span> <span class="n">TycheConceptValue</span><span class="p">],</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">learning_strat</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;ConceptLearningStrategy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">fget</span><span class="p">,</span> <span class="n">fset</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">learning_strat</span> <span class="o">=</span> <span class="n">learning_strat</span></div>
+
+
+<div class="viewcode-block" id="RoleFunctionSymbolReference"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.RoleFunctionSymbolReference">[docs]</a><span class="k">class</span> <span class="nc">RoleFunctionSymbolReference</span><span class="p">(</span><span class="n">FunctionSymbolReference</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Represents a reference to a concept, with additional information about the concept attached. &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">fget</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">any</span><span class="p">],</span> <span class="n">TycheRoleValue</span><span class="p">],</span>
+            <span class="n">fset</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">any</span><span class="p">,</span> <span class="n">TycheRoleValue</span><span class="p">],</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">learning_strat</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;RoleLearningStrategy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">fget</span><span class="p">,</span> <span class="n">fset</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">learning_strat</span> <span class="o">=</span> <span class="n">learning_strat</span></div>
+
+
+<span class="n">LearningStrategyType</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;LearningStrategyType&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="s1">&#39;LearningStrategy&#39;</span><span class="p">)</span>
+<span class="n">SelfType_IndividualPropertyDecorator</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span>
+    <span class="s2">&quot;SelfType_IndividualPropertyDecorator&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="s2">&quot;IndividualPropertyDecorator&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="IndividualPropertyDecorator"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.IndividualPropertyDecorator">[docs]</a><span class="k">class</span> <span class="nc">IndividualPropertyDecorator</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">AccessedValueType</span><span class="p">,</span> <span class="n">LearningStrategyType</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A decorator to mark methods as providing the value of a concept or role,</span>
+<span class="sd">    and to provide additional metadata or learning functions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">:</span> <span class="n">SelfType_IndividualPropertyDecorator</span><span class="p">,</span>
+            <span class="n">type_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">fget</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="s1">&#39;Individual&#39;</span><span class="p">],</span> <span class="n">AccessedValueType</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span>
+            <span class="n">symbol</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">type_name</span> <span class="o">=</span> <span class="n">type_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">custom_symbol</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">symbol</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">symbol</span> <span class="k">if</span> <span class="n">symbol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;this symbol&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fget</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="s1">&#39;Individual&#39;</span><span class="p">],</span> <span class="n">AccessedValueType</span><span class="p">]</span> <span class="o">=</span> <span class="n">fget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fset</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="s1">&#39;Individual&#39;</span><span class="p">,</span> <span class="n">AccessedValueType</span><span class="p">],</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">learning_strat</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">LearningStrategyType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;Individual&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AccessedValueType</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TycheIndividualsException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot access </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2"> without an instance&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fget</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+
+<div class="viewcode-block" id="IndividualPropertyDecorator.learning_func"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.IndividualPropertyDecorator.learning_func">[docs]</a>    <span class="k">def</span> <span class="nf">learning_func</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">learning_strat</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">LearningStrategyType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span>
+        <span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="s1">&#39;Individual&#39;</span><span class="p">,</span> <span class="n">AccessedValueType</span><span class="p">],</span> <span class="kc">None</span><span class="p">]],</span>
+        <span class="n">Callable</span><span class="p">[[</span><span class="s1">&#39;Individual&#39;</span><span class="p">,</span> <span class="n">AccessedValueType</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This can be used as a decorator to register a method-based setter for this symbol.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span>
+                <span class="n">fset</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="s1">&#39;Individual&#39;</span><span class="p">,</span> <span class="n">AccessedValueType</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="s1">&#39;Individual&#39;</span><span class="p">,</span> <span class="n">AccessedValueType</span><span class="p">],</span> <span class="kc">None</span><span class="p">]:</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">learning_strat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TycheIndividualsException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2"> already has a learning function set&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fset</span> <span class="o">=</span> <span class="n">fset</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">learning_strat</span> <span class="o">=</span> <span class="n">learning_strat</span>
+
+            <span class="c1"># Try to detect a potentially common error that is otherwise hard to spot.</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">fget</span><span class="o">.</span><span class="vm">__name__</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">fget</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">fset</span><span class="o">.</span><span class="vm">__name__</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TycheIndividualsException</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;The name of the </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fget</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">type_name</span><span class="si">}</span><span class="s2">&#39;s getter and learning &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;functions must not be the same&quot;</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">fset</span>
+
+        <span class="k">return</span> <span class="n">decorator</span></div>
+
+    <span class="k">def</span> <span class="nf">_create_symbol_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;FunctionSymbolReference&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">FunctionSymbolReference</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">,</span>
+            <span class="n">cast</span><span class="p">(</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">object</span><span class="p">],</span> <span class="n">AccessedValueType</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">fget</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fset</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__set_name__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">owner</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">ref_map</span> <span class="o">=</span> <span class="n">TycheAccessorStore</span><span class="o">.</span><span class="n">get_accessor_ref_map</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">owner</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ref_map</span><span class="p">:</span>
+            <span class="n">ref_map</span><span class="p">[</span><span class="n">owner</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># Allow the user to override the symbol that is used.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span> <span class="o">=</span> <span class="n">name</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">custom_symbol</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">custom_symbol</span>
+
+        <span class="c1"># Add this symbol to the set of function symbols.</span>
+        <span class="n">ref_map</span><span class="p">[</span><span class="n">owner</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_symbol_reference</span><span class="p">()</span>
+
+        <span class="c1"># Replace this decorator object with the original get function in the class.</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fget</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TycheConceptDecorator"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.TycheConceptDecorator">[docs]</a><span class="k">class</span> <span class="nc">TycheConceptDecorator</span><span class="p">(</span><span class="n">IndividualPropertyDecorator</span><span class="p">[</span><span class="n">TycheConceptValue</span><span class="p">,</span> <span class="s1">&#39;ConceptLearningStrategy&#39;</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Marks that a method provides the value of a concept for use in Tyche formulas.</span>
+<span class="sd">    The name of the function is used as the name of the concept in formulas.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">field_type_hint</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="nb">type</span><span class="p">]</span> <span class="o">=</span> <span class="n">TycheConceptField</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">:</span> <span class="n">SelfType_IndividualPropertyDecorator</span><span class="p">,</span>
+            <span class="n">fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">TycheConceptValue</span><span class="p">],</span>
+            <span class="o">*</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;concept&quot;</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="n">symbol</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_create_symbol_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;FunctionSymbolReference&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ConceptFunctionSymbolReference</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fget</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fset</span><span class="p">,</span> <span class="n">learning_strat</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">learning_strat</span>
+        <span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">obj_type</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s1">&#39;Individual&#39;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">TycheAccessorStore</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">TycheAccessorStore</span><span class="o">.</span><span class="n">get_or_populate_for</span><span class="p">(</span>
+            <span class="n">obj_type</span><span class="p">,</span> <span class="n">TycheConceptDecorator</span><span class="p">,</span> <span class="n">TycheConceptDecorator</span><span class="o">.</span><span class="n">field_type_hint</span><span class="p">,</span> <span class="s2">&quot;concept&quot;</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TycheRoleDecorator"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.TycheRoleDecorator">[docs]</a><span class="k">class</span> <span class="nc">TycheRoleDecorator</span><span class="p">(</span><span class="n">IndividualPropertyDecorator</span><span class="p">[</span><span class="n">TycheRoleValue</span><span class="p">,</span> <span class="s1">&#39;RoleLearningStrategy&#39;</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Marks that a method provides the value of a role for use in Tyche formulas.</span>
+<span class="sd">    The name of the function is used as the name of the role in formulas.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">field_type_hint</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="nb">type</span><span class="p">]</span> <span class="o">=</span> <span class="n">TycheRoleField</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">:</span> <span class="n">SelfType_IndividualPropertyDecorator</span><span class="p">,</span>
+            <span class="n">fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">TycheRoleValue</span><span class="p">],</span>
+            <span class="o">*</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;role&quot;</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="n">symbol</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_create_symbol_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;FunctionSymbolReference&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">RoleFunctionSymbolReference</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fget</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fset</span><span class="p">,</span> <span class="n">learning_strat</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">learning_strat</span>
+        <span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">obj_type</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s1">&#39;Individual&#39;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">TycheAccessorStore</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">TycheAccessorStore</span><span class="o">.</span><span class="n">get_or_populate_for</span><span class="p">(</span>
+            <span class="n">obj_type</span><span class="p">,</span> <span class="n">TycheRoleDecorator</span><span class="p">,</span> <span class="n">TycheRoleDecorator</span><span class="o">.</span><span class="n">field_type_hint</span><span class="p">,</span> <span class="s2">&quot;role&quot;</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="concept"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.concept">[docs]</a><span class="k">def</span> <span class="nf">concept</span><span class="p">(</span>
+        <span class="o">*</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Callable</span><span class="p">[[</span><span class="s1">&#39;Individual&#39;</span><span class="p">],</span> <span class="n">TycheConceptValue</span><span class="p">]],</span> <span class="n">TycheConceptDecorator</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Registers a method as supplying the value of a concept for the evaluation of Tyche expressions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">annotator</span><span class="p">(</span><span class="n">inner_fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">TycheConceptValue</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="n">TycheConceptDecorator</span><span class="p">(</span><span class="n">inner_fn</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="n">symbol</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">annotator</span></div>
+
+
+<div class="viewcode-block" id="role"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.role">[docs]</a><span class="k">def</span> <span class="nf">role</span><span class="p">(</span>
+        <span class="o">*</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Callable</span><span class="p">[[],</span> <span class="n">TycheRoleValue</span><span class="p">]],</span> <span class="n">TycheRoleDecorator</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Registers a method as supplying the value of a role for the evaluation of Tyche expressions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">annotator</span><span class="p">(</span><span class="n">inner_fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">TycheRoleValue</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="n">TycheRoleDecorator</span><span class="p">(</span><span class="n">inner_fn</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="n">symbol</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">annotator</span></div>
+
+
+<span class="n">SelfType_LearningStrategy</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;SelfType_LearningStrategy&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="s2">&quot;LearningStrategy&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="LearningStrategy"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.LearningStrategy">[docs]</a><span class="k">class</span> <span class="nc">LearningStrategy</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Applies changes to individuals to update them based upon observations. &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">SelfType_LearningStrategy</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="LearningStrategy.init_for_new_usage"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.LearningStrategy.init_for_new_usage">[docs]</a>    <span class="k">def</span> <span class="nf">init_for_new_usage</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SelfType_LearningStrategy</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If a learning strategy requires per-reference per-individual state, then this can</span>
+<span class="sd">        clone the learning strategy for each new individual and reference. Otherwise, the</span>
+<span class="sd">        state of this learning strategy will be shared for every individual and reference</span>
+<span class="sd">        that uses it (which is fine for stateless learning strategies).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span></div></div>
+
+
+<div class="viewcode-block" id="ConceptLearningStrategy"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.ConceptLearningStrategy">[docs]</a><span class="k">class</span> <span class="nc">ConceptLearningStrategy</span><span class="p">(</span><span class="n">LearningStrategy</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Applies changes to individuals to update them based upon observations of concepts.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ConceptLearningStrategy.apply"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.ConceptLearningStrategy.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">:</span> <span class="n">SelfType_LearningStrategy</span><span class="p">,</span>
+            <span class="n">individual</span><span class="p">:</span> <span class="n">TycheContext</span><span class="p">,</span>
+            <span class="n">concept_ref</span><span class="p">:</span> <span class="n">ConceptFunctionSymbolReference</span><span class="p">,</span>
+            <span class="n">observation</span><span class="p">:</span> <span class="n">ADLNode</span><span class="p">,</span>
+            <span class="n">likelihood</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Modifies the individual to learn the given concept from the given observation of it.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> does not implement apply&quot;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="RoleLearningStrategy"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.RoleLearningStrategy">[docs]</a><span class="k">class</span> <span class="nc">RoleLearningStrategy</span><span class="p">(</span><span class="n">LearningStrategy</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Applies changes to individuals to update them based upon observations over roles.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="RoleLearningStrategy.apply"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.RoleLearningStrategy.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">:</span> <span class="n">SelfType_LearningStrategy</span><span class="p">,</span>
+            <span class="n">individual</span><span class="p">:</span> <span class="n">TycheContext</span><span class="p">,</span>
+            <span class="n">role_ref</span><span class="p">:</span> <span class="n">RoleFunctionSymbolReference</span><span class="p">,</span>
+            <span class="n">observation</span><span class="p">:</span> <span class="n">ADLNode</span><span class="p">,</span>
+            <span class="n">likelihood</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Modifies the individual to learn the given concept from the given observation of it.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> does not implement apply&quot;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="DirectConceptLearningStrategy"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.DirectConceptLearningStrategy">[docs]</a><span class="k">class</span> <span class="nc">DirectConceptLearningStrategy</span><span class="p">(</span><span class="n">ConceptLearningStrategy</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The most basic learning strategy that simply updates concepts</span>
+<span class="sd">    to the values they were observed as. A learning rate can be</span>
+<span class="sd">    used to limit the changes to the concept&#39;s value, to stop a</span>
+<span class="sd">    single true observation marking the concept always true.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">learning_rate</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TycheIndividualsException</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The learning rate must be greater than 0, not </span><span class="si">{</span><span class="n">learning_rate</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">learning_rate</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TycheIndividualsException</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The learning rate must be less than or equal to 1, not </span><span class="si">{</span><span class="n">learning_rate</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="n">learning_rate</span>
+
+<div class="viewcode-block" id="DirectConceptLearningStrategy.apply"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.DirectConceptLearningStrategy.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">:</span> <span class="n">SelfType_LearningStrategy</span><span class="p">,</span>
+            <span class="n">individual</span><span class="p">:</span> <span class="n">TycheContext</span><span class="p">,</span>
+            <span class="n">concept_ref</span><span class="p">:</span> <span class="n">ConceptFunctionSymbolReference</span><span class="p">,</span>
+            <span class="n">observation</span><span class="p">:</span> <span class="n">ADLNode</span><span class="p">,</span>
+            <span class="n">likelihood</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+
+        <span class="c1"># Limit the learning by the learning rate applied for the strategy.</span>
+        <span class="n">learning_rate</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span>
+
+        <span class="c1"># Limit the learning by the confidence in the new value of the concept.</span>
+        <span class="c1"># If likelihood is 50%, then that is useless to tell us the value of the concept.</span>
+        <span class="n">confidence</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">likelihood</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
+        <span class="n">learning_rate</span> <span class="o">*=</span> <span class="n">confidence</span>
+
+        <span class="c1"># Calculate the weighted sum of the current and new probabilities.</span>
+        <span class="n">curr_prob</span> <span class="o">=</span> <span class="n">concept_ref</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">individual</span><span class="p">)</span>
+        <span class="n">new_value</span> <span class="o">=</span> <span class="n">likelihood</span> <span class="o">*</span> <span class="n">learning_rate</span> <span class="o">+</span> <span class="n">curr_prob</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">learning_rate</span><span class="p">)</span>
+
+        <span class="c1"># Update the individual!</span>
+        <span class="n">concept_ref</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">individual</span><span class="p">,</span> <span class="n">new_value</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(learning_rate=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(learning_rate=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span><span class="si">}</span><span class="s2">)&quot;</span></div>
+
+
+<div class="viewcode-block" id="StatisticalConceptLearningStrategy"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.StatisticalConceptLearningStrategy">[docs]</a><span class="k">class</span> <span class="nc">StatisticalConceptLearningStrategy</span><span class="p">(</span><span class="n">ConceptLearningStrategy</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This learning strategy accumulates a running mean of observations</span>
+<span class="sd">    about a concept, and uses it to learn the value of the concept.</span>
+<span class="sd">    An initial value bias can be used to favour the initial value of</span>
+<span class="sd">    the concept until enough observations have been made.</span>
+
+<span class="sd">    If an initial value is not supplied on construction, then the initial</span>
+<span class="sd">    value is considered to be the value of the concept when the first</span>
+<span class="sd">    observation is made that calls this learning strategy.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_value_weight</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+                 <span class="o">*</span><span class="p">,</span> <span class="n">decay_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">decay_rate_for_decay_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">initial_value_weight</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TycheIndividualsException</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The initial value weight must be greater than or equal to 0, not </span><span class="si">{</span><span class="n">initial_value_weight</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">decay_rate</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TycheIndividualsException</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The decay rate must be greater than or equal to 0, not </span><span class="si">{</span><span class="n">decay_rate</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">decay_rate_for_decay_rate</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TycheIndividualsException</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The decay rate of the decay rate must be greater than or equal to 0, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;not </span><span class="si">{</span><span class="n">decay_rate_for_decay_rate</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_value_weight</span> <span class="o">=</span> <span class="n">initial_value_weight</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decay_rate</span> <span class="o">=</span> <span class="n">decay_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decay_rate_for_decay_rate</span> <span class="o">=</span> <span class="n">decay_rate_for_decay_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">running_learning_rate_sum</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">running_likelihood_sum</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+<div class="viewcode-block" id="StatisticalConceptLearningStrategy.init_for_new_usage"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.StatisticalConceptLearningStrategy.init_for_new_usage">[docs]</a>    <span class="k">def</span> <span class="nf">init_for_new_usage</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SelfType_LearningStrategy</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is required so that the state of each reference that uses an instance</span>
+<span class="sd">        of this learning strategy is kept separate.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">initial_value_weight</span><span class="p">,</span>
+            <span class="n">decay_rate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">decay_rate</span><span class="p">,</span>
+            <span class="n">decay_rate_for_decay_rate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">decay_rate_for_decay_rate</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="StatisticalConceptLearningStrategy.apply"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.StatisticalConceptLearningStrategy.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">:</span> <span class="n">SelfType_LearningStrategy</span><span class="p">,</span>
+            <span class="n">individual</span><span class="p">:</span> <span class="n">TycheContext</span><span class="p">,</span>
+            <span class="n">concept_ref</span><span class="p">:</span> <span class="n">ConceptFunctionSymbolReference</span><span class="p">,</span>
+            <span class="n">observation</span><span class="p">:</span> <span class="n">ADLNode</span><span class="p">,</span>
+            <span class="n">likelihood</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+
+        <span class="c1"># Decay old observations over time.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">running_learning_rate_sum</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decay_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">running_likelihood_sum</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decay_rate</span>
+
+        <span class="c1"># Decay the decay rate over time.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decay_rate</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">decay_rate</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">decay_rate_for_decay_rate</span>
+
+        <span class="c1"># If we were not given an initial value on construction, read it now.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">initial_value</span> <span class="o">=</span> <span class="n">concept_ref</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">individual</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">running_learning_rate_sum</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_value_weight</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">running_likelihood_sum</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_value</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_value_weight</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Update the running totals.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">running_learning_rate_sum</span> <span class="o">+=</span> <span class="n">learning_rate</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">running_likelihood_sum</span> <span class="o">+=</span> <span class="n">likelihood</span> <span class="o">*</span> <span class="n">learning_rate</span>
+
+        <span class="c1"># Calculate the running mean observed value of the concept.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_learning_rate_sum</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">concept_ref</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">individual</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_likelihood_sum</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_learning_rate_sum</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span> \
+               <span class="sa">f</span><span class="s2">&quot;(initial_value_weight=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_value_weight</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, decay_rate=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">decay_rate</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">)&quot;</span></div>
+
+
+<div class="viewcode-block" id="BayesRuleLearningStrategy"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.BayesRuleLearningStrategy">[docs]</a><span class="k">class</span> <span class="nc">BayesRuleLearningStrategy</span><span class="p">(</span><span class="n">RoleLearningStrategy</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    TODO</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="n">learning_rate</span>
+
+<div class="viewcode-block" id="BayesRuleLearningStrategy.apply"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.BayesRuleLearningStrategy.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">:</span> <span class="n">SelfType_LearningStrategy</span><span class="p">,</span>
+            <span class="n">individual</span><span class="p">:</span> <span class="n">TycheContext</span><span class="p">,</span>
+            <span class="n">role_ref</span><span class="p">:</span> <span class="n">RoleFunctionSymbolReference</span><span class="p">,</span>
+            <span class="n">observation</span><span class="p">:</span> <span class="n">ADLNode</span><span class="p">,</span>
+            <span class="n">likelihood</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">observation</span><span class="p">,</span> <span class="n">Expectation</span><span class="p">):</span>
+            <span class="c1"># Update the role using Bayes&#39; rule.</span>
+            <span class="n">expectation</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">Expectation</span><span class="p">,</span> <span class="n">observation</span><span class="p">)</span>
+            <span class="n">curr_role_value</span> <span class="o">=</span> <span class="n">role_ref</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">individual</span><span class="p">)</span>
+            <span class="n">new_role_value</span> <span class="o">=</span> <span class="n">curr_role_value</span><span class="o">.</span><span class="n">apply_bayes_rule</span><span class="p">(</span>
+                <span class="n">Given</span><span class="p">(</span><span class="n">expectation</span><span class="o">.</span><span class="n">eval_node</span><span class="p">,</span> <span class="n">expectation</span><span class="o">.</span><span class="n">given_node</span><span class="p">),</span>
+                <span class="n">likelihood</span><span class="p">,</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span>
+            <span class="p">)</span>
+            <span class="n">role_ref</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">individual</span><span class="p">,</span> <span class="n">new_role_value</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="StatisticalRoleLearningStrategy"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.StatisticalRoleLearningStrategy">[docs]</a><span class="k">class</span> <span class="nc">StatisticalRoleLearningStrategy</span><span class="p">(</span><span class="n">RoleLearningStrategy</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    TODO</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_value_weight</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+                 <span class="o">*</span><span class="p">,</span> <span class="n">decay_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">decay_rate_for_decay_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">initial_value_weight</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TycheIndividualsException</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The initial value weight must be greater than or equal to 0, not </span><span class="si">{</span><span class="n">initial_value_weight</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">decay_rate</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TycheIndividualsException</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The decay rate must be greater than or equal to 0, not </span><span class="si">{</span><span class="n">decay_rate</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">decay_rate_for_decay_rate</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TycheIndividualsException</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The decay rate of the decay rate must be greater than or equal to 0, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;not </span><span class="si">{</span><span class="n">decay_rate_for_decay_rate</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_value_weight</span> <span class="o">=</span> <span class="n">initial_value_weight</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decay_rate</span> <span class="o">=</span> <span class="n">decay_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decay_rate_for_decay_rate</span> <span class="o">=</span> <span class="n">decay_rate_for_decay_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">RoleDist</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">running_learning_rate_sums</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">TycheContext</span><span class="p">],</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">running_likelihood_sums</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">TycheContext</span><span class="p">],</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="StatisticalRoleLearningStrategy.init_for_new_usage"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.StatisticalRoleLearningStrategy.init_for_new_usage">[docs]</a>    <span class="k">def</span> <span class="nf">init_for_new_usage</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SelfType_LearningStrategy</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is required so that the state of each reference that uses an instance</span>
+<span class="sd">        of this learning strategy is kept separate.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">initial_value_weight</span><span class="p">,</span>
+            <span class="n">decay_rate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">decay_rate</span><span class="p">,</span>
+            <span class="n">decay_rate_for_decay_rate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">decay_rate_for_decay_rate</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="StatisticalRoleLearningStrategy.apply"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.StatisticalRoleLearningStrategy.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">:</span> <span class="n">SelfType_LearningStrategy</span><span class="p">,</span>
+            <span class="n">individual</span><span class="p">:</span> <span class="n">TycheContext</span><span class="p">,</span>
+            <span class="n">role_ref</span><span class="p">:</span> <span class="n">RoleFunctionSymbolReference</span><span class="p">,</span>
+            <span class="n">observation</span><span class="p">:</span> <span class="n">ADLNode</span><span class="p">,</span>
+            <span class="n">likelihood</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+
+        <span class="c1"># We only know how to deal with Expectation nodes here.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">observation</span><span class="p">,</span> <span class="n">Expectation</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="n">expectation</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">Expectation</span><span class="p">,</span> <span class="n">observation</span><span class="p">)</span>
+
+        <span class="c1"># Decay old observations over time.</span>
+        <span class="k">for</span> <span class="n">ctx</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_likelihood_sums</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">running_learning_rate_sums</span><span class="p">[</span><span class="n">ctx</span><span class="p">]</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decay_rate</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">running_likelihood_sums</span><span class="p">[</span><span class="n">ctx</span><span class="p">]</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decay_rate</span>
+
+        <span class="c1"># Decay the decay rate over time.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decay_rate</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">decay_rate</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">decay_rate_for_decay_rate</span>
+
+        <span class="c1"># If we were not given an initial value on construction, read it now.</span>
+        <span class="n">curr_role_value</span> <span class="o">=</span> <span class="n">role_ref</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">individual</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">initial_value</span> <span class="o">=</span> <span class="n">curr_role_value</span>
+            <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">prob</span> <span class="ow">in</span> <span class="n">curr_role_value</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">running_learning_rate_sums</span><span class="p">[</span><span class="n">ctx</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_value_weight</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">running_likelihood_sums</span><span class="p">[</span><span class="n">ctx</span><span class="p">]</span> <span class="o">=</span> <span class="n">prob</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_value_weight</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Apply Bayes&#39; rule to update the current value of the role.</span>
+            <span class="n">bayes_role_value</span> <span class="o">=</span> <span class="n">curr_role_value</span><span class="o">.</span><span class="n">apply_bayes_rule</span><span class="p">(</span>
+                <span class="n">Given</span><span class="p">(</span><span class="n">expectation</span><span class="o">.</span><span class="n">eval_node</span><span class="p">,</span> <span class="n">expectation</span><span class="o">.</span><span class="n">given_node</span><span class="p">),</span>
+                <span class="n">likelihood</span><span class="p">,</span> <span class="mf">1.0</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Update the running totals.</span>
+            <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">prob</span> <span class="ow">in</span> <span class="n">bayes_role_value</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">ctx</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_likelihood_sums</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">running_learning_rate_sums</span><span class="p">[</span><span class="n">ctx</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">running_likelihood_sums</span><span class="p">[</span><span class="n">ctx</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">running_learning_rate_sums</span><span class="p">[</span><span class="n">ctx</span><span class="p">]</span> <span class="o">+=</span> <span class="n">learning_rate</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">running_likelihood_sums</span><span class="p">[</span><span class="n">ctx</span><span class="p">]</span> <span class="o">+=</span> <span class="n">prob</span> <span class="o">*</span> <span class="n">learning_rate</span>
+
+        <span class="c1"># Calculate the running mean observed value of the role.</span>
+        <span class="n">new_role_value</span> <span class="o">=</span> <span class="n">ExclusiveRoleDist</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">ctx</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_likelihood_sums</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">ctx_learning_rate_sum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_learning_rate_sums</span><span class="p">[</span><span class="n">ctx</span><span class="p">]</span>
+            <span class="n">ctx_prob_sum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">running_likelihood_sums</span><span class="p">[</span><span class="n">ctx</span><span class="p">]</span>
+            <span class="n">weight</span> <span class="o">=</span> <span class="n">ctx_prob_sum</span> <span class="o">/</span> <span class="n">ctx_learning_rate_sum</span>
+            <span class="k">if</span> <span class="n">weight</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">new_role_value</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">new_role_value</span><span class="o">.</span><span class="n">is_empty</span><span class="p">():</span>
+            <span class="k">return</span>
+        <span class="n">role_ref</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">individual</span><span class="p">,</span> <span class="n">new_role_value</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span> \
+               <span class="sa">f</span><span class="s2">&quot;(initial_value_weight=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_value_weight</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, decay_rate=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">decay_rate</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">)&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="Individual"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.Individual">[docs]</a><span class="k">class</span> <span class="nc">Individual</span><span class="p">(</span><span class="n">TycheContext</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A helper class for representing individual entities in an aleatoric knowledge base.</span>
+<span class="sd">    These roles can be used as contexts to use to evaluate Tyche expressions within.</span>
+
+<span class="sd">    The concepts and roles about the individual may be stored as instance variables,</span>
+<span class="sd">    or as methods that supply their value.</span>
+<span class="sd">    * Fields can be marked as concepts by giving them the TycheConcept type hint.</span>
+<span class="sd">    * Fields can be marked as roles by giving them the TycheRole type hint.</span>
+<span class="sd">    * Methods can be marked as concepts using the @concept decorator.</span>
+<span class="sd">    * Methods can be marked as roles using the @role decorator.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">concepts</span><span class="p">:</span> <span class="n">TycheAccessorStore</span>
+    <span class="n">roles</span><span class="p">:</span> <span class="n">TycheAccessorStore</span>
+    <span class="n">concept_learning_strats</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ConceptLearningStrategy</span><span class="p">]</span>
+    <span class="n">role_learning_strats</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">RoleLearningStrategy</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">concepts</span> <span class="o">=</span> <span class="n">TycheConceptDecorator</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">roles</span> <span class="o">=</span> <span class="n">TycheRoleDecorator</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+
+        <span class="c1"># Initialise all the learning strategies for this individual.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">concept_learning_strats</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">ref</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">concepts</span><span class="o">.</span><span class="n">accessors</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="n">ConceptFunctionSymbolReference</span><span class="p">):</span>
+                <span class="k">continue</span>
+
+            <span class="n">concept_ref</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">ConceptFunctionSymbolReference</span><span class="p">,</span> <span class="n">ref</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">concept_ref</span><span class="o">.</span><span class="n">learning_strat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">concept_learning_strats</span><span class="p">[</span><span class="n">symbol</span><span class="p">]</span> <span class="o">=</span> <span class="n">concept_ref</span><span class="o">.</span><span class="n">learning_strat</span><span class="o">.</span><span class="n">init_for_new_usage</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">role_learning_strats</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">ref</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">roles</span><span class="o">.</span><span class="n">accessors</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="n">RoleFunctionSymbolReference</span><span class="p">):</span>
+                <span class="k">continue</span>
+
+            <span class="n">role_ref</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">RoleFunctionSymbolReference</span><span class="p">,</span> <span class="n">ref</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">role_ref</span><span class="o">.</span><span class="n">learning_strat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">role_learning_strats</span><span class="p">[</span><span class="n">symbol</span><span class="p">]</span> <span class="o">=</span> <span class="n">role_ref</span><span class="o">.</span><span class="n">learning_strat</span><span class="o">.</span><span class="n">init_for_new_usage</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Individual.eval"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.Individual.eval">[docs]</a>    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">CompatibleWithADLNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="c1"># The Given operator does nothing when evaluated on a regular individual,</span>
+        <span class="c1"># as the given and the sentence within the node are independent.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">Given</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">cast</span><span class="p">(</span><span class="n">Given</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span><span class="o">.</span><span class="n">node</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ADLNode</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="o">.</span><span class="n">direct_eval</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Individual.eval_role"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.Individual.eval_role">[docs]</a>    <span class="k">def</span> <span class="nf">eval_role</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">:</span> <span class="n">CompatibleWithRole</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RoleDist</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Role</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">role</span><span class="p">)</span><span class="o">.</span><span class="n">direct_eval</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Individual.describe"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.Individual.describe">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="n">obj_type</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s1">&#39;Individual&#39;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Returns a string describing the concepts and roles of the given Individual type. &quot;&quot;&quot;</span>
+        <span class="n">atoms</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">Individual</span><span class="o">.</span><span class="n">get_concept_names</span><span class="p">(</span><span class="n">obj_type</span><span class="p">)))</span>
+        <span class="n">roles</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">Individual</span><span class="o">.</span><span class="n">get_role_names</span><span class="p">(</span><span class="n">obj_type</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">obj_type</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> </span><span class="se">{{</span><span class="s2">atoms=</span><span class="si">{</span><span class="n">atoms</span><span class="si">}</span><span class="s2">, roles=</span><span class="si">{</span><span class="n">roles</span><span class="si">}</span><span class="se">}}</span><span class="s2">&quot;</span></div>
+
+<div class="viewcode-block" id="Individual.get_concept_names"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.Individual.get_concept_names">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_concept_names</span><span class="p">(</span><span class="n">obj_type</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s1">&#39;Individual&#39;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot; Returns all the concept names of the given Individual type. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">TycheConceptDecorator</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">obj_type</span><span class="p">)</span><span class="o">.</span><span class="n">all_symbols</span></div>
+
+<div class="viewcode-block" id="Individual.get_role_names"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.Individual.get_role_names">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_role_names</span><span class="p">(</span><span class="n">obj_type</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s1">&#39;Individual&#39;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot; Returns all the role names of the given Individual type. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">TycheRoleDecorator</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">obj_type</span><span class="p">)</span><span class="o">.</span><span class="n">all_symbols</span></div>
+
+<div class="viewcode-block" id="Individual.coerce_concept_value"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.Individual.coerce_concept_value">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">coerce_concept_value</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Coerces concept values to a float value in the range [0, 1],</span>
+<span class="sd">        and raises errors if this is not possible.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TycheIndividualsException</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Error in </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: Concept values must be &gt;= to 0, not </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TycheIndividualsException</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Error in </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: Concept values must be &lt;= to 1, not </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+
+            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">value</span> <span class="k">else</span> <span class="mi">0</span>
+
+        <span class="k">raise</span> <span class="n">TycheIndividualsException</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Error in </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: Concept values be of type float, int or bool, not </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Individual.get_concept"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.Individual.get_concept">[docs]</a>    <span class="k">def</span> <span class="nf">get_concept</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concepts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coerce_concept_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Individual.get_concept_reference"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.Individual.get_concept_reference">[docs]</a>    <span class="k">def</span> <span class="nf">get_concept_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BakedSymbolReference</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+        <span class="n">ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">concepts</span><span class="o">.</span><span class="n">get_reference</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span>
+        <span class="n">coerced_ref</span> <span class="o">=</span> <span class="n">GuardedSymbolReference</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coerce_concept_value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coerce_concept_value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">coerced_ref</span><span class="o">.</span><span class="n">bake</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Individual.coerce_role_value"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.Individual.coerce_role_value">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">coerce_role_value</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RoleDist</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Coerces role values to only allow WeightedRoleDistribution.</span>
+<span class="sd">        In the future, this should accept other types of role distributions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">RoleDist</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">value</span>
+
+        <span class="k">raise</span> <span class="n">TycheIndividualsException</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Error in </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: Role values must be of type &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">RoleDist</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">, not </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Individual.get_role"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.Individual.get_role">[docs]</a>    <span class="k">def</span> <span class="nf">get_role</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RoleDist</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">roles</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coerce_role_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Individual.get_role_reference"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.Individual.get_role_reference">[docs]</a>    <span class="k">def</span> <span class="nf">get_role_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SymbolReference</span><span class="p">[</span><span class="n">RoleDist</span><span class="p">]:</span>
+        <span class="n">ref</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">roles</span><span class="o">.</span><span class="n">get_reference</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span>
+        <span class="n">coerced_ref</span> <span class="o">=</span> <span class="n">GuardedSymbolReference</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coerce_role_value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coerce_role_value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">coerced_ref</span><span class="o">.</span><span class="n">bake</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_observe_expectation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expectation</span><span class="p">:</span> <span class="n">Expectation</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Applies role learning to the role, and propagates the observation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Apply any learning strategy that may be present.</span>
+        <span class="n">symbol</span> <span class="o">=</span> <span class="n">expectation</span><span class="o">.</span><span class="n">role</span><span class="o">.</span><span class="n">symbol</span>
+        <span class="n">prev_role_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_role</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prev_role_value</span><span class="p">,</span> <span class="n">ExclusiveRoleDist</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">TycheIndividualsException</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unsupported observation of expectation over </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">prev_role_value</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">role_learning_strats</span><span class="p">:</span>
+            <span class="n">ref</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">RoleFunctionSymbolReference</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">roles</span><span class="o">.</span><span class="n">get_reference</span><span class="p">(</span><span class="n">symbol</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">role_learning_strats</span><span class="p">[</span><span class="n">symbol</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">expectation</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">)</span>
+
+        <span class="c1"># Propagate the observation!</span>
+        <span class="n">possible_matching_individuals</span> <span class="o">=</span> <span class="n">Expectation</span><span class="o">.</span><span class="n">reverse_exclusive_observation</span><span class="p">(</span>
+            <span class="n">prev_role_value</span><span class="p">,</span> <span class="n">expectation</span><span class="o">.</span><span class="n">eval_node</span><span class="p">,</span> <span class="n">expectation</span><span class="o">.</span><span class="n">given_node</span><span class="p">,</span> <span class="n">likelihood</span>
+        <span class="p">)</span>
+        <span class="n">concept_given</span> <span class="o">=</span> <span class="n">Given</span><span class="p">(</span><span class="n">expectation</span><span class="o">.</span><span class="n">eval_node</span><span class="p">,</span> <span class="n">expectation</span><span class="o">.</span><span class="n">given_node</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">prob</span> <span class="ow">in</span> <span class="n">possible_matching_individuals</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ctx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ctx</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">concept_given</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">,</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">prob</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_observe_atom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Concept</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If a learning strategy is set for the observed concept, this applies it.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">symbol</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">concept_learning_strats</span><span class="p">:</span>
+            <span class="n">ref</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">ConceptFunctionSymbolReference</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">concepts</span><span class="o">.</span><span class="n">get_reference</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">symbol</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">concept_learning_strats</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">symbol</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_observe_child_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observation</span><span class="p">:</span> <span class="n">ADLNode</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Propagates the observation to its child nodes.</span>
+<span class="sd">        e.g. observe (A and B) -&gt; observe A and observe B</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Loop through all the child nodes of the observation.</span>
+        <span class="n">child_nodes</span> <span class="o">=</span> <span class="n">observation</span><span class="o">.</span><span class="n">get_child_nodes_in_eval_context</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">child_node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">child_nodes</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child_node</span><span class="p">,</span> <span class="n">Constant</span><span class="p">):</span>
+                <span class="k">continue</span>  <span class="c1"># Quick skip</span>
+
+            <span class="c1"># We have to calculate this within the loop, as the loop updates the model.</span>
+            <span class="n">observation_prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">observation</span><span class="p">)</span>
+            <span class="n">obs_matches_expected_prob</span> <span class="o">=</span> <span class="n">likelihood</span> <span class="o">*</span> <span class="n">observation_prob</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">likelihood</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">observation_prob</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">obs_matches_expected_prob</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TycheIndividualsException</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;The observation is impossible under this model &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">observation</span><span class="si">}</span><span class="s2"> with likelihood </span><span class="si">{</span><span class="n">likelihood</span><span class="si">}</span><span class="s2"> @ </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">)&quot;</span>
+                <span class="p">)</span>
+
+            <span class="n">obs_given_child</span> <span class="o">=</span> <span class="n">observation</span><span class="o">.</span><span class="n">copy_with_new_child_node_from_eval_context</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">ALWAYS</span><span class="p">)</span>
+            <span class="n">obs_given_not_child</span> <span class="o">=</span> <span class="n">observation</span><span class="o">.</span><span class="n">copy_with_new_child_node_from_eval_context</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">NEVER</span><span class="p">)</span>
+
+            <span class="n">child_prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">child_node</span><span class="p">)</span>
+            <span class="n">obs_given_child_prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">obs_given_child</span><span class="p">)</span>
+            <span class="n">obs_given_not_child_prob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">obs_given_not_child</span><span class="p">)</span>
+
+            <span class="n">child_likelihood</span> <span class="o">=</span> <span class="n">uncertain_bayes_rule</span><span class="p">(</span>
+                <span class="n">child_prob</span><span class="p">,</span> <span class="n">observation_prob</span><span class="p">,</span> <span class="n">obs_given_child_prob</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">)</span>
+
+            <span class="c1"># Corresponds to the learning_rate parameter.</span>
+            <span class="n">child_influence</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">obs_given_child_prob</span> <span class="o">-</span> <span class="n">obs_given_not_child_prob</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">child_influence</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># Propagate!</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">child_node</span><span class="p">,</span> <span class="n">child_likelihood</span><span class="p">,</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">child_influence</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Individual.observe"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.Individual.observe">[docs]</a>    <span class="k">def</span> <span class="nf">observe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observation</span><span class="p">:</span> <span class="n">ADLNode</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Learns the roles and concepts within this individual based upon the observation,</span>
+<span class="sd">        and propagate the effects of the observation node to its child nodes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">observation</span><span class="p">,</span> <span class="n">Expectation</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_observe_expectation</span><span class="p">(</span><span class="n">cast</span><span class="p">(</span><span class="n">Expectation</span><span class="p">,</span> <span class="n">observation</span><span class="p">),</span> <span class="n">likelihood</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">observation</span><span class="p">,</span> <span class="n">Concept</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_observe_atom</span><span class="p">(</span><span class="n">cast</span><span class="p">(</span><span class="n">Concept</span><span class="p">,</span> <span class="n">observation</span><span class="p">),</span> <span class="n">likelihood</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">observation</span><span class="p">,</span> <span class="n">Given</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">cast</span><span class="p">(</span><span class="n">Given</span><span class="p">,</span> <span class="n">observation</span><span class="p">)</span><span class="o">.</span><span class="n">node</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_observe_child_nodes</span><span class="p">(</span><span class="n">observation</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Individual.to_str"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.Individual.to_str">[docs]</a>    <span class="k">def</span> <span class="nf">to_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">detail_lvl</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">indent_lvl</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">detail_lvl</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;&lt;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&gt;&quot;</span>
+
+        <span class="n">sub_detail_lvl</span> <span class="o">=</span> <span class="n">detail_lvl</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="c1"># Key-values of concepts.</span>
+        <span class="n">concept_values</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">sym</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_concept</span><span class="p">(</span><span class="n">sym</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">sym</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">concepts</span><span class="o">.</span><span class="n">all_symbols</span><span class="p">]</span>
+        <span class="n">concept_values</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+        <span class="c1"># We don&#39;t want to list out the entirety of the roles.</span>
+        <span class="n">role_values</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">role_symbol</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">roles</span><span class="o">.</span><span class="n">all_symbols</span><span class="p">:</span>
+            <span class="n">role</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_role</span><span class="p">(</span><span class="n">role_symbol</span><span class="p">)</span>
+            <span class="n">role_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">role_symbol</span><span class="si">}</span><span class="s2">=</span><span class="si">{</span><span class="n">role</span><span class="o">.</span><span class="n">to_str</span><span class="p">(</span><span class="n">detail_lvl</span><span class="o">=</span><span class="n">sub_detail_lvl</span><span class="p">,</span> <span class="n">indent_lvl</span><span class="o">=</span><span class="n">indent_lvl</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">role_values</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">key_values</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">concept_values</span> <span class="o">+</span> <span class="n">role_values</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">key_values</span><span class="si">}</span><span class="s2">)&quot;</span></div></div>
+
+
+<div class="viewcode-block" id="IdentityIndividual"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.IdentityIndividual">[docs]</a><span class="k">class</span> <span class="nc">IdentityIndividual</span><span class="p">(</span><span class="n">TycheContext</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Implicitly represents a role over the set of possible states that an individual could take.</span>
+<span class="sd">    Evaluation of concepts and roles with this context will implicitly perform an expectation</span>
+<span class="sd">    over the set of possible individuals in the id role.</span>
+
+<span class="sd">    The None-individual is not supported for identity roles.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">learning_strat</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">RoleLearningStrategy</span><span class="p">]</span>
+    <span class="n">id_role_value</span><span class="p">:</span> <span class="n">ExclusiveRoleDist</span>
+    <span class="n">id_role_ref</span><span class="p">:</span> <span class="n">FieldSymbolReference</span> <span class="o">=</span> <span class="n">FieldSymbolReference</span><span class="p">(</span><span class="s2">&quot;&lt;id&gt;&quot;</span><span class="p">,</span> <span class="n">field_name</span><span class="o">=</span><span class="s2">&quot;id_role_value&quot;</span><span class="p">)</span>
+    <span class="n">id_role</span><span class="p">:</span> <span class="n">Role</span> <span class="o">=</span> <span class="n">ReferenceBackedRole</span><span class="p">(</span><span class="n">id_role_ref</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">id_role_value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ExclusiveRoleDist</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span>
+            <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">entries</span><span class="p">:</span> <span class="n">RoleDistributionEntries</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">learning_strat</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">RoleLearningStrategy</span><span class="p">]</span> <span class="o">=</span> <span class="n">BayesRuleLearningStrategy</span><span class="p">()):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">learning_strat</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">learning_strat</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">learning_strat</span><span class="o">.</span><span class="n">init_for_new_usage</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">id_role_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">entries</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TycheIndividualsException</span><span class="p">(</span>
+                <span class="s2">&quot;An id_role_value distribution and a set of entries for the id role cannot both be supplied at once&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">id_role_value</span> <span class="o">=</span> <span class="n">id_role_value</span> <span class="k">if</span> <span class="n">id_role_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">ExclusiveRoleDist</span><span class="p">(</span><span class="n">entries</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ctx</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">id_role_value</span><span class="o">.</span><span class="n">contexts</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">ctx</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TycheIndividualsException</span><span class="p">(</span><span class="s2">&quot;None individuals are not supported by IndividualIdentity&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="IdentityIndividual.is_empty"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.IdentityIndividual.is_empty">[docs]</a>    <span class="k">def</span> <span class="nf">is_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot; Returns whether no possible individuals have been added. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">id_role_value</span><span class="o">.</span><span class="n">is_empty</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_verify_not_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_empty</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;This IndividualIdentity has not been given any possible individuals&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="IdentityIndividual.add"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.IdentityIndividual.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">individual</span><span class="p">:</span> <span class="n">TycheContext</span><span class="p">,</span> <span class="n">weight</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a possible individual with the given weight. The weights</span>
+<span class="sd">        represent the relative weight of the individual against the</span>
+<span class="sd">        weights of other individuals. If the given individual already</span>
+<span class="sd">        exists, this will replace their weight.</span>
+
+<span class="sd">        If no weight is given, the default weight of 1 will be used.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">individual</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TycheIndividualsException</span><span class="p">(</span><span class="s2">&quot;None individuals are not supported by IndividualIdentity&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">id_role_value</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">individual</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IdentityIndividual.remove"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.IdentityIndividual.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">individual</span><span class="p">:</span> <span class="n">TycheContext</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Removes the given individual from this identity individual. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">id_role_value</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">individual</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IdentityIndividual.eval"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.IdentityIndividual.eval">[docs]</a>    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Expectation</span><span class="o">.</span><span class="n">evaluate_for_role</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_role_value</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">ALWAYS</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IdentityIndividual.eval_role"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.IdentityIndividual.eval_role">[docs]</a>    <span class="k">def</span> <span class="nf">eval_role</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">:</span> <span class="s1">&#39;Role&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RoleDist</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">role</span><span class="o">.</span><span class="n">direct_eval</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IdentityIndividual.get_role"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.IdentityIndividual.get_role">[docs]</a>    <span class="k">def</span> <span class="nf">get_role</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RoleDist</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_verify_not_empty</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">Expectation</span><span class="o">.</span><span class="n">evaluate_role_under_role</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_role_value</span><span class="p">,</span> <span class="n">Role</span><span class="p">(</span><span class="n">symbol</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="IdentityIndividual.get_concept"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.IdentityIndividual.get_concept">[docs]</a>    <span class="k">def</span> <span class="nf">get_concept</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">TycheIndividualsException</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Cannot evaluate atoms for instances of </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">. eval should be used instead&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IdentityIndividual.get_concept_reference"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.IdentityIndividual.get_concept_reference">[docs]</a>    <span class="k">def</span> <span class="nf">get_concept_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SymbolReference</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="n">TycheIndividualsException</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Cannot evaluate mutable concepts for instances of </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IdentityIndividual.get_role_reference"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.IdentityIndividual.get_role_reference">[docs]</a>    <span class="k">def</span> <span class="nf">get_role_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SymbolReference</span><span class="p">[</span><span class="n">RoleDist</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="n">TycheIndividualsException</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Cannot evaluate mutable roles for instances of </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IdentityIndividual.observe"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.IdentityIndividual.observe">[docs]</a>    <span class="k">def</span> <span class="nf">observe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observation</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">learning_rate</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_verify_not_empty</span><span class="p">()</span>
+
+        <span class="n">prev_id_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">id_role_value</span>
+        <span class="n">node</span><span class="p">,</span> <span class="n">given</span> <span class="o">=</span> <span class="n">Given</span><span class="o">.</span><span class="n">maybe_unpack</span><span class="p">(</span><span class="n">observation</span><span class="p">)</span>
+
+        <span class="c1"># Apply any learning strategy that is set for this IdentityIndividual.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">learning_strat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">implicit_expectation</span> <span class="o">=</span> <span class="n">Expectation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id_role</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">given</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">learning_strat</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id_role_ref</span><span class="p">,</span> <span class="n">implicit_expectation</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">)</span>
+
+        <span class="c1"># Propagate the observation!</span>
+        <span class="n">possible_matching_individuals</span> <span class="o">=</span> <span class="n">Expectation</span><span class="o">.</span><span class="n">reverse_exclusive_observation</span><span class="p">(</span>
+            <span class="n">prev_id_value</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">given</span><span class="p">,</span> <span class="n">likelihood</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">prob</span> <span class="ow">in</span> <span class="n">possible_matching_individuals</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ctx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ctx</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">observation</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">,</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">prob</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Yields tuples of the possible individuals that could</span>
+<span class="sd">        represent this individual, and their probability.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_verify_not_empty</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">prob</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">id_role_value</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">prob</span>
+
+<div class="viewcode-block" id="IdentityIndividual.to_str"><a class="viewcode-back" href="../../individuals.html#tyche.individuals.IdentityIndividual.to_str">[docs]</a>    <span class="k">def</span> <span class="nf">to_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">detail_lvl</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">indent_lvl</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">detail_lvl</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">id_role_value</span><span class="o">.</span><span class="n">to_str</span><span class="p">(</span><span class="n">detail_lvl</span><span class="o">=</span><span class="n">detail_lvl</span><span class="p">,</span> <span class="n">indent_lvl</span><span class="o">=</span><span class="n">indent_lvl</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Tyche</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../language.html">tyche.language</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../individuals.html">tyche.individuals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../distributions.html">tyche.distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../probability.html">tyche.probability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">tyche.references</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Padraig Lamont, drtnf.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.1.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

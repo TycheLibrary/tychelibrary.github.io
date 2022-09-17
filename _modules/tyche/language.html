@@ -53,6 +53,10 @@
 <span class="sd">    the construction or use of the ADL language constructs.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters:</span>
+<span class="sd">            message: A description of the error.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;TycheLanguageException: &quot;</span> <span class="o">+</span> <span class="n">message</span></div>
 
 
@@ -719,6 +723,13 @@
 <span class="sd">        i.e., this performs a logical NOT operation to this node.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">NEVER</span><span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">otherwise</span><span class="p">(</span><span class="n">ALWAYS</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__invert__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Produces a new node that represents the complement (negation) of this node.</span>
+<span class="sd">        i.e., this performs a logical NOT operation to this node.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">complement</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__and__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">CompatibleWithADLNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>

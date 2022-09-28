@@ -800,8 +800,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">role_learning_strats</span><span class="p">[</span><span class="n">symbol</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">expectation</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">)</span>
 
         <span class="c1"># Propagate the observation!</span>
-        <span class="n">possible_matching_individuals</span> <span class="o">=</span> <span class="n">Expectation</span><span class="o">.</span><span class="n">reverse_exclusive_observation</span><span class="p">(</span>
-            <span class="n">prev_role_value</span><span class="p">,</span> <span class="n">expectation</span><span class="o">.</span><span class="n">eval_node</span><span class="p">,</span> <span class="n">expectation</span><span class="o">.</span><span class="n">given_node</span><span class="p">,</span> <span class="n">likelihood</span>
+        <span class="n">possible_matching_individuals</span> <span class="o">=</span> <span class="n">prev_role_value</span><span class="o">.</span><span class="n">reverse_expectation_influences</span><span class="p">(</span>
+            <span class="n">expectation</span><span class="o">.</span><span class="n">eval_node</span><span class="p">,</span> <span class="n">expectation</span><span class="o">.</span><span class="n">given_node</span><span class="p">,</span> <span class="n">likelihood</span>
         <span class="p">)</span>
         <span class="n">concept_given</span> <span class="o">=</span> <span class="n">Given</span><span class="p">(</span><span class="n">expectation</span><span class="o">.</span><span class="n">eval_node</span><span class="p">,</span> <span class="n">expectation</span><span class="o">.</span><span class="n">given_node</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">prob</span> <span class="ow">in</span> <span class="n">possible_matching_individuals</span><span class="p">:</span>
@@ -986,8 +986,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">learning_strat</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id_role_ref</span><span class="p">,</span> <span class="n">implicit_expectation</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">)</span>
 
         <span class="c1"># Propagate the observation!</span>
-        <span class="n">possible_matching_individuals</span> <span class="o">=</span> <span class="n">Expectation</span><span class="o">.</span><span class="n">reverse_exclusive_observation</span><span class="p">(</span>
-            <span class="n">prev_id_value</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">given</span><span class="p">,</span> <span class="n">likelihood</span>
+        <span class="n">possible_matching_individuals</span> <span class="o">=</span> <span class="n">prev_id_value</span><span class="o">.</span><span class="n">reverse_expectation_influences</span><span class="p">(</span>
+            <span class="n">node</span><span class="p">,</span> <span class="n">given</span><span class="p">,</span> <span class="n">likelihood</span>
         <span class="p">)</span>
         <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">prob</span> <span class="ow">in</span> <span class="n">possible_matching_individuals</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">ctx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>

@@ -97,6 +97,32 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;contexts is not implemented for </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="RoleDist.calculate_expectation"><a class="viewcode-back" href="../../language.html#tyche.language.RoleDist.calculate_expectation">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_expectation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">,</span> <span class="n">given</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Evaluates an expectation over this role. This evaluation contains an</span>
+<span class="sd">        implicit given that the role has at least one related individual. If the</span>
+<span class="sd">        role contains no non-null entries, then this will evaluate to vacuously True.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;calculate_expectation_operator is not implemented for </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RoleDist.reverse_expectation_influences"><a class="viewcode-back" href="../../language.html#tyche.language.RoleDist.reverse_expectation_influences">[docs]</a>    <span class="k">def</span> <span class="nf">reverse_expectation_influences</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">,</span> <span class="n">given</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="s1">&#39;TycheContext&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the influence of each related individual in this role on the truth</span>
+<span class="sd">        of an expectation with the given parameters. The likelihood gives the chance</span>
+<span class="sd">        that the observation was true (i.e., a likelihood of 0 represents that the</span>
+<span class="sd">        observation of this expectation was false).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;calculate_reverse_expectation_influence&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RoleDist.calculate_exists"><a class="viewcode-back" href="../../language.html#tyche.language.RoleDist.calculate_exists">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Evaluates the likelihood that this role has at least one related individual.</span>
+<span class="sd">        The null individual is considered to represent &quot;no relation&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;calculate_exists_operator is not implemented for </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the number of related individuals in this role</span>
@@ -259,7 +285,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_weight</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span>
 
-        <span class="n">role_belief</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Expectation</span><span class="o">.</span><span class="n">evaluate_for_role</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observation</span><span class="p">,</span> <span class="n">ALWAYS</span><span class="p">)</span>
+        <span class="n">role_belief</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_expectation</span><span class="p">(</span><span class="n">observation</span><span class="p">,</span> <span class="n">ALWAYS</span><span class="p">)</span>
 
         <span class="n">learned_entries</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;TycheContext&#39;</span><span class="p">],</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">total_weight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_weight</span>
@@ -280,6 +306,80 @@
                 <span class="n">learned_entries</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">context</span><span class="p">,</span> <span class="n">learned_weight</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">ExclusiveRoleDist</span><span class="p">(</span><span class="n">learned_entries</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ExclusiveRoleDist.calculate_expectation"><a class="viewcode-back" href="../../language.html#tyche.language.ExclusiveRoleDist.calculate_expectation">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_expectation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">,</span> <span class="n">given</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="n">node</span><span class="p">,</span> <span class="n">given</span> <span class="o">=</span> <span class="n">Given</span><span class="o">.</span><span class="n">maybe_unpack</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">given</span><span class="p">)</span>
+
+        <span class="n">total_prob</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">total_given_prob</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">node_and_given</span> <span class="o">=</span> <span class="n">node</span> <span class="o">&amp;</span> <span class="n">given</span>
+        <span class="k">for</span> <span class="n">other_context</span><span class="p">,</span> <span class="n">prob</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">other_context</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">given_prob</span> <span class="o">=</span> <span class="n">other_context</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">given</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">given_prob</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">true_prob</span> <span class="o">=</span> <span class="n">other_context</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">node_and_given</span><span class="p">)</span>
+            <span class="n">total_prob</span> <span class="o">+=</span> <span class="n">prob</span> <span class="o">*</span> <span class="n">true_prob</span>
+            <span class="n">total_given_prob</span> <span class="o">+=</span> <span class="n">prob</span> <span class="o">*</span> <span class="n">given_prob</span>
+
+        <span class="c1"># Vacuously True if only None in role, or if all givens evaluated to never.</span>
+        <span class="k">if</span> <span class="n">total_given_prob</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span>
+
+        <span class="c1"># Division for the implicit given non-None.</span>
+        <span class="k">return</span> <span class="n">total_prob</span> <span class="o">/</span> <span class="n">total_given_prob</span></div>
+
+<div class="viewcode-block" id="ExclusiveRoleDist.reverse_expectation_influences"><a class="viewcode-back" href="../../language.html#tyche.language.ExclusiveRoleDist.reverse_expectation_influences">[docs]</a>    <span class="k">def</span> <span class="nf">reverse_expectation_influences</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">,</span> <span class="n">given</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="s1">&#39;TycheContext&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+
+        <span class="n">entries</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">TycheContext</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">total_given_prob</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">other_context</span><span class="p">,</span> <span class="n">prob</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">other_context</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">given_prob</span> <span class="o">=</span> <span class="n">other_context</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">given</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">given_prob</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">node_prob</span> <span class="o">=</span> <span class="n">other_context</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="n">given_prob</span> <span class="o">=</span> <span class="n">other_context</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">given</span><span class="p">)</span>
+
+            <span class="n">matches_observation_prob</span> <span class="o">=</span> <span class="n">likelihood</span> <span class="o">*</span> <span class="n">node_prob</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">likelihood</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">node_prob</span><span class="p">)</span>
+            <span class="n">chosen_prob</span> <span class="o">=</span> <span class="n">prob</span> <span class="o">*</span> <span class="n">given_prob</span>
+            <span class="n">total_given_prob</span> <span class="o">+=</span> <span class="n">chosen_prob</span>
+
+            <span class="n">weight</span> <span class="o">=</span> <span class="n">chosen_prob</span> <span class="o">*</span> <span class="n">matches_observation_prob</span>
+            <span class="k">if</span> <span class="n">weight</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">other_context</span><span class="p">,</span> <span class="n">weight</span><span class="p">))</span>
+
+        <span class="c1"># If no entries could have possibly matched, then the expectation would have been vacuously true.</span>
+        <span class="k">if</span> <span class="n">total_given_prob</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">entries</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">entries</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TycheLanguageException</span><span class="p">(</span><span class="s2">&quot;The observation is impossible under this model&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">entries</span></div>
+
+<div class="viewcode-block" id="ExclusiveRoleDist.calculate_exists"><a class="viewcode-back" href="../../language.html#tyche.language.ExclusiveRoleDist.calculate_exists">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">exists_weight</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">other_context</span><span class="p">,</span> <span class="n">prob</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">other_context</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">prob</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">exists_weight</span> <span class="o">+=</span> <span class="n">prob</span>
+
+        <span class="c1"># Vacuous False if no entries in role.</span>
+        <span class="k">if</span> <span class="n">exists_weight</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+
+        <span class="c1"># Otherwise, there was no None entry in this role, so it always exists.</span>
+        <span class="k">return</span> <span class="mf">1.0</span></div>
 
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_entries</span><span class="p">))</span>
@@ -416,6 +516,39 @@
 <div class="viewcode-block" id="IndependentRoleDist.contexts"><a class="viewcode-back" href="../../language.html#tyche.language.IndependentRoleDist.contexts">[docs]</a>    <span class="k">def</span> <span class="nf">contexts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_entries</span><span class="p">:</span>
             <span class="k">yield</span> <span class="n">ctx</span></div>
+
+<div class="viewcode-block" id="IndependentRoleDist.calculate_expectation"><a class="viewcode-back" href="../../language.html#tyche.language.IndependentRoleDist.calculate_expectation">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_expectation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">,</span> <span class="n">given</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="n">node</span><span class="p">,</span> <span class="n">given</span> <span class="o">=</span> <span class="n">Given</span><span class="o">.</span><span class="n">maybe_unpack</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">given</span><span class="p">)</span>
+
+        <span class="c1"># Expectations over independent roles just act as a big OR.</span>
+        <span class="n">not_prob</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">not_given_prob</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">node_and_given</span> <span class="o">=</span> <span class="n">node</span> <span class="o">&amp;</span> <span class="n">given</span>
+        <span class="k">for</span> <span class="n">other_context</span><span class="p">,</span> <span class="n">prob</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">other_context</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">given_prob</span> <span class="o">=</span> <span class="n">other_context</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">given</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">given_prob</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">true_prob</span> <span class="o">=</span> <span class="n">other_context</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">node_and_given</span><span class="p">)</span>
+            <span class="n">not_prob</span> <span class="o">*=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">prob</span> <span class="o">*</span> <span class="n">true_prob</span>
+            <span class="n">not_given_prob</span> <span class="o">*=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">prob</span> <span class="o">*</span> <span class="n">given_prob</span>
+
+        <span class="c1"># Vacuously true if no matched relations.</span>
+        <span class="k">if</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">not_given_prob</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">not_prob</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">not_given_prob</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IndependentRoleDist.calculate_exists"><a class="viewcode-back" href="../../language.html#tyche.language.IndependentRoleDist.calculate_exists">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Calculate the chance that we select none of the individuals.</span>
+        <span class="n">none_selected_prob</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">other_context</span><span class="p">,</span> <span class="n">prob</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="n">none_selected_prob</span> <span class="o">*=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">prob</span>
+
+        <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">none_selected_prob</span></div>
 
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_entries</span><span class="p">)</span>
@@ -1174,130 +1307,16 @@
                 <span class="n">result</span><span class="o">.</span><span class="n">add_combining_weights</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">outer_prob</span><span class="p">)</span>
                 <span class="k">continue</span>
 
-            <span class="k">for</span> <span class="n">inner_context</span><span class="p">,</span> <span class="n">inner_prob</span> <span class="ow">in</span> <span class="n">outer_context</span><span class="o">.</span><span class="n">get_role</span><span class="p">(</span><span class="n">inner_role</span><span class="o">.</span><span class="n">symbol</span><span class="p">):</span>
+            <span class="n">inner_role_value</span> <span class="o">=</span> <span class="n">outer_context</span><span class="o">.</span><span class="n">get_role</span><span class="p">(</span><span class="n">inner_role</span><span class="o">.</span><span class="n">symbol</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inner_role_value</span><span class="p">,</span> <span class="n">ExclusiveRoleDist</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">TycheLanguageException</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Evaluating a role of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">inner_role_value</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;under an ExclusiveRoleDist is not yet supported&quot;</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">inner_context</span><span class="p">,</span> <span class="n">inner_prob</span> <span class="ow">in</span> <span class="n">inner_role_value</span><span class="p">:</span>
                 <span class="n">result</span><span class="o">.</span><span class="n">add_combining_weights</span><span class="p">(</span><span class="n">inner_context</span><span class="p">,</span> <span class="n">outer_prob</span> <span class="o">*</span> <span class="n">inner_prob</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">result</span></div>
-
-<div class="viewcode-block" id="Expectation.evaluate_for_role"><a class="viewcode-back" href="../../language.html#tyche.language.Expectation.evaluate_for_role">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">evaluate_for_role</span><span class="p">(</span><span class="n">role</span><span class="p">:</span> <span class="n">RoleDist</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ADLNode</span><span class="p">,</span> <span class="n">given</span><span class="p">:</span> <span class="n">ADLNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Evaluates an expectation over the given role, without requiring a context.</span>
-<span class="sd">        This evaluation contains an implicit given that the role is non-None. If the</span>
-<span class="sd">        role only contains None, then this will evaluate to vacuously True.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">role</span><span class="p">,</span> <span class="n">ExclusiveRoleDist</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">Expectation</span><span class="o">.</span><span class="n">evaluate_for_exclusive_role</span><span class="p">(</span><span class="n">cast</span><span class="p">(</span><span class="n">ExclusiveRoleDist</span><span class="p">,</span> <span class="n">role</span><span class="p">),</span> <span class="n">node</span><span class="p">,</span> <span class="n">given</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">role</span><span class="p">,</span> <span class="n">IndependentRoleDist</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">Expectation</span><span class="o">.</span><span class="n">evaluate_for_independent_role</span><span class="p">(</span><span class="n">cast</span><span class="p">(</span><span class="n">IndependentRoleDist</span><span class="p">,</span> <span class="n">role</span><span class="p">),</span> <span class="n">node</span><span class="p">,</span> <span class="n">given</span><span class="p">)</span>
-
-        <span class="k">raise</span> <span class="n">TycheLanguageException</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Unexpected role distribution type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">role</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Expectation.evaluate_for_exclusive_role"><a class="viewcode-back" href="../../language.html#tyche.language.Expectation.evaluate_for_exclusive_role">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">evaluate_for_exclusive_role</span><span class="p">(</span><span class="n">role</span><span class="p">:</span> <span class="n">ExclusiveRoleDist</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ADLNode</span><span class="p">,</span> <span class="n">given</span><span class="p">:</span> <span class="n">ADLNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Evaluates an expectation over the given role, without requiring a context.</span>
-<span class="sd">        This evaluation contains an implicit given that the role is non-None. If the</span>
-<span class="sd">        role only contains None, then this will evaluate to vacuously True.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">node</span><span class="p">,</span> <span class="n">given</span> <span class="o">=</span> <span class="n">Given</span><span class="o">.</span><span class="n">maybe_unpack</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">given</span><span class="p">)</span>
-
-        <span class="n">total_prob</span> <span class="o">=</span> <span class="mf">0.0</span>
-        <span class="n">total_given_prob</span> <span class="o">=</span> <span class="mf">0.0</span>
-        <span class="n">node_and_given</span> <span class="o">=</span> <span class="n">node</span> <span class="o">&amp;</span> <span class="n">given</span>
-        <span class="k">for</span> <span class="n">other_context</span><span class="p">,</span> <span class="n">prob</span> <span class="ow">in</span> <span class="n">role</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">other_context</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">continue</span>
-
-            <span class="n">given_prob</span> <span class="o">=</span> <span class="n">other_context</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">given</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">given_prob</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">continue</span>
-
-            <span class="n">true_prob</span> <span class="o">=</span> <span class="n">other_context</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">node_and_given</span><span class="p">)</span>
-            <span class="n">total_prob</span> <span class="o">+=</span> <span class="n">prob</span> <span class="o">*</span> <span class="n">true_prob</span>
-            <span class="n">total_given_prob</span> <span class="o">+=</span> <span class="n">prob</span> <span class="o">*</span> <span class="n">given_prob</span>
-
-        <span class="c1"># Vacuously True if only None in role, or if all givens evaluated to never.</span>
-        <span class="k">if</span> <span class="n">total_given_prob</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="mi">1</span>
-
-        <span class="c1"># Division for the implicit given non-None.</span>
-        <span class="k">return</span> <span class="n">total_prob</span> <span class="o">/</span> <span class="n">total_given_prob</span></div>
-
-<div class="viewcode-block" id="Expectation.evaluate_for_independent_role"><a class="viewcode-back" href="../../language.html#tyche.language.Expectation.evaluate_for_independent_role">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">evaluate_for_independent_role</span><span class="p">(</span><span class="n">role</span><span class="p">:</span> <span class="n">IndependentRoleDist</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ADLNode</span><span class="p">,</span> <span class="n">given</span><span class="p">:</span> <span class="n">ADLNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Evaluates an expectation over the given role, without requiring a context.</span>
-<span class="sd">        If the role contains no related individuals that match the given, then this</span>
-<span class="sd">        evaluates to vacuously true.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">node</span><span class="p">,</span> <span class="n">given</span> <span class="o">=</span> <span class="n">Given</span><span class="o">.</span><span class="n">maybe_unpack</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">given</span><span class="p">)</span>
-
-        <span class="c1"># Expectations over independent roles just treat this as a big OR.</span>
-        <span class="n">not_prob</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="n">total_given_prob</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">node_and_given</span> <span class="o">=</span> <span class="n">node</span> <span class="o">&amp;</span> <span class="n">given</span>
-        <span class="k">for</span> <span class="n">other_context</span><span class="p">,</span> <span class="n">prob</span> <span class="ow">in</span> <span class="n">role</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">other_context</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">continue</span>
-
-            <span class="n">given_prob</span> <span class="o">=</span> <span class="n">other_context</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">given</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">given_prob</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">continue</span>
-
-            <span class="n">true_prob</span> <span class="o">=</span> <span class="n">other_context</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">node_and_given</span><span class="p">)</span>
-            <span class="n">not_prob</span> <span class="o">*=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">prob</span> <span class="o">*</span> <span class="n">true_prob</span>
-            <span class="n">total_given_prob</span> <span class="o">+=</span> <span class="n">prob</span> <span class="o">*</span> <span class="n">given_prob</span>
-
-        <span class="c1"># Vacuously true if no matched relations.</span>
-        <span class="k">if</span> <span class="n">total_given_prob</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="mi">1</span>
-
-        <span class="c1"># Treatment of OR as a series of AND:</span>
-        <span class="c1"># x OR y === NOT ((NOT x) AND (NOT y)).</span>
-        <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">not_prob</span></div>
-
-<div class="viewcode-block" id="Expectation.reverse_exclusive_observation"><a class="viewcode-back" href="../../language.html#tyche.language.Expectation.reverse_exclusive_observation">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">reverse_exclusive_observation</span><span class="p">(</span>
-            <span class="n">role</span><span class="p">:</span> <span class="n">ExclusiveRoleDist</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">ADLNode</span><span class="p">,</span> <span class="n">given</span><span class="p">:</span> <span class="n">ADLNode</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ExclusiveRoleDist</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Evaluates to a role that represents the chance that each individual in the role</span>
-<span class="sd">        was the individual that contributed to the observation. The likelihood gives the</span>
-<span class="sd">        chance that the observation was true (i.e., a likelihood of 0 represents that the</span>
-<span class="sd">        observation of this expectation was false).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">entries</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">TycheContext</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
-
-        <span class="n">total_given_prob</span> <span class="o">=</span> <span class="mf">0.0</span>
-        <span class="k">for</span> <span class="n">other_context</span><span class="p">,</span> <span class="n">prob</span> <span class="ow">in</span> <span class="n">role</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">other_context</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">continue</span>
-
-            <span class="n">given_prob</span> <span class="o">=</span> <span class="n">other_context</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">given</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">given_prob</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">continue</span>
-
-            <span class="n">node_prob</span> <span class="o">=</span> <span class="n">other_context</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
-            <span class="n">given_prob</span> <span class="o">=</span> <span class="n">other_context</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">given</span><span class="p">)</span>
-
-            <span class="n">matches_observation_prob</span> <span class="o">=</span> <span class="n">likelihood</span> <span class="o">*</span> <span class="n">node_prob</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">likelihood</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">node_prob</span><span class="p">)</span>
-            <span class="n">chosen_prob</span> <span class="o">=</span> <span class="n">prob</span> <span class="o">*</span> <span class="n">given_prob</span>
-            <span class="n">total_given_prob</span> <span class="o">+=</span> <span class="n">chosen_prob</span>
-
-            <span class="n">weight</span> <span class="o">=</span> <span class="n">chosen_prob</span> <span class="o">*</span> <span class="n">matches_observation_prob</span>
-            <span class="k">if</span> <span class="n">weight</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">other_context</span><span class="p">,</span> <span class="n">weight</span><span class="p">))</span>
-
-        <span class="c1"># If no entries could have possibly matched, then the expectation would have been vacuously true.</span>
-        <span class="k">if</span> <span class="n">total_given_prob</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">ExclusiveRoleDist</span><span class="p">()</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">entries</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">TycheLanguageException</span><span class="p">(</span><span class="s2">&quot;The observation is impossible under this model&quot;</span><span class="p">)</span>
-
-        <span class="c1"># Division for the implicit given non-None.</span>
-        <span class="k">return</span> <span class="n">ExclusiveRoleDist</span><span class="p">(</span><span class="n">entries</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Expectation.direct_eval"><a class="viewcode-back" href="../../language.html#tyche.language.Expectation.direct_eval">[docs]</a>    <span class="k">def</span> <span class="nf">direct_eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TycheContext</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1307,7 +1326,8 @@
 <span class="sd">        If the role only contains None, then this will evaluate</span>
 <span class="sd">        to vacuously True.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Expectation</span><span class="o">.</span><span class="n">evaluate_for_role</span><span class="p">(</span><span class="n">context</span><span class="o">.</span><span class="n">eval_role</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">role</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_node</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">given_node</span><span class="p">)</span></div></div>
+        <span class="n">role_value</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">eval_role</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">role</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">role_value</span><span class="o">.</span><span class="n">calculate_expectation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eval_node</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">given_node</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="Exists"><a class="viewcode-back" href="../../language.html#tyche.language.Exists">[docs]</a><span class="k">class</span> <span class="nc">Exists</span><span class="p">(</span><span class="n">ADLNode</span><span class="p">):</span>
@@ -1341,19 +1361,8 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evaluates the likelihood that the given role has a non-None value.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">exists_weight</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">other_context</span><span class="p">,</span> <span class="n">prob</span> <span class="ow">in</span> <span class="n">context</span><span class="o">.</span><span class="n">eval_role</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">role</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">other_context</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">return</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">prob</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">exists_weight</span> <span class="o">+=</span> <span class="n">prob</span>
-
-        <span class="c1"># Vacuous False if no entries in role.</span>
-        <span class="k">if</span> <span class="n">exists_weight</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="mf">0.0</span>
-
-        <span class="c1"># Otherwise, there was no None entry in this role, so it always exists.</span>
-        <span class="k">return</span> <span class="mf">1.0</span></div></div>
+        <span class="n">role_value</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">eval_role</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">role</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">role_value</span><span class="o">.</span><span class="n">calculate_exists</span><span class="p">()</span></div></div>
 
 
 <div class="viewcode-block" id="LeastFixedPoint"><a class="viewcode-back" href="../../language.html#tyche.language.LeastFixedPoint">[docs]</a><span class="k">class</span> <span class="nc">LeastFixedPoint</span><span class="p">(</span><span class="n">ADLNode</span><span class="p">):</span>

@@ -94,6 +94,53 @@ the None-individual if it is present.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="tyche.language.RoleDist.calculate_expectation">
+<span class="sig-name descname"><span class="pre">calculate_expectation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">given</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tyche/language.html#RoleDist.calculate_expectation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tyche.language.RoleDist.calculate_expectation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates an expectation over this role. This evaluation contains an
+implicit given that the role has at least one related individual. If the
+role contains no non-null entries, then this will evaluate to vacuously True.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node</strong> (<a class="reference internal" href="#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p></li>
+<li><p><strong>given</strong> (<a class="reference internal" href="#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.language.RoleDist.reverse_expectation_influences">
+<span class="sig-name descname"><span class="pre">reverse_expectation_influences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">given</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">likelihood</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tyche/language.html#RoleDist.reverse_expectation_influences"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tyche.language.RoleDist.reverse_expectation_influences" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the influence of each related individual in this role on the truth
+of an expectation with the given parameters. The likelihood gives the chance
+that the observation was true (i.e., a likelihood of 0 represents that the
+observation of this expectation was false).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node</strong> (<a class="reference internal" href="#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p></li>
+<li><p><strong>given</strong> (<a class="reference internal" href="#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p></li>
+<li><p><strong>likelihood</strong> (<em>float</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[tuple[‘TycheContext’, float]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.language.RoleDist.calculate_exists">
+<span class="sig-name descname"><span class="pre">calculate_exists</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tyche/language.html#RoleDist.calculate_exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tyche.language.RoleDist.calculate_exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the likelihood that this role has at least one related individual.
+The null individual is considered to represent “no relation”.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="tyche.language.RoleDist.to_str">
 <span class="sig-name descname"><span class="pre">to_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detail_lvl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indent_lvl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tyche/language.html#RoleDist.to_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tyche.language.RoleDist.to_str" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a text representation of the contents of this role distribution.</p>
@@ -244,6 +291,53 @@ remain unchanged.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="tyche.language.ExclusiveRoleDist.calculate_expectation">
+<span class="sig-name descname"><span class="pre">calculate_expectation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">given</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tyche/language.html#ExclusiveRoleDist.calculate_expectation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tyche.language.ExclusiveRoleDist.calculate_expectation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates an expectation over this role. This evaluation contains an
+implicit given that the role has at least one related individual. If the
+role contains no non-null entries, then this will evaluate to vacuously True.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node</strong> (<a class="reference internal" href="#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p></li>
+<li><p><strong>given</strong> (<a class="reference internal" href="#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.language.ExclusiveRoleDist.reverse_expectation_influences">
+<span class="sig-name descname"><span class="pre">reverse_expectation_influences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">given</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">likelihood</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tyche/language.html#ExclusiveRoleDist.reverse_expectation_influences"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tyche.language.ExclusiveRoleDist.reverse_expectation_influences" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the influence of each related individual in this role on the truth
+of an expectation with the given parameters. The likelihood gives the chance
+that the observation was true (i.e., a likelihood of 0 represents that the
+observation of this expectation was false).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node</strong> (<a class="reference internal" href="#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p></li>
+<li><p><strong>given</strong> (<a class="reference internal" href="#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p></li>
+<li><p><strong>likelihood</strong> (<em>float</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[tuple[‘TycheContext’, float]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.language.ExclusiveRoleDist.calculate_exists">
+<span class="sig-name descname"><span class="pre">calculate_exists</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tyche/language.html#ExclusiveRoleDist.calculate_exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tyche.language.ExclusiveRoleDist.calculate_exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the likelihood that this role has at least one related individual.
+The null individual is considered to represent “no relation”.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="tyche.language.ExclusiveRoleDist.sample">
 <span class="sig-name descname"><span class="pre">sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rng</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tyche/language.html#ExclusiveRoleDist.sample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tyche.language.ExclusiveRoleDist.sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Selects a random individual from this role based upon their weights.</p>
@@ -347,6 +441,32 @@ The probability must fall within the range [0, 1].</p>
 <span class="sig-name descname"><span class="pre">contexts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tyche/language.html#IndependentRoleDist.contexts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tyche.language.IndependentRoleDist.contexts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Yields all the contexts within this role, including
 the None-individual if it is present.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.language.IndependentRoleDist.calculate_expectation">
+<span class="sig-name descname"><span class="pre">calculate_expectation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">given</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tyche/language.html#IndependentRoleDist.calculate_expectation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tyche.language.IndependentRoleDist.calculate_expectation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates an expectation over this role. This evaluation contains an
+implicit given that the role has at least one related individual. If the
+role contains no non-null entries, then this will evaluate to vacuously True.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node</strong> (<a class="reference internal" href="#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p></li>
+<li><p><strong>given</strong> (<a class="reference internal" href="#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.language.IndependentRoleDist.calculate_exists">
+<span class="sig-name descname"><span class="pre">calculate_exists</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tyche/language.html#IndependentRoleDist.calculate_exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tyche.language.IndependentRoleDist.calculate_exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the likelihood that this role has at least one related individual.
+The null individual is considered to represent “no relation”.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1329,88 +1449,6 @@ the context is selected from an inner_role selected from outer_role.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>outer_role</strong> (<a class="reference internal" href="#tyche.language.ExclusiveRoleDist" title="tyche.language.ExclusiveRoleDist"><em>ExclusiveRoleDist</em></a>) – </p></li>
 <li><p><strong>inner_role</strong> (<a class="reference internal" href="#tyche.language.Role" title="tyche.language.Role"><em>Role</em></a>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#tyche.language.ExclusiveRoleDist" title="tyche.language.ExclusiveRoleDist"><em>ExclusiveRoleDist</em></a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tyche.language.Expectation.evaluate_for_role">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">evaluate_for_role</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">role</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">given</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tyche/language.html#Expectation.evaluate_for_role"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tyche.language.Expectation.evaluate_for_role" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluates an expectation over the given role, without requiring a context.
-This evaluation contains an implicit given that the role is non-None. If the
-role only contains None, then this will evaluate to vacuously True.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>role</strong> (<a class="reference internal" href="#tyche.language.RoleDist" title="tyche.language.RoleDist"><em>RoleDist</em></a>) – </p></li>
-<li><p><strong>node</strong> (<a class="reference internal" href="#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p></li>
-<li><p><strong>given</strong> (<a class="reference internal" href="#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tyche.language.Expectation.evaluate_for_exclusive_role">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">evaluate_for_exclusive_role</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">role</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">given</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tyche/language.html#Expectation.evaluate_for_exclusive_role"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tyche.language.Expectation.evaluate_for_exclusive_role" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluates an expectation over the given role, without requiring a context.
-This evaluation contains an implicit given that the role is non-None. If the
-role only contains None, then this will evaluate to vacuously True.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>role</strong> (<a class="reference internal" href="#tyche.language.ExclusiveRoleDist" title="tyche.language.ExclusiveRoleDist"><em>ExclusiveRoleDist</em></a>) – </p></li>
-<li><p><strong>node</strong> (<a class="reference internal" href="#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p></li>
-<li><p><strong>given</strong> (<a class="reference internal" href="#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tyche.language.Expectation.evaluate_for_independent_role">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">evaluate_for_independent_role</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">role</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">given</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tyche/language.html#Expectation.evaluate_for_independent_role"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tyche.language.Expectation.evaluate_for_independent_role" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluates an expectation over the given role, without requiring a context.
-If the role contains no related individuals that match the given, then this
-evaluates to vacuously true.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>role</strong> (<a class="reference internal" href="#tyche.language.IndependentRoleDist" title="tyche.language.IndependentRoleDist"><em>IndependentRoleDist</em></a>) – </p></li>
-<li><p><strong>node</strong> (<a class="reference internal" href="#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p></li>
-<li><p><strong>given</strong> (<a class="reference internal" href="#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="tyche.language.Expectation.reverse_exclusive_observation">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reverse_exclusive_observation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">role</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">given</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">likelihood</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tyche/language.html#Expectation.reverse_exclusive_observation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tyche.language.Expectation.reverse_exclusive_observation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluates to a role that represents the chance that each individual in the role
-was the individual that contributed to the observation. The likelihood gives the
-chance that the observation was true (i.e., a likelihood of 0 represents that the
-observation of this expectation was false).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>role</strong> (<a class="reference internal" href="#tyche.language.ExclusiveRoleDist" title="tyche.language.ExclusiveRoleDist"><em>ExclusiveRoleDist</em></a>) – </p></li>
-<li><p><strong>node</strong> (<a class="reference internal" href="#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p></li>
-<li><p><strong>given</strong> (<a class="reference internal" href="#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p></li>
-<li><p><strong>likelihood</strong> (<em>float</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>

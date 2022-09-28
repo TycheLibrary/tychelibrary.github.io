@@ -113,12 +113,14 @@ role contains no non-null entries, then this will evaluate to vacuously True.</p
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tyche.language.RoleDist.reverse_expectation_influences">
-<span class="sig-name descname"><span class="pre">reverse_expectation_influences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">given</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">likelihood</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tyche/language.html#RoleDist.reverse_expectation_influences"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tyche.language.RoleDist.reverse_expectation_influences" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates the influence of each related individual in this role on the truth
-of an expectation with the given parameters. The likelihood gives the chance
-that the observation was true (i.e., a likelihood of 0 represents that the
+<dt class="sig sig-object py" id="tyche.language.RoleDist.reverse_expectation_learning_params">
+<span class="sig-name descname"><span class="pre">reverse_expectation_learning_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">given</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">likelihood</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tyche/language.html#RoleDist.reverse_expectation_learning_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tyche.language.RoleDist.reverse_expectation_learning_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the influence and learning rate of each related individual in this role
+for the truth of an expectation with the given parameters. The likelihood gives the
+chance that the observation was true (i.e., a likelihood of 0 represents that the
 observation of this expectation was false).</p>
+<p>Returns a tuple of each related context that could have been selected, its likelihood,
+and its influence.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -128,7 +130,7 @@ observation of this expectation was false).</p>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list[tuple[‘TycheContext’, float]]</p>
+<dd class="field-even"><p>list[tuple[‘TycheContext’, float, float]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -310,12 +312,14 @@ role contains no non-null entries, then this will evaluate to vacuously True.</p
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="tyche.language.ExclusiveRoleDist.reverse_expectation_influences">
-<span class="sig-name descname"><span class="pre">reverse_expectation_influences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">given</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">likelihood</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tyche/language.html#ExclusiveRoleDist.reverse_expectation_influences"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tyche.language.ExclusiveRoleDist.reverse_expectation_influences" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates the influence of each related individual in this role on the truth
-of an expectation with the given parameters. The likelihood gives the chance
-that the observation was true (i.e., a likelihood of 0 represents that the
+<dt class="sig sig-object py" id="tyche.language.ExclusiveRoleDist.reverse_expectation_learning_params">
+<span class="sig-name descname"><span class="pre">reverse_expectation_learning_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">given</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">likelihood</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tyche/language.html#ExclusiveRoleDist.reverse_expectation_learning_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tyche.language.ExclusiveRoleDist.reverse_expectation_learning_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the influence and learning rate of each related individual in this role
+for the truth of an expectation with the given parameters. The likelihood gives the
+chance that the observation was true (i.e., a likelihood of 0 represents that the
 observation of this expectation was false).</p>
+<p>Returns a tuple of each related context that could have been selected, its likelihood,
+and its influence.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -325,7 +329,7 @@ observation of this expectation was false).</p>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list[tuple[‘TycheContext’, float]]</p>
+<dd class="field-even"><p>list[tuple[‘TycheContext’, float, float]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -458,6 +462,29 @@ role contains no non-null entries, then this will evaluate to vacuously True.</p
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tyche.language.IndependentRoleDist.reverse_expectation_learning_params">
+<span class="sig-name descname"><span class="pre">reverse_expectation_learning_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">given</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">likelihood</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tyche/language.html#IndependentRoleDist.reverse_expectation_learning_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tyche.language.IndependentRoleDist.reverse_expectation_learning_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the influence and learning rate of each related individual in this role
+for the truth of an expectation with the given parameters. The likelihood gives the
+chance that the observation was true (i.e., a likelihood of 0 represents that the
+observation of this expectation was false).</p>
+<p>Returns a tuple of each related context that could have been selected, its likelihood,
+and its influence.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node</strong> (<a class="reference internal" href="#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p></li>
+<li><p><strong>given</strong> (<a class="reference internal" href="#tyche.language.ADLNode" title="tyche.language.ADLNode"><em>ADLNode</em></a>) – </p></li>
+<li><p><strong>likelihood</strong> (<em>float</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[tuple[‘TycheContext’, float, float]]</p>
 </dd>
 </dl>
 </dd></dl>

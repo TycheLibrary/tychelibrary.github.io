@@ -105,14 +105,17 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;calculate_expectation_operator is not implemented for </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="RoleDist.reverse_expectation_influences"><a class="viewcode-back" href="../../language.html#tyche.language.RoleDist.reverse_expectation_influences">[docs]</a>    <span class="k">def</span> <span class="nf">reverse_expectation_influences</span><span class="p">(</span>
+<div class="viewcode-block" id="RoleDist.reverse_expectation_learning_params"><a class="viewcode-back" href="../../language.html#tyche.language.RoleDist.reverse_expectation_learning_params">[docs]</a>    <span class="k">def</span> <span class="nf">reverse_expectation_learning_params</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">,</span> <span class="n">given</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="s1">&#39;TycheContext&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="s1">&#39;TycheContext&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculates the influence of each related individual in this role on the truth</span>
-<span class="sd">        of an expectation with the given parameters. The likelihood gives the chance</span>
-<span class="sd">        that the observation was true (i.e., a likelihood of 0 represents that the</span>
+<span class="sd">        Calculates the influence and learning rate of each related individual in this role</span>
+<span class="sd">        for the truth of an expectation with the given parameters. The likelihood gives the</span>
+<span class="sd">        chance that the observation was true (i.e., a likelihood of 0 represents that the</span>
 <span class="sd">        observation of this expectation was false).</span>
+
+<span class="sd">        Returns a tuple of each related context that could have been selected, its likelihood,</span>
+<span class="sd">        and its influence.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;calculate_reverse_expectation_influence&quot;</span><span class="p">)</span></div>
 
@@ -332,11 +335,11 @@
         <span class="c1"># Division for the implicit given non-None.</span>
         <span class="k">return</span> <span class="n">total_prob</span> <span class="o">/</span> <span class="n">total_given_prob</span></div>
 
-<div class="viewcode-block" id="ExclusiveRoleDist.reverse_expectation_influences"><a class="viewcode-back" href="../../language.html#tyche.language.ExclusiveRoleDist.reverse_expectation_influences">[docs]</a>    <span class="k">def</span> <span class="nf">reverse_expectation_influences</span><span class="p">(</span>
+<div class="viewcode-block" id="ExclusiveRoleDist.reverse_expectation_learning_params"><a class="viewcode-back" href="../../language.html#tyche.language.ExclusiveRoleDist.reverse_expectation_learning_params">[docs]</a>    <span class="k">def</span> <span class="nf">reverse_expectation_learning_params</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">,</span> <span class="n">given</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="s1">&#39;TycheContext&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="s1">&#39;TycheContext&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
 
-        <span class="n">entries</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">TycheContext</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">weighted_entries</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">TycheContext</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="n">total_given_prob</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="k">for</span> <span class="n">other_context</span><span class="p">,</span> <span class="n">prob</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
@@ -348,7 +351,6 @@
                 <span class="k">continue</span>
 
             <span class="n">node_prob</span> <span class="o">=</span> <span class="n">other_context</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
-            <span class="n">given_prob</span> <span class="o">=</span> <span class="n">other_context</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">given</span><span class="p">)</span>
 
             <span class="n">matches_observation_prob</span> <span class="o">=</span> <span class="n">likelihood</span> <span class="o">*</span> <span class="n">node_prob</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">likelihood</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">node_prob</span><span class="p">)</span>
             <span class="n">chosen_prob</span> <span class="o">=</span> <span class="n">prob</span> <span class="o">*</span> <span class="n">given_prob</span>
@@ -356,13 +358,24 @@
 
             <span class="n">weight</span> <span class="o">=</span> <span class="n">chosen_prob</span> <span class="o">*</span> <span class="n">matches_observation_prob</span>
             <span class="k">if</span> <span class="n">weight</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">other_context</span><span class="p">,</span> <span class="n">weight</span><span class="p">))</span>
+                <span class="n">weighted_entries</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">other_context</span><span class="p">,</span> <span class="n">weight</span><span class="p">))</span>
 
         <span class="c1"># If no entries could have possibly matched, then the expectation would have been vacuously true.</span>
         <span class="k">if</span> <span class="n">total_given_prob</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">entries</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">entries</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">weighted_entries</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">TycheLanguageException</span><span class="p">(</span><span class="s2">&quot;The observation is impossible under this model&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Scale the related contexts based upon their weight.</span>
+        <span class="n">total_weight</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">weighted_entries</span><span class="p">:</span>
+            <span class="n">total_weight</span> <span class="o">+=</span> <span class="n">weight</span>
+
+        <span class="n">entries</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">TycheContext</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">weighted_entries</span><span class="p">:</span>
+            <span class="n">prob</span> <span class="o">=</span> <span class="n">weight</span> <span class="o">/</span> <span class="n">total_weight</span>
+            <span class="c1"># Likelihood shouldn&#39;t change for a mutually exclusive role.</span>
+            <span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">ctx</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">,</span> <span class="n">prob</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">entries</span></div>
 
@@ -524,8 +537,8 @@
         <span class="n">not_prob</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="n">not_given_prob</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="n">node_and_given</span> <span class="o">=</span> <span class="n">node</span> <span class="o">&amp;</span> <span class="n">given</span>
-        <span class="k">for</span> <span class="n">other_context</span><span class="p">,</span> <span class="n">prob</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">other_context</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">other_context</span><span class="p">,</span> <span class="n">selected_prob</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">other_context</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">selected_prob</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">continue</span>
 
             <span class="n">given_prob</span> <span class="o">=</span> <span class="n">other_context</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">given</span><span class="p">)</span>
@@ -533,14 +546,81 @@
                 <span class="k">continue</span>
 
             <span class="n">true_prob</span> <span class="o">=</span> <span class="n">other_context</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">node_and_given</span><span class="p">)</span>
-            <span class="n">not_prob</span> <span class="o">*=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">prob</span> <span class="o">*</span> <span class="n">true_prob</span>
-            <span class="n">not_given_prob</span> <span class="o">*=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">prob</span> <span class="o">*</span> <span class="n">given_prob</span>
+            <span class="n">not_prob</span> <span class="o">*=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">selected_prob</span> <span class="o">*</span> <span class="n">true_prob</span>
+            <span class="n">not_given_prob</span> <span class="o">*=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">selected_prob</span> <span class="o">*</span> <span class="n">given_prob</span>
 
         <span class="c1"># Vacuously true if no matched relations.</span>
         <span class="k">if</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">not_given_prob</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">1</span>
 
         <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">not_prob</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">not_given_prob</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IndependentRoleDist.reverse_expectation_learning_params"><a class="viewcode-back" href="../../language.html#tyche.language.IndependentRoleDist.reverse_expectation_learning_params">[docs]</a>    <span class="k">def</span> <span class="nf">reverse_expectation_learning_params</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">,</span> <span class="n">given</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="s1">&#39;TycheContext&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+
+        <span class="n">node</span><span class="p">,</span> <span class="n">given</span> <span class="o">=</span> <span class="n">Given</span><span class="o">.</span><span class="n">maybe_unpack</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">given</span><span class="p">)</span>
+        <span class="n">node_and_given</span> <span class="o">=</span> <span class="n">node</span> <span class="o">&amp;</span> <span class="n">given</span>
+
+        <span class="c1"># Calculate the probabilities required for all related individuals.</span>
+        <span class="n">related_probs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">TycheContext</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">child_ctx</span><span class="p">,</span> <span class="n">selected_prob</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">child_ctx</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">selected_prob</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">given_prob</span> <span class="o">=</span> <span class="n">child_ctx</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">given</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">given_prob</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">true_prob</span> <span class="o">=</span> <span class="n">child_ctx</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">node_and_given</span><span class="p">)</span>
+            <span class="n">selected_prob</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">given_prob</span> <span class="o">*</span> <span class="n">selected_prob</span>
+            <span class="n">related_probs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span>
+                <span class="n">child_ctx</span><span class="p">,</span> <span class="n">true_prob</span><span class="p">,</span> <span class="n">selected_prob</span>
+            <span class="p">))</span>
+
+        <span class="c1"># Calculate the overall probability of the expectation.</span>
+        <span class="n">obs_not_prob</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">obs_not_given_prob</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">child_ctx</span><span class="p">,</span> <span class="n">true_prob</span><span class="p">,</span> <span class="n">selected_prob</span> <span class="ow">in</span> <span class="n">related_probs</span><span class="p">:</span>
+            <span class="n">obs_not_prob</span> <span class="o">*=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">true_prob</span> <span class="o">*</span> <span class="n">selected_prob</span>
+            <span class="n">obs_not_given_prob</span> <span class="o">*=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">selected_prob</span>
+
+        <span class="n">obs_given_prob</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">obs_not_given_prob</span>
+        <span class="n">observation_prob</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">obs_not_prob</span><span class="p">)</span> <span class="o">/</span> <span class="n">obs_given_prob</span> <span class="k">if</span> <span class="n">obs_given_prob</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">obs_matches_expected_prob</span> <span class="o">=</span> <span class="n">likelihood</span> <span class="o">*</span> <span class="n">observation_prob</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">likelihood</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">observation_prob</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">obs_matches_expected_prob</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TycheLanguageException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The observation is impossible under this model&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Calculate the influence of each related individual!</span>
+        <span class="n">entries</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">TycheContext</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">child_ctx</span><span class="p">,</span> <span class="n">child_true_prob</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">related_probs</span><span class="p">:</span>
+            <span class="c1"># Calculate P(obs|child) and P(obs|NOT child)</span>
+            <span class="n">given_child_not_prob</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">given_not_child_not_prob</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">child_not_given_prob</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">true_prob</span><span class="p">,</span> <span class="n">selected_prob</span> <span class="ow">in</span> <span class="n">related_probs</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">ctx</span> <span class="o">==</span> <span class="n">child_ctx</span><span class="p">:</span>
+                    <span class="n">given_child_not_prob</span> <span class="o">*=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">selected_prob</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">given_child_not_prob</span> <span class="o">*=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">true_prob</span> <span class="o">*</span> <span class="n">selected_prob</span>
+                    <span class="n">given_not_child_not_prob</span> <span class="o">*=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">true_prob</span> <span class="o">*</span> <span class="n">selected_prob</span>
+
+                <span class="n">child_not_given_prob</span> <span class="o">*=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">selected_prob</span>
+
+            <span class="n">child_given_prob</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">child_not_given_prob</span>
+            <span class="n">obs_given_child_prob</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">given_child_not_prob</span><span class="p">)</span> <span class="o">/</span> <span class="n">child_given_prob</span> <span class="k">if</span> <span class="n">child_given_prob</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">obs_given_not_child_prob</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">given_not_child_not_prob</span><span class="p">)</span> <span class="o">/</span> <span class="n">child_given_prob</span> <span class="k">if</span> <span class="n">child_given_prob</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">1</span><span class="p">)</span>
+
+            <span class="n">child_likelihood</span> <span class="o">=</span> <span class="n">uncertain_bayes_rule</span><span class="p">(</span>
+                <span class="n">child_true_prob</span><span class="p">,</span> <span class="n">observation_prob</span><span class="p">,</span> <span class="n">obs_given_child_prob</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">)</span>
+
+            <span class="c1"># Corresponds to the learning_rate parameter.</span>
+            <span class="n">child_influence</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">obs_given_child_prob</span> <span class="o">-</span> <span class="n">obs_given_not_child_prob</span><span class="p">)</span>
+            <span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">child_ctx</span><span class="p">,</span> <span class="n">child_likelihood</span><span class="p">,</span> <span class="n">child_influence</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">entries</span></div>
 
 <div class="viewcode-block" id="IndependentRoleDist.calculate_exists"><a class="viewcode-back" href="../../language.html#tyche.language.IndependentRoleDist.calculate_exists">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Calculate the chance that we select none of the individuals.</span>

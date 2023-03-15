@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tyche.distributions &#8212; Tyche v1.0.0 documentation</title>
+    <title>tyche.distributions &#8212; Tyche v1.0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -78,12 +78,12 @@
 
 
 <div class="viewcode-block" id="TycheDistributionsException"><a class="viewcode-back" href="../../distributions.html#tyche.distributions.TycheDistributionsException">[docs]</a><span class="k">class</span> <span class="nc">TycheDistributionsException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    An exception type that is thrown when errors occur in</span>
 <span class="sd">    the construction or use of probability distributions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parameters:</span>
 <span class="sd">            message: A message describing the reason that this</span>
 <span class="sd">              exception was raised.</span>
@@ -92,14 +92,14 @@
 
 
 <div class="viewcode-block" id="ProbDist"><a class="viewcode-back" href="../../distributions.html#tyche.distributions.ProbDist">[docs]</a><span class="k">class</span> <span class="nc">ProbDist</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A probability distribution over a space of numeric values.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>
 
 <div class="viewcode-block" id="ProbDist.sample"><a class="viewcode-back" href="../../distributions.html#tyche.distributions.ProbDist.sample">[docs]</a>    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rng</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">Generator</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Samples random values from this distribution.</span>
 
 <span class="sd">        Parameters:</span>
@@ -115,14 +115,14 @@
 
 
 <div class="viewcode-block" id="ContinuousProbDist"><a class="viewcode-back" href="../../distributions.html#tyche.distributions.ContinuousProbDist">[docs]</a><span class="k">class</span> <span class="nc">ContinuousProbDist</span><span class="p">(</span><span class="n">ProbDist</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A probability distribution over a continuous space of numeric values.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
 <div class="viewcode-block" id="ContinuousProbDist.truncate"><a class="viewcode-back" href="../../distributions.html#tyche.distributions.ContinuousProbDist.truncate">[docs]</a>    <span class="k">def</span> <span class="nf">truncate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimum</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">maximum</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ContinuousProbDist&#39;</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a new distribution that represents the truncation of</span>
 <span class="sd">        this distribution to the range [minimum, maximum].</span>
 
@@ -132,10 +132,10 @@
 <span class="sd">            maximum: An upper limit on the numeric values in this distribution</span>
 <span class="sd">              after truncation.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">TruncateContinuousProbDist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimum</span><span class="p">,</span> <span class="n">maximum</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">TruncatedContinuousProbDist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimum</span><span class="p">,</span> <span class="n">maximum</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_shift</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shift</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ContinuousProbDist&#39;</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a new distribution that represents a shift of this</span>
 <span class="sd">        distribution by `shift`.</span>
 
@@ -146,7 +146,7 @@
         <span class="k">return</span> <span class="n">LinearTransformContinuousProbDist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shift</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ContinuousProbDist&#39;</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a new distribution that represents a scale of this</span>
 <span class="sd">        distribution by `scale`.</span>
 
@@ -160,7 +160,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">inverse_cdf</span><span class="p">(</span><span class="n">random_probability</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">shape</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="ContinuousProbDist.cdf"><a class="viewcode-back" href="../../distributions.html#tyche.distributions.ContinuousProbDist.cdf">[docs]</a>    <span class="k">def</span> <span class="nf">cdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evaluates the cumulative density function of this distribution</span>
 <span class="sd">        at `x`. The resulting value should fall in the range [0, 1],</span>
 <span class="sd">        although numerical error can cause slightly lower or higher</span>
@@ -176,25 +176,25 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;cdf is unimplemented for &quot;</span> <span class="o">+</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ContinuousProbDist.mean"><a class="viewcode-back" href="../../distributions.html#tyche.distributions.ContinuousProbDist.mean">[docs]</a>    <span class="k">def</span> <span class="nf">mean</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evaluates to the mean value of this distribution.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">inverse_cdf</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ContinuousProbDist.variance"><a class="viewcode-back" href="../../distributions.html#tyche.distributions.ContinuousProbDist.variance">[docs]</a>    <span class="k">def</span> <span class="nf">variance</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evaluates to the variance of this distribution.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;variance is unimplemented for &quot;</span> <span class="o">+</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ContinuousProbDist.std_dev"><a class="viewcode-back" href="../../distributions.html#tyche.distributions.ContinuousProbDist.std_dev">[docs]</a>    <span class="k">def</span> <span class="nf">std_dev</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evaluates to the standard deviation of this distribution.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variance</span><span class="p">())</span></div>
 
 <div class="viewcode-block" id="ContinuousProbDist.pdf"><a class="viewcode-back" href="../../distributions.html#tyche.distributions.ContinuousProbDist.pdf">[docs]</a>    <span class="k">def</span> <span class="nf">pdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evaluates the probability density function of this distribution</span>
 <span class="sd">        at `x`. The resulting value should fall in the range [0, 1],</span>
 <span class="sd">        although numerical error can cause slightly lower or higher</span>
@@ -210,7 +210,7 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;pdf is unimplemented for &quot;</span> <span class="o">+</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ContinuousProbDist.inverse_cdf"><a class="viewcode-back" href="../../distributions.html#tyche.distributions.ContinuousProbDist.inverse_cdf">[docs]</a>    <span class="k">def</span> <span class="nf">inverse_cdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prob</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evaluates the inverse cumulative density function of this distribution</span>
 <span class="sd">        at `prob`. This involves calculating the value in this distribution</span>
 <span class="sd">        that would produce the given probability, `prob`, if it was used to</span>
@@ -226,20 +226,20 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;inverse_cdf is unimplemented for &quot;</span> <span class="o">+</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_try_add_to_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">ContinuousProbDist</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;ContinuousProbDist&#39;</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Attempts to add this continuous probability distribution to the other continuous</span>
 <span class="sd">        probability distribution. If this is not supported, then None should be returned.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">ProbDistLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ContinuousProbDist&#39;</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds the other scalar or probability distribution to this probability distribution.</span>
 <span class="sd">        Sampling values from the resulting continuous probability distribution is equivalent</span>
 <span class="sd">        to sampling values from this and the other probability distributions, and then</span>
 <span class="sd">        adding them.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Scalar additions such as UniformDist(0, 1) &lt; 0.1</span>
+        <span class="c1"># Scalar additions such as UniformDist(0, 1) + 0.1</span>
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shift</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
 
@@ -255,7 +255,7 @@
         <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">result</span>
 
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        I would love for this to &#39;just work&#39;, but unfortunately this requires the</span>
 <span class="sd">        convolution of the PDFs of the two distributions. These convolutions</span>
 <span class="sd">        are known for fixed pairs of distributions. However, they require an infinite</span>
@@ -272,13 +272,13 @@
             <span class="sa">f</span><span class="s2">&quot;Addition of distributions of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span><span class="si">}</span><span class="s2"> is not yet supported&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__radd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">ProbDistLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ContinuousProbDist&#39;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span> <span class="o">+</span> <span class="n">other</span>  <span class="c1"># Add is commutative</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__add__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>  <span class="c1"># Add is commutative</span>
 
     <span class="k">def</span> <span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">ProbDistLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ContinuousProbDist&#39;</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Adds the other scalar or probability distribution to this probability distribution.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Multiplies the other scalar or probability distribution by this probability distribution.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Scalar additions such as UniformDist(0, 1) &lt; 0.1</span>
+        <span class="c1"># Scalar multiplications such as UniformDist(0, 1) * 0.1</span>
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
 
@@ -286,10 +286,10 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Multiplication of distributions is not yet implemented&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__rmul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">ProbDistLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ContinuousProbDist&#39;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span> <span class="o">*</span> <span class="n">other</span>  <span class="c1"># Mul is commutative</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__mul__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>  <span class="c1"># Mul is commutative</span>
 
     <span class="k">def</span> <span class="fm">__truediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">ProbDistLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ContinuousProbDist&#39;</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds the other scalar or probability distribution to this probability distribution.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">other</span><span class="p">)</span>
@@ -298,7 +298,7 @@
         <span class="k">raise</span> <span class="n">TycheDistributionsException</span><span class="p">(</span><span class="s2">&quot;Division by probability distributions is not yet implemented&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">ProbDistLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ContinuousProbDist&#39;</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Subtracts the other scalar or probability distribution from this probability distribution.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="n">other</span><span class="p">)</span>
@@ -307,13 +307,13 @@
         <span class="k">return</span> <span class="n">other</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__neg__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ContinuousProbDist&#39;</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Negates the values of this probability distribution.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span>
 
     <span class="k">def</span> <span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">ProbDistLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the probability that a value sampled from this distribution</span>
 <span class="sd">        is less than a value sampled from other.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -326,7 +326,7 @@
         <span class="k">return</span> <span class="bp">self</span> <span class="o">-</span> <span class="n">other</span> <span class="o">&lt;</span> <span class="mi">0</span>
 
     <span class="k">def</span> <span class="fm">__le__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">ProbDistLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the probability that a value sampled from this distribution</span>
 <span class="sd">        is less than or equal to a value sampled from other.</span>
 <span class="sd">        As this is continuous, this is the same as less than.</span>
@@ -334,29 +334,28 @@
         <span class="k">return</span> <span class="bp">self</span> <span class="o">&lt;</span> <span class="n">other</span>
 
     <span class="k">def</span> <span class="fm">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">ProbDistLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the probability that a value sampled from this distribution</span>
-<span class="sd">        is less than or equal to a value sampled from other.</span>
-<span class="sd">        As this is continuous, this is the same as less than.</span>
+<span class="sd">        is greater than a value sampled from other.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span> <span class="o">&lt;=</span> <span class="n">other</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__ge__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">ProbDistLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the probability that a value sampled from this distribution</span>
-<span class="sd">        is less than or equal to a value sampled from other.</span>
-<span class="sd">        As this is continuous, this is the same as less than.</span>
+<span class="sd">        is greater than or equal to a value sampled from other.</span>
+<span class="sd">        As this is continuous, this is the same as greater than.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span> <span class="o">&gt;</span> <span class="n">other</span></div>
 
 
 <div class="viewcode-block" id="LinearTransformContinuousProbDist"><a class="viewcode-back" href="../../distributions.html#tyche.distributions.LinearTransformContinuousProbDist">[docs]</a><span class="k">class</span> <span class="nc">LinearTransformContinuousProbDist</span><span class="p">(</span><span class="n">ContinuousProbDist</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Applies a linear transformation (scale + shift) to a ContinuousProbDist.</span>
 <span class="sd">    The scaling of values is performed before the shift of values.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dist</span><span class="p">:</span> <span class="n">ContinuousProbDist</span><span class="p">,</span> <span class="n">shift</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">scale</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parameters:</span>
 <span class="sd">            dist: A delegate continuous probability distribution to scale and shift.</span>
 <span class="sd">            shift: A shift to be applied to the delegate distribution, `dist`, after</span>
@@ -371,9 +370,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_dist</span> <span class="o">=</span> <span class="n">dist</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_linear_shift</span> <span class="o">=</span> <span class="n">shift</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_linear_scale</span> <span class="o">=</span> <span class="n">scale</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_pdf_mul</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_inverse_shift</span> <span class="o">=</span> <span class="o">-</span><span class="n">shift</span> <span class="o">/</span> <span class="n">scale</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_inverse_scale</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">scale</span>
 
     <span class="k">def</span> <span class="nf">_shift</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shift</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ContinuousProbDist&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">LinearTransformContinuousProbDist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dist</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_linear_shift</span> <span class="o">+</span> <span class="n">shift</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_linear_scale</span><span class="p">)</span>
@@ -382,12 +378,12 @@
         <span class="k">return</span> <span class="n">LinearTransformContinuousProbDist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dist</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_linear_shift</span> <span class="o">*</span> <span class="n">scale</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_linear_scale</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; Applies the shift and scale of this transformation to x. &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Applies the shift and scale of this transformation to x. &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_linear_shift</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_linear_scale</span> <span class="o">*</span> <span class="n">x</span>
 
-    <span class="k">def</span> <span class="nf">_inverse_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot; Applies the shift and scale of this transformation to x. &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inverse_shift</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inverse_scale</span> <span class="o">*</span> <span class="n">x</span>
+    <span class="k">def</span> <span class="nf">_inverse_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Applies the inverse shift and scale of this transformation to y. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">y</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_linear_scale</span>  <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_linear_shift</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_linear_scale</span>
 
 <div class="viewcode-block" id="LinearTransformContinuousProbDist.sample"><a class="viewcode-back" href="../../distributions.html#tyche.distributions.LinearTransformContinuousProbDist.sample">[docs]</a>    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rng</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">Generator</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dist</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="n">shape</span><span class="p">))</span></div>
@@ -400,35 +396,36 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dist</span><span class="o">.</span><span class="n">variance</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_linear_scale</span><span class="o">**</span><span class="mi">2</span></div>
 
 <div class="viewcode-block" id="LinearTransformContinuousProbDist.pdf"><a class="viewcode-back" href="../../distributions.html#tyche.distributions.LinearTransformContinuousProbDist.pdf">[docs]</a>    <span class="k">def</span> <span class="nf">pdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dist</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_inverse_transform</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pdf_mul</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dist</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_inverse_transform</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_linear_scale</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="LinearTransformContinuousProbDist.inverse_cdf"><a class="viewcode-back" href="../../distributions.html#tyche.distributions.LinearTransformContinuousProbDist.inverse_cdf">[docs]</a>    <span class="k">def</span> <span class="nf">inverse_cdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prob</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
         <span class="n">prob</span> <span class="o">=</span> <span class="n">prob</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_linear_scale</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">prob</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dist</span><span class="o">.</span><span class="n">inverse_cdf</span><span class="p">(</span><span class="n">prob</span><span class="p">))</span></div>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shift</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s2">&quot;(</span><span class="si">{}</span><span class="s2"> * </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_linear_scale</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dist</span><span class="p">))</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s2">&quot;(</span><span class="si">{}</span><span class="s2"> + </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_linear_shift</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dist</span><span class="p">))</span>
-
-        <span class="k">return</span> <span class="s2">&quot;(</span><span class="si">{}</span><span class="s2"> + </span><span class="si">{}</span><span class="s2"> * </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_linear_shift</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_linear_scale</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dist</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_linear_shift</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_linear_scale</span><span class="si">}</span><span class="s2"> * </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dist</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_linear_scale</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_linear_shift</span><span class="si">}</span><span class="s2"> + </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dist</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_linear_scale</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_linear_shift</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_linear_scale</span><span class="p">)</span><span class="si">}</span><span class="s2"> * </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dist</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
+        
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_linear_shift</span><span class="si">}</span><span class="s2"> + </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_linear_scale</span><span class="si">}</span><span class="s2"> * </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dist</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;LinearTransform(shift=</span><span class="si">{}</span><span class="s2">, scale=</span><span class="si">{}</span><span class="s2">, dist=</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_linear_shift</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_linear_scale</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dist</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;LinearTransformDist(shift=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_linear_shift</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;scale=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_linear_scale</span><span class="si">}</span><span class="s2">, dist=</span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dist</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span>
         <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="TruncateContinuousProbDist"><a class="viewcode-back" href="../../distributions.html#tyche.distributions.TruncateContinuousProbDist">[docs]</a><span class="k">class</span> <span class="nc">TruncateContinuousProbDist</span><span class="p">(</span><span class="n">ContinuousProbDist</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="TruncatedContinuousProbDist"><a class="viewcode-back" href="../../distributions.html#tyche.distributions.TruncatedContinuousProbDist">[docs]</a><span class="k">class</span> <span class="nc">TruncatedContinuousProbDist</span><span class="p">(</span><span class="n">ContinuousProbDist</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Applies a truncation to a ContinuousProbDist. All values below `minimum`</span>
 <span class="sd">    and above `maximum` are discarded.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dist</span><span class="p">:</span> <span class="n">ContinuousProbDist</span><span class="p">,</span> <span class="n">minimum</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">maximum</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parameters:</span>
 <span class="sd">            dist: A delegate continuous probability distribution to truncate.</span>
 <span class="sd">            minimum: The lower bound to use to truncate the delegate distribution.</span>
@@ -436,9 +433,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">maximum</span> <span class="o">&lt;=</span> <span class="n">minimum</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">TycheDistributionsException</span><span class="p">(</span><span class="s2">&quot;TruncatedNormalDist maximum must be &gt; than minimum. </span><span class="si">{}</span><span class="s2"> &lt;= </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">maximum</span><span class="p">,</span> <span class="n">minimum</span>
-            <span class="p">))</span>
+            <span class="k">raise</span> <span class="n">TycheDistributionsException</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;TruncatedNormalDist maximum must be &gt; than minimum. </span><span class="si">{</span><span class="n">maximum</span><span class="si">}</span><span class="s2"> &lt;= </span><span class="si">{</span><span class="n">minimum</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_dist</span> <span class="o">=</span> <span class="n">dist</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_minimum</span> <span class="o">=</span> <span class="n">minimum</span>
@@ -447,29 +444,28 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_upper_cdf</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">maximum</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lower_cdf</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_upper_cdf</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">TycheDistributionsException</span><span class="p">(</span>
-                <span class="s2">&quot;The truncation of [</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">] applied to </span><span class="si">{}</span><span class="s2"> would result in an all-zero probability distribution&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">minimum</span><span class="p">,</span> <span class="n">maximum</span><span class="p">,</span> <span class="n">dist</span>
-                <span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;The truncation of [</span><span class="si">{</span><span class="n">minimum</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">maximum</span><span class="si">}</span><span class="s2">] applied to </span><span class="si">{</span><span class="n">dist</span><span class="si">}</span><span class="s2"> would result &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;in an all-zero probability distribution&quot;</span>
             <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_inverse_transform_cdf_mul</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_upper_cdf</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lower_cdf</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_transform_cdf_mul</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_upper_cdf</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lower_cdf</span><span class="p">)</span>
 
-<div class="viewcode-block" id="TruncateContinuousProbDist.truncate"><a class="viewcode-back" href="../../distributions.html#tyche.distributions.TruncateContinuousProbDist.truncate">[docs]</a>    <span class="k">def</span> <span class="nf">truncate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimum</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">maximum</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ContinuousProbDist&#39;</span><span class="p">:</span>
+<div class="viewcode-block" id="TruncatedContinuousProbDist.truncate"><a class="viewcode-back" href="../../distributions.html#tyche.distributions.TruncatedContinuousProbDist.truncate">[docs]</a>    <span class="k">def</span> <span class="nf">truncate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimum</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">maximum</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ContinuousProbDist&#39;</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">minimum</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_minimum</span> <span class="ow">and</span> <span class="n">maximum</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maximum</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span>
 
-        <span class="k">return</span> <span class="n">TruncateContinuousProbDist</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">TruncatedContinuousProbDist</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_dist</span><span class="p">,</span>
             <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_minimum</span><span class="p">,</span> <span class="n">minimum</span><span class="p">),</span>
             <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_maximum</span><span class="p">,</span> <span class="n">maximum</span><span class="p">)</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="TruncateContinuousProbDist.cdf"><a class="viewcode-back" href="../../distributions.html#tyche.distributions.TruncateContinuousProbDist.cdf">[docs]</a>    <span class="k">def</span> <span class="nf">cdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
+<div class="viewcode-block" id="TruncatedContinuousProbDist.cdf"><a class="viewcode-back" href="../../distributions.html#tyche.distributions.TruncatedContinuousProbDist.cdf">[docs]</a>    <span class="k">def</span> <span class="nf">cdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
         <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dist</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lower_cdf</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform_cdf_mul</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="TruncateContinuousProbDist.pdf"><a class="viewcode-back" href="../../distributions.html#tyche.distributions.TruncateContinuousProbDist.pdf">[docs]</a>    <span class="k">def</span> <span class="nf">pdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
+<div class="viewcode-block" id="TruncatedContinuousProbDist.pdf"><a class="viewcode-back" href="../../distributions.html#tyche.distributions.TruncatedContinuousProbDist.pdf">[docs]</a>    <span class="k">def</span> <span class="nf">pdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_minimum</span> <span class="ow">or</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maximum</span><span class="p">):</span>
             <span class="k">return</span> <span class="mi">0</span>
 
@@ -479,23 +475,23 @@
 
         <span class="k">return</span> <span class="n">result</span></div>
 
-<div class="viewcode-block" id="TruncateContinuousProbDist.inverse_cdf"><a class="viewcode-back" href="../../distributions.html#tyche.distributions.TruncateContinuousProbDist.inverse_cdf">[docs]</a>    <span class="k">def</span> <span class="nf">inverse_cdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prob</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
+<div class="viewcode-block" id="TruncatedContinuousProbDist.inverse_cdf"><a class="viewcode-back" href="../../distributions.html#tyche.distributions.TruncatedContinuousProbDist.inverse_cdf">[docs]</a>    <span class="k">def</span> <span class="nf">inverse_cdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prob</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dist</span><span class="o">.</span><span class="n">inverse_cdf</span><span class="p">(</span><span class="n">prob</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inverse_transform_cdf_mul</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lower_cdf</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;Truncate([</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">], </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_minimum</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maximum</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dist</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Truncated([</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_minimum</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_maximum</span><span class="si">}</span><span class="s2">], </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_dist</span><span class="si">}</span><span class="s2">)&quot;</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;Truncate(min=</span><span class="si">{}</span><span class="s2">, max=</span><span class="si">{}</span><span class="s2">, dist=</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_minimum</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maximum</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dist</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;TruncatedDist(min=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_minimum</span><span class="si">}</span><span class="s2">, max=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_maximum</span><span class="si">}</span><span class="s2">, dist=</span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dist</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span></div>
 
 
 <div class="viewcode-block" id="UniformDist"><a class="viewcode-back" href="../../distributions.html#tyche.distributions.UniformDist">[docs]</a><span class="k">class</span> <span class="nc">UniformDist</span><span class="p">(</span><span class="n">ContinuousProbDist</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A uniform probability distribution over the range [minimum, maximum].</span>
 <span class="sd">    All values within this range have equal probability of being sampled.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimum</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">maximum</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parameters:</span>
 <span class="sd">            minimum: The lower bound on values that could be sampled from this</span>
 <span class="sd">              uniform probability distribution.</span>
@@ -504,9 +500,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">maximum</span> <span class="o">&lt;=</span> <span class="n">minimum</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">TycheDistributionsException</span><span class="p">(</span><span class="s2">&quot;UniformDist maximum must be &gt; than minimum. </span><span class="si">{}</span><span class="s2"> &lt;= </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">maximum</span><span class="p">,</span> <span class="n">minimum</span>
-            <span class="p">))</span>
+            <span class="k">raise</span> <span class="n">TycheDistributionsException</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;UniformDist maximum must be &gt; than minimum. </span><span class="si">{</span><span class="n">maximum</span><span class="si">}</span><span class="s2"> &lt;= </span><span class="si">{</span><span class="n">minimum</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_minimum</span> <span class="o">=</span> <span class="n">minimum</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_maximum</span> <span class="o">=</span> <span class="n">maximum</span>
@@ -535,26 +531,28 @@
         <span class="k">return</span> <span class="n">stats</span><span class="o">.</span><span class="n">uniform</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">prob</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_minimum</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_maximum</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_minimum</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;Uniform(</span><span class="si">{:.3f}</span><span class="s2"> to </span><span class="si">{:.3f}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_minimum</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maximum</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Uniform(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_minimum</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_maximum</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">)&quot;</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;UniformDist(min=</span><span class="si">{}</span><span class="s2">, max=</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_minimum</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_maximum</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;UniformDist(min=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_minimum</span><span class="si">}</span><span class="s2">, max=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_maximum</span><span class="si">}</span><span class="s2">)&quot;</span></div>
 
 
 <div class="viewcode-block" id="NormalDist"><a class="viewcode-back" href="../../distributions.html#tyche.distributions.NormalDist">[docs]</a><span class="k">class</span> <span class="nc">NormalDist</span><span class="p">(</span><span class="n">ContinuousProbDist</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A normal probability distribution centered around `mean` with a</span>
 <span class="sd">    standard deviation of `std_dev`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mean</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">std_dev</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parameters:</span>
 <span class="sd">            mean: The mean of this normal distribution.</span>
 <span class="sd">            std_dev: The standard deviation of this normal distribution.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">std_dev</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">TycheDistributionsException</span><span class="p">(</span><span class="s2">&quot;NormalDist std_dev must be &gt; than 0. </span><span class="si">{}</span><span class="s2"> &lt;= 0&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">std_dev</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="n">TycheDistributionsException</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;NormalDist std_dev must be &gt; than 0. </span><span class="si">{</span><span class="n">std_dev</span><span class="si">}</span><span class="s2"> &lt;= 0&quot;</span>
+            <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_mean</span> <span class="o">=</span> <span class="n">mean</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_std_dev</span> <span class="o">=</span> <span class="n">std_dev</span>
@@ -597,10 +595,10 @@
         <span class="k">return</span> <span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">prob</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_mean</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_std_dev</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;Normal(mean=</span><span class="si">{:.3f}</span><span class="s2">, std_dev=</span><span class="si">{:.3f}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_std_dev</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Normal(mean=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_mean</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, std_dev=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_std_dev</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">)&quot;</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;NormalDist(mean=</span><span class="si">{}</span><span class="s2">, std_dev=</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mean</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_std_dev</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;NormalDist(mean=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_mean</span><span class="si">}</span><span class="s2">, std_dev=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_std_dev</span><span class="si">}</span><span class="s2">)&quot;</span></div>
 </pre></div>
 
           </div>
@@ -662,11 +660,11 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2022, Padraig Lamont, drtnf.
+      &copy;2023, Padraig Lamont, drtnf.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 5.1.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
     </div>
 

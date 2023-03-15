@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tyche.language &#8212; Tyche v1.0.0 documentation</title>
+    <title>tyche.language &#8212; Tyche v1.0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -48,12 +48,12 @@
 
 
 <div class="viewcode-block" id="TycheLanguageException"><a class="viewcode-back" href="../../language.html#tyche.language.TycheLanguageException">[docs]</a><span class="k">class</span> <span class="nc">TycheLanguageException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    An exception type that is thrown when errors occur in</span>
 <span class="sd">    the construction or use of the ADL language constructs.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parameters:</span>
 <span class="sd">            message: A description of the error.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -68,37 +68,37 @@
 
 
 <div class="viewcode-block" id="RoleDist"><a class="viewcode-back" href="../../language.html#tyche.language.RoleDist">[docs]</a><span class="k">class</span> <span class="nc">RoleDist</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A probability distribution of related contexts.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="RoleDist.is_empty"><a class="viewcode-back" href="../../language.html#tyche.language.RoleDist.is_empty">[docs]</a>    <span class="k">def</span> <span class="nf">is_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns whether no individuals (including None) have been added to this role.</span>
 <span class="sd">        If None was explicitly added, then this will return False.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;is_empty is not implemented for </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="RoleDist.clear"><a class="viewcode-back" href="../../language.html#tyche.language.RoleDist.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Removes all individuals from this distribution.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;clear is not implemented for </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="RoleDist.contains"><a class="viewcode-back" href="../../language.html#tyche.language.RoleDist.contains">[docs]</a>    <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">individual</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;TycheContext&#39;</span><span class="p">]):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns whether this role distribution contains the given individual.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;contains is not implemented for </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="RoleDist.contexts"><a class="viewcode-back" href="../../language.html#tyche.language.RoleDist.contexts">[docs]</a>    <span class="k">def</span> <span class="nf">contexts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Yields all the contexts within this role, including</span>
 <span class="sd">        the None-individual if it is present.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;contexts is not implemented for </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="RoleDist.calculate_expectation"><a class="viewcode-back" href="../../language.html#tyche.language.RoleDist.calculate_expectation">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_expectation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">,</span> <span class="n">given</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evaluates an expectation over this role. This evaluation contains an</span>
 <span class="sd">        implicit given that the role has at least one related individual. If the</span>
 <span class="sd">        role contains no non-null entries, then this will evaluate to vacuously True.</span>
@@ -108,7 +108,7 @@
 <div class="viewcode-block" id="RoleDist.reverse_expectation_learning_params"><a class="viewcode-back" href="../../language.html#tyche.language.RoleDist.reverse_expectation_learning_params">[docs]</a>    <span class="k">def</span> <span class="nf">reverse_expectation_learning_params</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">,</span> <span class="n">given</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="s1">&#39;TycheContext&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculates the influence and learning rate of each related individual in this role</span>
 <span class="sd">        for the truth of an expectation with the given parameters. The likelihood gives the</span>
 <span class="sd">        chance that the observation was true (i.e., a likelihood of 0 represents that the</span>
@@ -120,35 +120,35 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;calculate_reverse_expectation_influence&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="RoleDist.calculate_exists"><a class="viewcode-back" href="../../language.html#tyche.language.RoleDist.calculate_exists">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evaluates the likelihood that this role has at least one related individual.</span>
 <span class="sd">        The null individual is considered to represent &quot;no relation&quot;.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;calculate_exists_operator is not implemented for </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the number of related individuals in this role</span>
 <span class="sd">        (including the None-individual, if present).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;__len__ is not implemented for </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Yields tuples of TycheContext objects or None, and their associated</span>
 <span class="sd">        probabilities (i.e. Tuple[Optional[TycheContext], float]).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;__iter__ is not implemented for </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="RoleDist.to_str"><a class="viewcode-back" href="../../language.html#tyche.language.RoleDist.to_str">[docs]</a>    <span class="k">def</span> <span class="nf">to_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">detail_lvl</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">indent_lvl</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a text representation of the contents of this role distribution.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;to_str is not implemented for </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="ExclusiveRoleDist"><a class="viewcode-back" href="../../language.html#tyche.language.ExclusiveRoleDist">[docs]</a><span class="k">class</span> <span class="nc">ExclusiveRoleDist</span><span class="p">(</span><span class="n">RoleDist</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A probability distribution of contexts for a role, where either</span>
 <span class="sd">    zero or one related contexts are related when the role is observed.</span>
 <span class="sd">    The zero in this case refers to the possibility of selecting the</span>
@@ -175,7 +175,7 @@
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">entries</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">entries</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">TycheContext</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">weight</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
-                        <span class="k">raise</span> <span class="n">TycheLanguageException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Illegal entry in entries dict: </span><span class="si">{</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="k">raise</span> <span class="n">TycheLanguageException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Illegal entry in entries dict: </span><span class="si">{</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">weight</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">TycheLanguageException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Illegal entries value: </span><span class="si">{</span><span class="n">entries</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -185,7 +185,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">total_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The sum of the weights of all entries in this role distribution.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
@@ -206,7 +206,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_index_of</span><span class="p">(</span><span class="n">individual</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="ExclusiveRoleDist.add"><a class="viewcode-back" href="../../language.html#tyche.language.ExclusiveRoleDist.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">individual</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;TycheContext&#39;</span><span class="p">],</span> <span class="n">weight</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add an individual to this distribution with the given weighting.</span>
 <span class="sd">        The weightings of individuals are relative to one another. If</span>
 <span class="sd">        an individual already exists in the distribution, then its</span>
@@ -226,7 +226,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ExclusiveRoleDist.add_combining_weights"><a class="viewcode-back" href="../../language.html#tyche.language.ExclusiveRoleDist.add_combining_weights">[docs]</a>    <span class="k">def</span> <span class="nf">add_combining_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">individual</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;TycheContext&#39;</span><span class="p">],</span> <span class="n">weight</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add an individual to this distribution. If the individual already</span>
 <span class="sd">        exists in this role, then the given weight will be added to their</span>
 <span class="sd">        existing weight. Otherwise, the given weight will be used as the</span>
@@ -243,7 +243,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_entries</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">individual</span><span class="p">,</span> <span class="n">weight</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="ExclusiveRoleDist.remove"><a class="viewcode-back" href="../../language.html#tyche.language.ExclusiveRoleDist.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">individual</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;TycheContext&#39;</span><span class="p">]):</span>
-        <span class="sd">&quot;&quot;&quot; Removes the given individual from this distribution. &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Removes the given individual from this distribution. &quot;&quot;&quot;</span>
         <span class="n">existing_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_index_of</span><span class="p">(</span><span class="n">individual</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">existing_index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
@@ -256,7 +256,7 @@
 
 <div class="viewcode-block" id="ExclusiveRoleDist.apply_bayes_rule"><a class="viewcode-back" href="../../language.html#tyche.language.ExclusiveRoleDist.apply_bayes_rule">[docs]</a>    <span class="k">def</span> <span class="nf">apply_bayes_rule</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">observation</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ExclusiveRoleDist&#39;</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Applies Bayes&#39; rule to update the probabilities of the individuals</span>
 <span class="sd">        mapped within this role based upon an uncertain observation. This</span>
 <span class="sd">        cannot learn anything about the None individual. Returns an updated</span>
@@ -398,7 +398,7 @@
         <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_entries</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Yields tuples of TycheContext objects or None, and their associated</span>
 <span class="sd">        probabilities (i.e. Tuple[Optional[TycheContext], float]).</span>
 <span class="sd">        The sum of all returned probabilities should sum to 1,</span>
@@ -415,7 +415,7 @@
             <span class="k">yield</span> <span class="n">context</span><span class="p">,</span> <span class="n">weight</span> <span class="o">/</span> <span class="n">total_weight</span>
 
 <div class="viewcode-block" id="ExclusiveRoleDist.sample"><a class="viewcode-back" href="../../language.html#tyche.language.ExclusiveRoleDist.sample">[docs]</a>    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rng</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">Generator</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;TycheContext&#39;</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Selects a random individual from this role based upon their weights.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">target_cumulative_weight</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_weight</span><span class="p">)</span>
@@ -438,7 +438,7 @@
         <span class="n">sub_indent_lvl</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">indent_lvl</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">indent_lvl</span> <span class="o">+</span> <span class="mi">1</span>
 
         <span class="k">def</span> <span class="nf">format_prob</span><span class="p">(</span><span class="n">prob</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="mi">100</span> <span class="o">*</span> <span class="n">prob</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%&quot;</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="mi">100</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">prob</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%&quot;</span>
 
         <span class="k">def</span> <span class="nf">format_ctx</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;TycheContext&#39;</span><span class="p">]):</span>
             <span class="k">if</span> <span class="n">ctx</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -453,7 +453,7 @@
 
 
 <div class="viewcode-block" id="IndependentRoleDist"><a class="viewcode-back" href="../../language.html#tyche.language.IndependentRoleDist">[docs]</a><span class="k">class</span> <span class="nc">IndependentRoleDist</span><span class="p">(</span><span class="n">RoleDist</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A probability distribution of contexts for a role, where each</span>
 <span class="sd">    relation to the contexts is independent. That is, zero, one,</span>
 <span class="sd">    or many contexts may be related when the role is observed.</span>
@@ -478,7 +478,7 @@
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">entries</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">prob</span> <span class="ow">in</span> <span class="n">entries</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">TycheContext</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prob</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
-                        <span class="k">raise</span> <span class="n">TycheLanguageException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Illegal entry in entries dict: </span><span class="si">{</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="k">raise</span> <span class="n">TycheLanguageException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Illegal entry in entries dict: </span><span class="si">{</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="n">prob</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">TycheLanguageException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Illegal entries value: </span><span class="si">{</span><span class="n">entries</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -499,7 +499,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_index_of</span><span class="p">(</span><span class="n">individual</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="IndependentRoleDist.add"><a class="viewcode-back" href="../../language.html#tyche.language.IndependentRoleDist.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">individual</span><span class="p">:</span> <span class="s1">&#39;TycheContext&#39;</span><span class="p">,</span> <span class="n">prob</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add an individual to this distribution with the given probability.</span>
 <span class="sd">        The probability must fall within the range [0, 1].</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -517,7 +517,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="IndependentRoleDist.remove"><a class="viewcode-back" href="../../language.html#tyche.language.IndependentRoleDist.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">individual</span><span class="p">:</span> <span class="s1">&#39;TycheContext&#39;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Removes the given individual from this distribution.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">existing_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_index_of</span><span class="p">(</span><span class="n">individual</span><span class="p">)</span>
@@ -634,7 +634,7 @@
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_entries</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Yields tuples of TycheContext objects, and their associated</span>
 <span class="sd">        probabilities (i.e. Tuple[TycheContext, float]).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -642,7 +642,7 @@
             <span class="k">yield</span> <span class="n">context</span><span class="p">,</span> <span class="n">prob</span>
 
 <div class="viewcode-block" id="IndependentRoleDist.sample"><a class="viewcode-back" href="../../language.html#tyche.language.IndependentRoleDist.sample">[docs]</a>    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rng</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">Generator</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="s1">&#39;TycheContext&#39;</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Selects a random set of related individuals based upon their probabilities.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
@@ -663,7 +663,7 @@
         <span class="n">sub_indent_lvl</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">indent_lvl</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">indent_lvl</span> <span class="o">+</span> <span class="mi">1</span>
 
         <span class="k">def</span> <span class="nf">format_prob</span><span class="p">(</span><span class="n">prob</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
-            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="mi">100</span> <span class="o">*</span> <span class="n">prob</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%&quot;</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="mi">100</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">prob</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%&quot;</span>
 
         <span class="k">def</span> <span class="nf">format_ctx</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="s1">&#39;TycheContext&#39;</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">ctx</span><span class="o">.</span><span class="n">to_str</span><span class="p">(</span><span class="n">detail_lvl</span><span class="o">=</span><span class="n">sub_detail_lvl</span><span class="p">,</span> <span class="n">indent_lvl</span><span class="o">=</span><span class="n">sub_indent_lvl</span><span class="p">)</span>
@@ -689,7 +689,7 @@
         <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;{&quot;</span><span class="p">,</span>
         <span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;}&quot;</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Formats a dictionary into a string, allowing custom key and value</span>
 <span class="sd">    string formatting, indentation, and prefix/suffix modification.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -717,28 +717,28 @@
 
 
 <div class="viewcode-block" id="TycheContext"><a class="viewcode-back" href="../../language.html#tyche.language.TycheContext">[docs]</a><span class="k">class</span> <span class="nc">TycheContext</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Provides context for relating variables in formulas</span>
 <span class="sd">    (e.g. a, b, c, etc...) to their related objects.</span>
 <span class="sd">    Each individual may supply their own context for</span>
 <span class="sd">    their variables and roles.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="TycheContext.eval"><a class="viewcode-back" href="../../language.html#tyche.language.TycheContext.eval">[docs]</a>    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">concept</span><span class="p">:</span> <span class="s1">&#39;CompatibleWithADLNode&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evaluates the given concept to a probability of</span>
 <span class="sd">        it being true if sampled within this context.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;eval is unimplemented for &quot;</span> <span class="o">+</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TycheContext.eval_role"><a class="viewcode-back" href="../../language.html#tyche.language.TycheContext.eval_role">[docs]</a>    <span class="k">def</span> <span class="nf">eval_role</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">:</span> <span class="s1">&#39;CompatibleWithRole&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RoleDist</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evaluates the given role to a distribution of possible</span>
 <span class="sd">        other contexts if it were sampled within this context.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;eval_role is unimplemented for &quot;</span> <span class="o">+</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TycheContext.observe"><a class="viewcode-back" href="../../language.html#tyche.language.TycheContext.observe">[docs]</a>    <span class="k">def</span> <span class="nf">observe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observation</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Attempts to update the beliefs of this individual based upon</span>
 <span class="sd">        an observation of the given concept.</span>
 
@@ -749,28 +749,28 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;observe is unimplemented for &quot;</span> <span class="o">+</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TycheContext.get_concept"><a class="viewcode-back" href="../../language.html#tyche.language.TycheContext.get_concept">[docs]</a>    <span class="k">def</span> <span class="nf">get_concept</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Gets the probability of the atom with the given symbol</span>
 <span class="sd">        being true, without modification by the context.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;get_concept is unimplemented for &quot;</span> <span class="o">+</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TycheContext.get_role"><a class="viewcode-back" href="../../language.html#tyche.language.TycheContext.get_role">[docs]</a>    <span class="k">def</span> <span class="nf">get_role</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RoleDist</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Gets the role distribution of the role with the</span>
 <span class="sd">        given symbol, without modification by the context.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;get_role is unimplemented for &quot;</span> <span class="o">+</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TycheContext.get_concept_reference"><a class="viewcode-back" href="../../language.html#tyche.language.TycheContext.get_concept_reference">[docs]</a>    <span class="k">def</span> <span class="nf">get_concept_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BakedSymbolReference</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Gets a mutable reference to the probability of the atom with the given symbol</span>
 <span class="sd">        being true. This reference can be used to get and set the value of the atom.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;get_concept_reference is unimplemented for &quot;</span> <span class="o">+</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TycheContext.get_role_reference"><a class="viewcode-back" href="../../language.html#tyche.language.TycheContext.get_role_reference">[docs]</a>    <span class="k">def</span> <span class="nf">get_role_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BakedSymbolReference</span><span class="p">[</span><span class="n">RoleDist</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Gets a mutable reference to the role distribution of the role with the</span>
 <span class="sd">        given symbol. This reference can be used to get and set the value of the role.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -780,7 +780,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_str</span><span class="p">()</span>
 
 <div class="viewcode-block" id="TycheContext.to_str"><a class="viewcode-back" href="../../language.html#tyche.language.TycheContext.to_str">[docs]</a>    <span class="k">def</span> <span class="nf">to_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">detail_lvl</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">indent_lvl</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        A version of str() that allows additional formatting options to be specified.</span>
 <span class="sd">        Allows specifying the number of levels of detail to include, and the</span>
 <span class="sd">        indentation to use while formatting.</span>
@@ -789,7 +789,7 @@
 
 
 <div class="viewcode-block" id="EmptyContext"><a class="viewcode-back" href="../../language.html#tyche.language.EmptyContext">[docs]</a><span class="k">class</span> <span class="nc">EmptyContext</span><span class="p">(</span><span class="n">TycheContext</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Provides an empty context for evaluating constant expressions.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="EmptyContext.eval"><a class="viewcode-back" href="../../language.html#tyche.language.EmptyContext.eval">[docs]</a>    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">concept</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -815,12 +815,12 @@
 
 
 <div class="viewcode-block" id="ADLNode"><a class="viewcode-back" href="../../language.html#tyche.language.ADLNode">[docs]</a><span class="k">class</span> <span class="nc">ADLNode</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The base class of all nodes in aleatoric description logic formulas.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="ADLNode.cast"><a class="viewcode-back" href="../../language.html#tyche.language.ADLNode.cast">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">cast</span><span class="p">(</span><span class="n">node</span><span class="p">:</span> <span class="n">CompatibleWithADLNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This provides the canonicalization of several supported ADL representations</span>
 <span class="sd">        into ADLNode objects. For example, strings are automatically considered to</span>
 <span class="sd">        represent concepts, and as such they may be converted into concept nodes</span>
@@ -834,7 +834,7 @@
             <span class="k">raise</span> <span class="n">TycheLanguageException</span><span class="p">(</span><span class="s2">&quot;Incompatible node type </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="ADLNode.get_child_nodes_in_eval_context"><a class="viewcode-back" href="../../language.html#tyche.language.ADLNode.get_child_nodes_in_eval_context">[docs]</a>    <span class="k">def</span> <span class="nf">get_child_nodes_in_eval_context</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="s1">&#39;ADLNode&#39;</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns an ordered list of the child nodes of this node that would be</span>
 <span class="sd">        evaluated in the same context as this node is evaluated. Nodes that</span>
 <span class="sd">        are evaluated in related contexts should not be returned here.</span>
@@ -842,7 +842,7 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;get_children_in_eval_context is unimplemented for &quot;</span> <span class="o">+</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ADLNode.copy_with_new_child_node_from_eval_context"><a class="viewcode-back" href="../../language.html#tyche.language.ADLNode.copy_with_new_child_node_from_eval_context">[docs]</a>    <span class="k">def</span> <span class="nf">copy_with_new_child_node_from_eval_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a copy of this node with the child node at the given index in</span>
 <span class="sd">        the list returned by get_children_in_eval_context replaced with the given</span>
 <span class="sd">        node.</span>
@@ -850,14 +850,14 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;copy_with_replaced_child_from_eval_context is unimplemented for &quot;</span> <span class="o">+</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        gives a compact string representation of the structure of the formula</span>
 <span class="sd">        in terms of primitive operators</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;__str__ is unimplemented for &quot;</span> <span class="o">+</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        gives the constructor string of the object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;__repr__ is unimplemented for &quot;</span> <span class="o">+</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
@@ -865,19 +865,19 @@
     <span class="c1"># maybe also include a function for giving an optimised inline string representation of a formula.</span>
 
     <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        return true if formulas are identical</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;__eq__ is unimplemented for &quot;</span> <span class="o">+</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        establishes a syntactic ordering over formula</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;__lt__ is unimplemented for &quot;</span> <span class="o">+</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ADLNode.direct_eval"><a class="viewcode-back" href="../../language.html#tyche.language.ADLNode.direct_eval">[docs]</a>    <span class="k">def</span> <span class="nf">direct_eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TycheContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Disclaimer:</span>
 <span class="sd">        This should _NOT_ be called to evaluate nodes using your model, as the</span>
 <span class="sd">        TycheContext objects should be given the control over the method of</span>
@@ -890,13 +890,13 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;direct_eval is unimplemented for &quot;</span> <span class="o">+</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ADLNode.normal_form"><a class="viewcode-back" href="../../language.html#tyche.language.ADLNode.normal_form">[docs]</a>    <span class="k">def</span> <span class="nf">normal_form</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the tree normal form of the formula, where atoms are ordered alphabetically.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;normal_form is unimplemented for &quot;</span> <span class="o">+</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ADLNode.is_equivalent"><a class="viewcode-back" href="../../language.html#tyche.language.ADLNode.is_equivalent">[docs]</a>    <span class="k">def</span> <span class="nf">is_equivalent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns true if this node is provably equivalent to the given node.</span>
 <span class="sd">        Delegates to normal_form function. Two nodes have the same normal form</span>
 <span class="sd">        if and only if they have the same evaluation function</span>
@@ -904,7 +904,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal_form</span><span class="p">()</span> <span class="o">==</span> <span class="n">node</span><span class="o">.</span><span class="n">normal_form</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="ADLNode.is_weaker"><a class="viewcode-back" href="../../language.html#tyche.language.ADLNode.is_weaker">[docs]</a>    <span class="k">def</span> <span class="nf">is_weaker</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns true if the probability of this node is provably necessarily</span>
 <span class="sd">        less than or equal to the probability of the given node.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -916,14 +916,14 @@
         <span class="k">raise</span> <span class="n">TycheLanguageException</span><span class="p">(</span><span class="s2">&quot;is_weaker is unimplemented for &quot;</span> <span class="o">+</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ADLNode.is_stronger"><a class="viewcode-back" href="../../language.html#tyche.language.ADLNode.is_stronger">[docs]</a>    <span class="k">def</span> <span class="nf">is_stronger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns true if the probability of this node is provably necessarily</span>
 <span class="sd">        greater than or equal to the probability of the given node.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">is_weaker</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ADLNode.when"><a class="viewcode-back" href="../../language.html#tyche.language.ADLNode.when">[docs]</a>    <span class="k">def</span> <span class="nf">when</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">condition</span><span class="p">:</span> <span class="n">CompatibleWithADLNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ConditionalWithoutElse&#39;</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a formula that represents (condition ? self : Always).</span>
 <span class="sd">        This is equivalent to the formula self -&gt; condition.</span>
 <span class="sd">        You can use a.when(b).otherwise(c) to represent (b ? a : c).</span>
@@ -931,34 +931,34 @@
         <span class="k">return</span> <span class="n">ConditionalWithoutElse</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ADLNode.complement"><a class="viewcode-back" href="../../language.html#tyche.language.ADLNode.complement">[docs]</a>    <span class="k">def</span> <span class="nf">complement</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Produces a new node that represents the complement (negation) of this node.</span>
 <span class="sd">        i.e., this performs a logical NOT operation to this node.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">NEVER</span><span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">otherwise</span><span class="p">(</span><span class="n">ALWAYS</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="fm">__invert__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Produces a new node that represents the complement (negation) of this node.</span>
 <span class="sd">        i.e., this performs a logical NOT operation to this node.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">complement</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__and__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">CompatibleWithADLNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Produces a new node that represents the conjunction of this node and the given node.</span>
 <span class="sd">        i.e., this performs a logical AND operation on this node and the given node.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">ADLNode</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">node</span><span class="p">)</span><span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">otherwise</span><span class="p">(</span><span class="n">NEVER</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__or__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">CompatibleWithADLNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ADLNode&#39;</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Produces a new node that represents the disjunction of this node and the given node.</span>
 <span class="sd">        i.e., this performs a logical OR operation on this node and the given node.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">ALWAYS</span><span class="o">.</span><span class="n">when</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">otherwise</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
 
-    <span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Ideas for other inline operators to define:</span>
 <span class="sd">    node.for(role)</span>
 <span class="sd">    node.for(role).given(margin)</span>
@@ -969,7 +969,7 @@
 
 
 <div class="viewcode-block" id="Atom"><a class="viewcode-back" href="../../language.html#tyche.language.Atom">[docs]</a><span class="k">class</span> <span class="nc">Atom</span><span class="p">(</span><span class="n">ADLNode</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represents indivisible nodes such as concepts and constants such as always or never.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">special_symbol</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
@@ -986,7 +986,7 @@
 
 <div class="viewcode-block" id="Atom.check_symbol"><a class="viewcode-back" href="../../language.html#tyche.language.Atom.check_symbol">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">check_symbol</span><span class="p">(</span><span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">symbol_name</span><span class="o">=</span><span class="s2">&quot;symbol&quot;</span><span class="p">,</span> <span class="n">symbol_type_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Atom&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks a string contains only alphanumeric characters or underscore.</span>
 <span class="sd">        Raises an error if the symbol is an invalid atom symbol.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1034,7 +1034,7 @@
 
 
 <div class="viewcode-block" id="Concept"><a class="viewcode-back" href="../../language.html#tyche.language.Concept">[docs]</a><span class="k">class</span> <span class="nc">Concept</span><span class="p">(</span><span class="n">Atom</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represents indivisible nodes such as concepts and constants such as always or never.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
@@ -1044,12 +1044,12 @@
         <span class="k">return</span> <span class="n">context</span><span class="o">.</span><span class="n">get_concept</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Concept.eval_reference"><a class="viewcode-back" href="../../language.html#tyche.language.Concept.eval_reference">[docs]</a>    <span class="k">def</span> <span class="nf">eval_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TycheContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BakedSymbolReference</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot; Evaluates to a mutable reference to the value of this concept. &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Evaluates to a mutable reference to the value of this concept. &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">context</span><span class="o">.</span><span class="n">get_concept_reference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="Constant"><a class="viewcode-back" href="../../language.html#tyche.language.Constant">[docs]</a><span class="k">class</span> <span class="nc">Constant</span><span class="p">(</span><span class="n">Atom</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A constant named aleatoric probability.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">probability</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
@@ -1065,7 +1065,7 @@
 
 
 <div class="viewcode-block" id="Role"><a class="viewcode-back" href="../../language.html#tyche.language.Role">[docs]</a><span class="k">class</span> <span class="nc">Role</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represents the relationships between contexts.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">special_symbol</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
@@ -1096,12 +1096,12 @@
         <span class="k">return</span> <span class="n">context</span><span class="o">.</span><span class="n">get_role</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Role.eval_reference"><a class="viewcode-back" href="../../language.html#tyche.language.Role.eval_reference">[docs]</a>    <span class="k">def</span> <span class="nf">eval_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TycheContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BakedSymbolReference</span><span class="p">[</span><span class="n">RoleDist</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot; Evaluates to a mutable reference to the value of this role. &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Evaluates to a mutable reference to the value of this role. &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">context</span><span class="o">.</span><span class="n">get_role_reference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbol</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="ConstantRole"><a class="viewcode-back" href="../../language.html#tyche.language.ConstantRole">[docs]</a><span class="k">class</span> <span class="nc">ConstantRole</span><span class="p">(</span><span class="n">Role</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represents a relationship that is constant.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">RoleDist</span><span class="p">):</span>
@@ -1117,12 +1117,12 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
 
 <div class="viewcode-block" id="ConstantRole.eval_reference"><a class="viewcode-back" href="../../language.html#tyche.language.ConstantRole.eval_reference">[docs]</a>    <span class="k">def</span> <span class="nf">eval_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TycheContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BakedSymbolReference</span><span class="p">[</span><span class="n">RoleDist</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot; Evaluates to a mutable reference to the value of this role. &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Evaluates to a mutable reference to the value of this role. &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="n">TycheLanguageException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Instances of </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> are immutable&quot;</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="ReferenceBackedRole"><a class="viewcode-back" href="../../language.html#tyche.language.ReferenceBackedRole">[docs]</a><span class="k">class</span> <span class="nc">ReferenceBackedRole</span><span class="p">(</span><span class="n">Role</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represents a relationship that&#39;s value is taken from a reference.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value_ref</span><span class="p">:</span> <span class="n">SymbolReference</span><span class="p">[</span><span class="n">RoleDist</span><span class="p">]):</span>
@@ -1136,12 +1136,12 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_ref</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ReferenceBackedRole.eval_reference"><a class="viewcode-back" href="../../language.html#tyche.language.ReferenceBackedRole.eval_reference">[docs]</a>    <span class="k">def</span> <span class="nf">eval_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TycheContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BakedSymbolReference</span><span class="p">[</span><span class="n">RoleDist</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot; Evaluates to a mutable reference to the value of this role. &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Evaluates to a mutable reference to the value of this role. &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_ref</span><span class="o">.</span><span class="n">bake</span><span class="p">(</span><span class="n">context</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="Conditional"><a class="viewcode-back" href="../../language.html#tyche.language.Conditional">[docs]</a><span class="k">class</span> <span class="nc">Conditional</span><span class="p">(</span><span class="n">ADLNode</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represents an aleatoric ternary construct (if-then-else).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">condition</span><span class="p">:</span> <span class="n">CompatibleWithADLNode</span><span class="p">,</span> <span class="n">if_yes</span><span class="p">:</span> <span class="n">CompatibleWithADLNode</span><span class="p">,</span> <span class="n">if_no</span><span class="p">:</span> <span class="n">CompatibleWithADLNode</span><span class="p">):</span>
@@ -1158,23 +1158,23 @@
         <span class="k">return</span> <span class="n">Conditional</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Conditional.is_known_noop"><a class="viewcode-back" href="../../language.html#tyche.language.Conditional.is_known_noop">[docs]</a>    <span class="k">def</span> <span class="nf">is_known_noop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Returns whether this conditional does nothing. i.e., (A ? ALWAYS : NEVER). &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Returns whether this conditional does nothing. i.e., (A ? ALWAYS : NEVER). &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">if_yes</span> <span class="o">==</span> <span class="n">ALWAYS</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">if_no</span> <span class="o">==</span> <span class="n">NEVER</span></div>
 
 <div class="viewcode-block" id="Conditional.is_known_complement"><a class="viewcode-back" href="../../language.html#tyche.language.Conditional.is_known_complement">[docs]</a>    <span class="k">def</span> <span class="nf">is_known_complement</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Returns whether this conditional is a complement operation. i.e., NOT A. &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Returns whether this conditional is a complement operation. i.e., NOT A. &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">if_yes</span> <span class="o">==</span> <span class="n">NEVER</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">if_no</span> <span class="o">==</span> <span class="n">ALWAYS</span></div>
 
 <div class="viewcode-block" id="Conditional.is_known_conjunction"><a class="viewcode-back" href="../../language.html#tyche.language.Conditional.is_known_conjunction">[docs]</a>    <span class="k">def</span> <span class="nf">is_known_conjunction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Returns whether this conditional is a conjunction. i.e., A AND B. &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Returns whether this conditional is a conjunction. i.e., A AND B. &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">if_yes</span> <span class="o">!=</span> <span class="n">ALWAYS</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">if_no</span> <span class="o">==</span> <span class="n">NEVER</span></div>
 
 <div class="viewcode-block" id="Conditional.is_known_disjunction"><a class="viewcode-back" href="../../language.html#tyche.language.Conditional.is_known_disjunction">[docs]</a>    <span class="k">def</span> <span class="nf">is_known_disjunction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Returns whether this conditional is a disjunction. i.e., A OR B. &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Returns whether this conditional is a disjunction. i.e., A OR B. &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">if_yes</span> <span class="o">==</span> <span class="n">ALWAYS</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">if_no</span> <span class="o">!=</span> <span class="n">NEVER</span></div>
 
 <div class="viewcode-block" id="Conditional.to_str"><a class="viewcode-back" href="../../language.html#tyche.language.Conditional.to_str">[docs]</a>    <span class="k">def</span> <span class="nf">to_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">allow_no_brackets</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Converts this node to a string, and potentially</span>
 <span class="sd">        omits the enclosing brackets if specifically allowed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1188,7 +1188,7 @@
         <span class="n">is_disjunction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_known_disjunction</span><span class="p">()</span>
 
         <span class="k">def</span> <span class="nf">sub_str</span><span class="p">(</span><span class="n">node</span><span class="p">:</span> <span class="n">ADLNode</span><span class="p">,</span> <span class="n">no_brackets</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot; Converts the given node to a string, with some formatting parameters. &quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot; Converts the given node to a string, with some formatting parameters. &quot;&quot;&quot;</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">Conditional</span><span class="p">):</span>
                 <span class="n">sub</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">Conditional</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">no_brackets</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1239,7 +1239,7 @@
         <span class="k">return</span> <span class="n">cond</span> <span class="o">*</span> <span class="n">if_yes</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">cond</span><span class="p">)</span> <span class="o">*</span> <span class="n">if_no</span></div>
 
 <div class="viewcode-block" id="Conditional.normal_form"><a class="viewcode-back" href="../../language.html#tyche.language.Conditional.normal_form">[docs]</a>    <span class="k">def</span> <span class="nf">normal_form</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the tree normal form of the conditional,</span>
 <span class="sd">        by recursively calling normal for on sub elements.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1250,7 +1250,7 @@
 
 
 <div class="viewcode-block" id="ConditionalWithoutElse"><a class="viewcode-back" href="../../language.html#tyche.language.ConditionalWithoutElse">[docs]</a><span class="k">class</span> <span class="nc">ConditionalWithoutElse</span><span class="p">(</span><span class="n">Conditional</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represents an aleatoric ternary construct of the form (condition ? if_yes : Always).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">condition</span><span class="p">:</span> <span class="n">CompatibleWithADLNode</span><span class="p">,</span> <span class="n">if_yes</span><span class="p">:</span> <span class="n">CompatibleWithADLNode</span><span class="p">):</span>
@@ -1261,7 +1261,7 @@
 
 
 <div class="viewcode-block" id="Given"><a class="viewcode-back" href="../../language.html#tyche.language.Given">[docs]</a><span class="k">class</span> <span class="nc">Given</span><span class="p">(</span><span class="n">ADLNode</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represents a node that should only be evaluated after the given evaluates to true.</span>
 <span class="sd">    Due to this, the evaluation of the Given must be handled by the context.</span>
 <span class="sd">    Therefore, these should be avoided generally, and only used when they are required.</span>
@@ -1275,7 +1275,7 @@
             <span class="n">node</span><span class="p">:</span> <span class="n">CompatibleWithADLNode</span><span class="p">,</span>
             <span class="n">given</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CompatibleWithADLNode</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">ADLNode</span><span class="p">,</span> <span class="n">ADLNode</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        If the node is a Given, then this unpacks the Given into its constituent node and the given node.</span>
 <span class="sd">        If a given is explicitly provided whilst the node is also a Given, the returned given will be</span>
 <span class="sd">        the conjunction of both. If the node is not a Given, then the provided node and given will be</span>
@@ -1325,7 +1325,7 @@
 
 
 <div class="viewcode-block" id="Expectation"><a class="viewcode-back" href="../../language.html#tyche.language.Expectation">[docs]</a><span class="k">class</span> <span class="nc">Expectation</span><span class="p">(</span><span class="n">ADLNode</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represents the aleatoric expectation construct,</span>
 <span class="sd">    &#39;The expectation that node is true for an individual selected randomly</span>
 <span class="sd">    from the given role, given that the individual evaluates given to true&#39;.</span>
@@ -1343,7 +1343,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">given_node</span> <span class="o">=</span> <span class="n">ADLNode</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">given_node</span><span class="p">)</span> <span class="k">if</span> <span class="n">given_node</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">ALWAYS</span>
 
 <div class="viewcode-block" id="Expectation.get_content_node"><a class="viewcode-back" href="../../language.html#tyche.language.Expectation.get_content_node">[docs]</a>    <span class="k">def</span> <span class="nf">get_content_node</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ADLNode</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a node that contains the contents of this expectation including both</span>
 <span class="sd">        the evaluation node, and the given node if one was provided on construction.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1376,7 +1376,7 @@
 
 <div class="viewcode-block" id="Expectation.evaluate_role_under_role"><a class="viewcode-back" href="../../language.html#tyche.language.Expectation.evaluate_role_under_role">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">evaluate_role_under_role</span><span class="p">(</span><span class="n">outer_role</span><span class="p">:</span> <span class="n">ExclusiveRoleDist</span><span class="p">,</span> <span class="n">inner_role</span><span class="p">:</span> <span class="n">Role</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ExclusiveRoleDist</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evaluates the expected role over a given set of roles. The chance</span>
 <span class="sd">        of the contexts in the returned role represents the chance that</span>
 <span class="sd">        the context is selected from an inner_role selected from outer_role.</span>
@@ -1399,7 +1399,7 @@
         <span class="k">return</span> <span class="n">result</span></div>
 
 <div class="viewcode-block" id="Expectation.direct_eval"><a class="viewcode-back" href="../../language.html#tyche.language.Expectation.direct_eval">[docs]</a>    <span class="k">def</span> <span class="nf">direct_eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TycheContext</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evaluates the node for all members of the role mapping</span>
 <span class="sd">        from the given context to other contexts. This evaluation</span>
 <span class="sd">        contains an implicit given that the role is non-None.</span>
@@ -1411,7 +1411,7 @@
 
 
 <div class="viewcode-block" id="Exists"><a class="viewcode-back" href="../../language.html#tyche.language.Exists">[docs]</a><span class="k">class</span> <span class="nc">Exists</span><span class="p">(</span><span class="n">ADLNode</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represents the expectation about whether a value for a role exists.</span>
 <span class="sd">    i.e. The probability that the value of a role is non-None.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1438,7 +1438,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">role</span>
 
 <div class="viewcode-block" id="Exists.direct_eval"><a class="viewcode-back" href="../../language.html#tyche.language.Exists.direct_eval">[docs]</a>    <span class="k">def</span> <span class="nf">direct_eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TycheContext</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evaluates the likelihood that the given role has a non-None value.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">role_value</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">eval_role</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">role</span><span class="p">)</span>
@@ -1446,7 +1446,7 @@
 
 
 <div class="viewcode-block" id="LeastFixedPoint"><a class="viewcode-back" href="../../language.html#tyche.language.LeastFixedPoint">[docs]</a><span class="k">class</span> <span class="nc">LeastFixedPoint</span><span class="p">(</span><span class="n">ADLNode</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Disclaimer: This class is not yet functional. It is a work in progress.</span>
 
 <span class="sd">    class for representing the aleatoric fixed point construct in the language.</span>
@@ -1472,7 +1472,7 @@
         <span class="k">return</span> <span class="n">Conditional</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Use X as the fixed point quantifier,</span>
 <span class="sd">        if least and greatest not relevant?</span>
 <span class="sd">        or is assignment appropriate x&lt;=(father.(bald?YES:x)) (GFP is x&gt;=(father.(bald?x:NO)) &quot;all bald on the male line&quot;)</span>
@@ -1494,13 +1494,13 @@
         <span class="k">raise</span> <span class="n">TycheLanguageException</span><span class="p">(</span><span class="s2">&quot;not yet implemented&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="LeastFixedPoint.direct_eval"><a class="viewcode-back" href="../../language.html#tyche.language.LeastFixedPoint.direct_eval">[docs]</a>    <span class="k">def</span> <span class="nf">direct_eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">TycheContext</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Complex one, needs iteration or equation solving.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="n">TycheLanguageException</span><span class="p">(</span><span class="s2">&quot;not yet implemented&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="LeastFixedPoint.normal_form"><a class="viewcode-back" href="../../language.html#tyche.language.LeastFixedPoint.normal_form">[docs]</a>    <span class="k">def</span> <span class="nf">normal_form</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the tree normal form of the conditional,</span>
 <span class="sd">        by recursively calling normal for on sub elements.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1514,7 +1514,7 @@
 
 <div class="viewcode-block" id="LeastFixedPoint.is_linear"><a class="viewcode-back" href="../../language.html#tyche.language.LeastFixedPoint.is_linear">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">is_linear</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        class method to test whether variable is linear in node</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="n">TycheLanguageException</span><span class="p">(</span><span class="s2">&quot;not yet implemented&quot;</span><span class="p">)</span></div></div>
@@ -1579,11 +1579,11 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2022, Padraig Lamont, drtnf.
+      &copy;2023, Padraig Lamont, drtnf.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 5.1.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
     </div>
 

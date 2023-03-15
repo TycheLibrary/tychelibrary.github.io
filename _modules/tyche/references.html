@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tyche.references &#8212; Tyche v1.0.0 documentation</title>
+    <title>tyche.references &#8212; Tyche v1.0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -44,7 +44,7 @@
 
 
 <div class="viewcode-block" id="TycheReferencesException"><a class="viewcode-back" href="../../references.html#tyche.references.TycheReferencesException">[docs]</a><span class="k">class</span> <span class="nc">TycheReferencesException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    An exception type that is thrown when errors occur in</span>
 <span class="sd">    the construction or use of references.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -56,7 +56,7 @@
 
 
 <div class="viewcode-block" id="SymbolReference"><a class="viewcode-back" href="../../references.html#tyche.references.SymbolReference">[docs]</a><span class="k">class</span> <span class="nc">SymbolReference</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">SymbolType</span><span class="p">]):</span>
-    <span class="sd">&quot;&quot;&quot; Represents a reference to the value of a symbol. &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Represents a reference to the value of a symbol. &quot;&quot;&quot;</span>
     <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
@@ -76,7 +76,7 @@
 
 
 <div class="viewcode-block" id="BakedSymbolReference"><a class="viewcode-back" href="../../references.html#tyche.references.BakedSymbolReference">[docs]</a><span class="k">class</span> <span class="nc">BakedSymbolReference</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">SymbolType</span><span class="p">]):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represents a reference to the value of a symbol,</span>
 <span class="sd">    with the object that the value is accessed from baked in.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -95,7 +95,7 @@
 
 
 <div class="viewcode-block" id="FieldSymbolReference"><a class="viewcode-back" href="../../references.html#tyche.references.FieldSymbolReference">[docs]</a><span class="k">class</span> <span class="nc">FieldSymbolReference</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">SymbolType</span><span class="p">],</span> <span class="n">SymbolReference</span><span class="p">[</span><span class="n">SymbolType</span><span class="p">]):</span>
-    <span class="sd">&quot;&quot;&quot; Represents a reference to a field in an object. &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Represents a reference to a field in an object. &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">field_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">field_name</span> <span class="o">=</span> <span class="n">symbol</span> <span class="k">if</span> <span class="n">field_name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">field_name</span>
@@ -113,7 +113,7 @@
 
 
 <div class="viewcode-block" id="FunctionSymbolReference"><a class="viewcode-back" href="../../references.html#tyche.references.FunctionSymbolReference">[docs]</a><span class="k">class</span> <span class="nc">FunctionSymbolReference</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">SymbolType</span><span class="p">],</span> <span class="n">SymbolReference</span><span class="p">[</span><span class="n">SymbolType</span><span class="p">]):</span>
-    <span class="sd">&quot;&quot;&quot; Represents a reference to a mutable property in an object. &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Represents a reference to a mutable property in an object. &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
             <span class="n">fget</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">object</span><span class="p">],</span> <span class="n">SymbolType</span><span class="p">],</span>
@@ -145,7 +145,7 @@
     <span class="n">Generic</span><span class="p">[</span><span class="n">SymbolType</span><span class="p">,</span> <span class="n">GuardedSymbolType</span><span class="p">],</span>
     <span class="n">SymbolReference</span><span class="p">[</span><span class="n">SymbolType</span><span class="p">]</span>
 <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Represents a mutable reference where the accessed value is</span>
 <span class="sd">    different to the value stored in the reference. The referenced</span>
 <span class="sd">    value is transformed when accessed or modified.</span>
@@ -234,11 +234,11 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2022, Padraig Lamont, drtnf.
+      &copy;2023, Padraig Lamont, drtnf.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 5.1.1</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
     </div>
 
